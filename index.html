@@ -3,79 +3,672 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ailiv — Consulenza e Ottimizzazione AI</title>
-<meta name="description" content="Ailiv. Consulenza e ottimizzazione AI. Stiamo costruendo qualcosa di fico.">
+<title>Ailiv — AI che lavora per il tuo business. In produzione, non in slide.</title>
+<meta name="description" content="Ailiv è l'agenzia italiana di consulenza e ottimizzazione AI per PMI. Costruiamo agenti, automazioni e processi AI che girano tutti i giorni. Audit AI Act, Transizione 5.0, pricing trasparente.">
+<meta name="keywords" content="agenzia AI Italia, consulenza intelligenza artificiale PMI, chatbot PMI, agenti AI aziendali, AI Act PMI, automazione processi, consulenza AI Roma">
+<meta property="og:title" content="Ailiv — AI che lavora per il tuo business">
+<meta property="og:description" content="Consulenza e ottimizzazione AI per PMI italiane. In produzione, non in slide.">
+<meta property="og:image" content="https://ailiv.it/assets/logo-ailiv.png">
+<meta property="og:url" content="https://ailiv.it">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="assets/bollino-ailiv.png">
 <link rel="apple-touch-icon" href="assets/bollino-ailiv.png">
+<link rel="canonical" href="https://ailiv.it/">
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --navy: #143d5c; --navy-dark: #0e2c43; --cream: #fafaf7; }
-  html { font-family: 'Inter', sans-serif; }
-  body { background: var(--cream); color: var(--navy); overflow: hidden; min-height: 100vh; }
+  :root {
+    --navy: #143d5c;
+    --navy-dark: #0e2c43;
+    --navy-light: #2a6fa3;
+    --cream: #fafaf7;
+    --cream-warm: #f5f3ee;
+    --accent: #d4a747;
+  }
+  * { -webkit-font-smoothing: antialiased; }
+  html { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--navy); }
 
-  .blob { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.18; pointer-events: none; z-index: 0; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.15; pointer-events: none; z-index: 0; }
   @keyframes float1 { 0%,100% { transform: translate(0,0) scale(1) } 50% { transform: translate(30px,-40px) scale(1.1) } }
   @keyframes float2 { 0%,100% { transform: translate(0,0) scale(1) } 50% { transform: translate(-40px,30px) scale(0.95) } }
-  .b1 { animation: float1 10s ease-in-out infinite; }
-  .b2 { animation: float2 12s ease-in-out infinite; }
+  .b1 { animation: float1 12s ease-in-out infinite; }
+  .b2 { animation: float2 14s ease-in-out infinite; }
 
   @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1) } 50% { opacity: .4; transform: scale(1.4) } }
   .dot { animation: pulse-dot 1.6s ease-in-out infinite; }
 
-  .bar-track { background: rgba(20,61,92,0.08); }
-  .bar-fill { background: linear-gradient(90deg, transparent 0%, var(--navy) 40%, var(--navy) 60%, transparent 100%); background-size: 200% 100%; animation: load 2.8s ease-in-out infinite; }
-  @keyframes load { 0% { background-position: 100% 0 } 100% { background-position: -100% 0 } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px) } to { opacity: 1; transform: translateY(0) } }
+  .reveal { opacity: 0; }
+  .reveal.visible { animation: fadeUp .9s ease-out forwards; }
 
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px) } to { opacity: 1; transform: translateY(0) } }
-  .fade { animation: fadeUp .9s ease-out both; }
-  .d1 { animation-delay: .1s } .d2 { animation-delay: .3s } .d3 { animation-delay: .5s } .d4 { animation-delay: .7s } .d5 { animation-delay: .9s }
+  .btn-primary {
+    background: var(--navy); color: #fff;
+    transition: all .3s;
+    box-shadow: 0 10px 40px rgba(20,61,92,0.2);
+  }
+  .btn-primary:hover { background: var(--navy-dark); transform: translateY(-2px); box-shadow: 0 15px 50px rgba(20,61,92,0.35); }
 
-  .btn-navy { background: var(--navy); color: #fff; transition: all .3s; box-shadow: 0 10px 40px rgba(20,61,92,0.25); }
-  .btn-navy:hover { background: var(--navy-dark); transform: translateY(-2px); box-shadow: 0 15px 50px rgba(20,61,92,0.35); }
+  .btn-ghost {
+    background: transparent; color: var(--navy);
+    border: 1.5px solid rgba(20,61,92,0.2);
+    transition: all .3s;
+  }
+  .btn-ghost:hover { border-color: var(--navy); background: rgba(20,61,92,0.03); }
 
-  .logo-img { max-width: 520px; width: 80%; height: auto; }
-  @media (max-width: 640px) { .logo-img { width: 85%; } }
+  .card {
+    background: #fff;
+    border: 1px solid rgba(20,61,92,0.08);
+    transition: all .3s;
+  }
+  .card:hover {
+    border-color: rgba(20,61,92,0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(20,61,92,0.08);
+  }
+
+  .nav-blur {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(250,250,247,0.8);
+    border-bottom: 1px solid rgba(20,61,92,0.06);
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(20,61,92,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(20,61,92,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .headline {
+    background: linear-gradient(135deg, #143d5c 0%, #2a6fa3 50%, #143d5c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.03em;
+  }
+
+  .stat-number {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .price-card.featured {
+    background: var(--navy);
+    color: #fff;
+    transform: scale(1.03);
+    box-shadow: 0 30px 80px rgba(20,61,92,0.3);
+  }
+  .price-card.featured .price-title,
+  .price-card.featured .price-value { color: #fff; }
+  .price-card.featured .price-feature { color: rgba(255,255,255,0.85); }
+  .price-card.featured .btn-primary { background: #fff; color: var(--navy); }
+  .price-card.featured .btn-primary:hover { background: var(--cream); }
+
+  .ticker {
+    animation: scroll 30s linear infinite;
+  }
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .accent-line {
+    width: 48px; height: 3px; background: var(--accent);
+    display: inline-block; vertical-align: middle; margin-right: 12px;
+  }
+
+  details[open] summary svg { transform: rotate(45deg); }
+  summary svg { transition: transform .3s; }
+  summary::-webkit-details-marker { display: none; }
 </style>
 </head>
-<body class="flex items-center justify-center px-6 relative">
+<body>
 
-  <div class="blob b1 w-[500px] h-[500px] top-0 -left-40" style="background: #143d5c;"></div>
-  <div class="blob b2 w-[500px] h-[500px] bottom-0 -right-40" style="background: #2a6fa3;"></div>
+<!-- ============ NAV ============ -->
+<nav class="fixed top-0 left-0 right-0 z-50 nav-blur">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2">
+      <img src="assets/bollino-ailiv.png" alt="Ailiv" class="h-9 w-auto">
+      <span class="text-xl font-bold tracking-tight text-[#143d5c]">ailiv<span class="text-[#143d5c]/40">.</span></span>
+    </a>
+    <div class="hidden md:flex gap-8 text-sm font-medium text-[#143d5c]/80">
+      <a href="#servizi" class="hover:text-[#143d5c] transition">Servizi</a>
+      <a href="#processo" class="hover:text-[#143d5c] transition">Processo</a>
+      <a href="#lavori" class="hover:text-[#143d5c] transition">Lavori</a>
+      <a href="#ai-act" class="hover:text-[#143d5c] transition">AI Act</a>
+      <a href="#pricing" class="hover:text-[#143d5c] transition">Pricing</a>
+    </div>
+    <a href="#contatti" class="btn-primary text-sm px-5 py-2.5 rounded-full font-semibold hidden sm:inline-block">Parliamone</a>
+  </div>
+</nav>
 
-  <main class="relative z-10 text-center max-w-2xl py-12">
+<!-- ============ HERO ============ -->
+<section class="relative min-h-screen flex items-center pt-28 pb-20 px-6 overflow-hidden grid-bg">
+  <div class="blob b1 bg-[#143d5c] w-[600px] h-[600px] top-20 -left-40"></div>
+  <div class="blob b2 bg-[#2a6fa3] w-[600px] h-[600px] bottom-0 -right-40"></div>
 
-    <img src="assets/logo-ailiv.png" alt="Ailiv" class="logo-img mx-auto mb-10 fade d1" />
+  <div class="relative z-10 max-w-6xl mx-auto w-full">
+    <div class="max-w-4xl">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#143d5c]/15 bg-white/80 backdrop-blur text-xs font-semibold text-[#143d5c] mb-8 reveal visible">
+        <span class="w-2 h-2 rounded-full bg-green-500 dot"></span>
+        CONSULENZA E OTTIMIZZAZIONE AI · ITALIA
+      </div>
 
-    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#143d5c]/15 bg-white/60 backdrop-blur text-xs font-medium text-[#143d5c] mb-8 fade d2">
-      <span class="w-2 h-2 rounded-full bg-green-500 dot"></span>
-      Lavori in corso
+      <h1 class="text-5xl sm:text-6xl md:text-8xl font-bold leading-[0.95] mb-6 headline reveal visible">
+        AI che lavora<br>per il tuo business.
+      </h1>
+
+      <p class="text-xl md:text-2xl text-[#143d5c]/70 max-w-2xl mb-4 leading-relaxed reveal visible">
+        In produzione, non in slide.
+      </p>
+
+      <p class="text-base md:text-lg text-[#143d5c]/60 max-w-2xl mb-10 leading-relaxed reveal visible">
+        Costruiamo agenti, automazioni e processi AI per PMI italiane.
+        Sistemi che girano tutti i giorni, misurano risultati veri e liberano il tuo tempo.
+        Abbiamo smesso di fare presentazioni nel 2023.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 mb-12 reveal visible">
+        <a href="#contatti" class="btn-primary px-8 py-4 rounded-full font-semibold text-center">
+          Richiedi Audit AI · € 490 →
+        </a>
+        <a href="#servizi" class="btn-ghost px-8 py-4 rounded-full font-semibold text-center">
+          Scopri come lavoriamo
+        </a>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-[#143d5c]/50 reveal visible">
+        <span class="text-xs uppercase tracking-widest font-semibold">Sistemi live per:</span>
+        <span class="font-semibold text-[#143d5c]/80">A Mano A Mano</span>
+        <span>·</span>
+        <span class="font-semibold text-[#143d5c]/80">Velocissimo</span>
+        <span>·</span>
+        <span class="font-semibold text-[#143d5c]/80">Ciotto</span>
+        <span>·</span>
+        <span class="font-semibold text-[#143d5c]/80">CL Felice</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEMA / STATS ============ -->
+<section class="relative py-24 px-6 bg-[#143d5c] text-white overflow-hidden">
+  <div class="blob w-[500px] h-[500px] top-0 left-1/4 bg-[#2a6fa3] opacity-30"></div>
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="mb-16 max-w-3xl">
+      <p class="text-sm uppercase tracking-widest text-white/50 font-semibold mb-4"><span class="accent-line"></span>Il problema</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-6">
+        Le PMI italiane stanno<br>rimanendo indietro.
+      </h2>
+      <p class="text-lg text-white/70 max-w-2xl">
+        Mentre le grandi imprese corrono, il 74% delle PMI italiane usa AI "fuori controllo":
+        dipendenti che copiano dati su ChatGPT, zero governance, zero misurazione, compliance zero.
+        Non è rifiuto dell'innovazione. È mancanza di un partner che sappia farla atterrare.
+      </p>
     </div>
 
-    <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-6 fade d3">
-      Stiamo costruendo<br>qualcosa di fico.
-    </h1>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="border-l-2 border-[#d4a747] pl-6">
+        <div class="stat-number text-[#d4a747]">15,7%</div>
+        <p class="text-white font-semibold mt-3 mb-1">PMI italiane adottano AI</p>
+        <p class="text-white/60 text-sm">Contro il 53% delle grandi imprese. Il gap si sta allargando. <span class="text-white/40">— ISTAT 2025</span></p>
+      </div>
+      <div class="border-l-2 border-[#d4a747] pl-6">
+        <div class="stat-number text-[#d4a747]">74%</div>
+        <p class="text-white font-semibold mt-3 mb-1">Usano "Shadow AI"</p>
+        <p class="text-white/60 text-sm">Attività AI fuori da qualunque perimetro governato. Bomba per GDPR e AI Act. <span class="text-white/40">— Econopoly 2025</span></p>
+      </div>
+      <div class="border-l-2 border-[#d4a747] pl-6">
+        <div class="stat-number text-[#d4a747]">60%</div>
+        <p class="text-white font-semibold mt-3 mb-1">Ha già rinunciato</p>
+        <p class="text-white/60 text-sm">Imprese che hanno valutato AI e hanno mollato per mancanza di competenze interne. <span class="text-white/40">— ISTAT 2025</span></p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <p class="text-[#143d5c]/70 text-lg md:text-xl mb-12 max-w-xl mx-auto fade d4">
-      Il nuovo sito di <strong>Ailiv</strong> arriva molto presto.<br>
-      Nel frattempo, se vuoi parlarci di un progetto:
+<!-- ============ CHI SIAMO ============ -->
+<section class="py-24 px-6">
+  <div class="max-w-4xl mx-auto text-center">
+    <p class="text-sm uppercase tracking-widest text-[#143d5c]/50 font-semibold mb-6"><span class="accent-line"></span>Chi siamo</p>
+    <h2 class="text-4xl md:text-5xl font-bold tracking-tight leading-tight mb-8">
+      Ailiv è un'agenzia italiana di<br>
+      <span class="text-[#143d5c]/60">consulenza e ottimizzazione AI per PMI.</span>
+    </h2>
+    <p class="text-xl text-[#143d5c]/70 leading-relaxed">
+      Non vendiamo slide. Vendiamo sistemi che ogni mattina, quando apri il ristorante,
+      il negozio, lo studio o la fabbrica, <strong>stanno già lavorando per te</strong>:
+      rispondono ai clienti, gestiscono ordini, preparano report, ti avvisano quando qualcosa
+      non va. L'AI che avremmo voluto trovare quando ne avevamo bisogno.
+    </p>
+  </div>
+</section>
+
+<!-- ============ SERVIZI ============ -->
+<section id="servizi" class="py-24 px-6 bg-[#f5f3ee]">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-16 max-w-3xl">
+      <p class="text-sm uppercase tracking-widest text-[#143d5c]/50 font-semibold mb-4"><span class="accent-line"></span>Cosa facciamo</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+        Quattro aree,<br>un solo obiettivo:<br>
+        <span class="text-[#143d5c]/50">farti vedere risultati.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="card rounded-2xl p-10">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="w-12 h-12 rounded-xl bg-[#143d5c] flex items-center justify-center text-white flex-shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+          </div>
+          <h3 class="text-2xl font-bold pt-2">Agenti AI operativi</h3>
+        </div>
+        <p class="text-[#143d5c]/70 leading-relaxed mb-4">
+          Chatbot che rispondono davvero, assistenti che prenotano, SDR virtuali che qualificano lead,
+          customer service 24/7 connesso al tuo gestionale. Non demo: sistemi che incassano o risparmiano ogni ora.
+        </p>
+        <p class="text-sm text-[#143d5c]/50">Stack: Claude Agent SDK · MCP · Cloudflare Workers · RAG</p>
+      </div>
+
+      <div class="card rounded-2xl p-10">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="w-12 h-12 rounded-xl bg-[#143d5c] flex items-center justify-center text-white flex-shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <h3 class="text-2xl font-bold pt-2">Automazione processi</h3>
+        </div>
+        <p class="text-[#143d5c]/70 leading-relaxed mb-4">
+          Lead, ordini, fatture, reportistica, onboarding, follow-up. Tutto quello che il tuo team fa
+          a mano e che un processo AI può fare mentre dormi. Integrato con i tools che già usi.
+        </p>
+        <p class="text-sm text-[#143d5c]/50">Stack: GoHighLevel · Make · API custom · Meta/Google integrations</p>
+      </div>
+
+      <div class="card rounded-2xl p-10">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="w-12 h-12 rounded-xl bg-[#143d5c] flex items-center justify-center text-white flex-shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <h3 class="text-2xl font-bold pt-2">Operations intelligence</h3>
+        </div>
+        <p class="text-[#143d5c]/70 leading-relaxed mb-4">
+          Dashboard real-time, alert su WhatsApp, previsioni di vendita, analisi cassa, reportistica
+          automatica ogni mattina. Sapere cosa sta succedendo nel tuo business in tempo reale, non il mese dopo.
+        </p>
+        <p class="text-sm text-[#143d5c]/50">Esempio live: assistente Velocissimo su API Pluto multi-store</p>
+      </div>
+
+      <div class="card rounded-2xl p-10">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="w-12 h-12 rounded-xl bg-[#143d5c] flex items-center justify-center text-white flex-shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <h3 class="text-2xl font-bold pt-2">AI Act & governance</h3>
+        </div>
+        <p class="text-[#143d5c]/70 leading-relaxed mb-4">
+          Audit Shadow AI, policy interne, alfabetizzazione obbligatoria del team (legge dal 2/2/2025),
+          messa a norma compliance. Ti teniamo fuori dai guai mentre facciamo crescere i risultati.
+        </p>
+        <p class="text-sm text-[#143d5c]/50">Normativa: AI Act UE · Legge 132/2025 · GDPR</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESSO ============ -->
+<section id="processo" class="py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-16 text-center">
+      <p class="text-sm uppercase tracking-widest text-[#143d5c]/50 font-semibold mb-4"><span class="accent-line"></span>Come lavoriamo</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+        Dal primo "ciao" al<br>primo risultato: <span class="text-[#143d5c]/50">14 giorni.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-6 relative">
+      <div class="card rounded-2xl p-8 relative">
+        <div class="text-6xl font-bold text-[#143d5c]/10 absolute top-4 right-4">01</div>
+        <div class="text-xs uppercase tracking-widest text-[#d4a747] font-bold mb-3">Giorno 1-2</div>
+        <h3 class="text-xl font-bold mb-3">Audit</h3>
+        <p class="text-sm text-[#143d5c]/60">Call conoscitiva di 45 min. Capiamo dove sei, cosa usi, dove il tempo va sprecato e quali dati hai davvero.</p>
+      </div>
+      <div class="card rounded-2xl p-8 relative">
+        <div class="text-6xl font-bold text-[#143d5c]/10 absolute top-4 right-4">02</div>
+        <div class="text-xs uppercase tracking-widest text-[#d4a747] font-bold mb-3">Giorno 3-5</div>
+        <h3 class="text-xl font-bold mb-3">Design</h3>
+        <p class="text-sm text-[#143d5c]/60">Proposta scritta: cosa costruiamo, quali KPI miglioriamo, quanto costa, quando va live. Tutto per iscritto.</p>
+      </div>
+      <div class="card rounded-2xl p-8 relative">
+        <div class="text-6xl font-bold text-[#143d5c]/10 absolute top-4 right-4">03</div>
+        <div class="text-xs uppercase tracking-widest text-[#d4a747] font-bold mb-3">Giorno 6-20</div>
+        <h3 class="text-xl font-bold mb-3">Build & Go live</h3>
+        <p class="text-sm text-[#143d5c]/60">Sviluppo, test, deploy. Il sistema entra in produzione sul tuo business. Ti formiamo il team. Funziona.</p>
+      </div>
+      <div class="card rounded-2xl p-8 relative">
+        <div class="text-6xl font-bold text-[#143d5c]/10 absolute top-4 right-4">04</div>
+        <div class="text-xs uppercase tracking-widest text-[#d4a747] font-bold mb-3">Dal giorno 21</div>
+        <h3 class="text-xl font-bold mb-3">Care</h3>
+        <p class="text-sm text-[#143d5c]/60">Mantenimento, evoluzioni mensili, report KPI, nuovi casi d'uso man mano che cresciamo insieme.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LAVORI ============ -->
+<section id="lavori" class="py-24 px-6 bg-[#f5f3ee]">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-16 max-w-3xl">
+      <p class="text-sm uppercase tracking-widest text-[#143d5c]/50 font-semibold mb-4"><span class="accent-line"></span>Sistemi in produzione</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+        Non ci piace parlarne.<br>
+        <span class="text-[#143d5c]/50">Preferiamo mostrarli.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <a href="https://amanoamanoboccea.it" target="_blank" rel="noopener" class="card rounded-2xl p-8 block group">
+        <div class="flex justify-between items-start mb-16">
+          <span class="text-xs uppercase tracking-widest text-[#143d5c]/50 font-bold">Ristorazione</span>
+          <span class="text-[#143d5c]/40 group-hover:text-[#143d5c] group-hover:translate-x-1 transition transform">→</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">A Mano A Mano</h3>
+        <p class="text-[#143d5c]/60 text-sm mb-6">Pizzeria Boccea — Sito, ordini online, chatbot AI "Manino" su Cloudflare Workers, email marketing narrativo, Meta Ads.</p>
+        <div class="flex gap-4 text-xs">
+          <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 text-[#143d5c] font-semibold">Chatbot 24/7</span>
+          <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 text-[#143d5c] font-semibold">Edge AI</span>
+        </div>
+      </a>
+
+      <div class="card rounded-2xl p-8">
+        <div class="flex justify-between items-start mb-16">
+          <span class="text-xs uppercase tracking-widest text-[#143d5c]/50 font-bold">Multi-store</span>
+          <span class="text-[#143d5c]/40">→</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">Velocissimo</h3>
+        <p class="text-[#143d5c]/60 text-sm mb-6">Assistente operativo real-time su API Pluto. Report giornalieri su incassi, ordini, rider, ritardi. WhatsApp automatico al titolare ogni mattina.</p>
+        <div class="flex gap-4 text-xs">
+          <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 text-[#143d5c] font-semibold">Real-time</span>
+          <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 text-[#143d5c] font-semibold">API Pluto</span>
+        </div>
+      </div>
+
+      <div class="card rounded-2xl p-8">
+        <div class="flex justify-between items-start mb-16">
+          <span class="text-xs uppercase tracking-widest text-[#143d5c]/50 font-bold">Beauty</span>
+          <span class="text-[#143d5c]/40">→</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">CL Felice Estetica</h3>
+        <p class="text-[#143d5c]/60 text-sm mb-6">Sito istituzionale + prenotazioni online + automazione follow-up clienti. Stack leggero per centro estetico.</p>
+        <div class="flex gap-4 text-xs">
+          <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 text-[#143d5c] font-semibold">Booking</span>
+          <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 text-[#143d5c] font-semibold">Automation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 p-6 rounded-2xl bg-[#143d5c]/5 border border-[#143d5c]/10 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-[#143d5c] text-sm md:text-base">
+        <strong>Vuoi vedere dal vivo un agente AI che abbiamo messo in produzione?</strong><br>
+        Apri un nostro cliente e chatta. È lì, 24/7, risponde sul serio.
+      </p>
+      <a href="https://amanoamanoboccea.it" target="_blank" rel="noopener" class="btn-primary px-6 py-3 rounded-full font-semibold text-sm whitespace-nowrap">
+        Prova Manino →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AI ACT ALERT ============ -->
+<section id="ai-act" class="py-24 px-6 bg-[#143d5c] text-white relative overflow-hidden">
+  <div class="blob w-[500px] h-[500px] top-0 right-0 bg-[#d4a747] opacity-20"></div>
+  <div class="max-w-5xl mx-auto relative z-10">
+    <div class="flex items-center gap-3 mb-6">
+      <span class="w-2 h-2 rounded-full bg-[#d4a747] dot"></span>
+      <p class="text-xs uppercase tracking-widest text-[#d4a747] font-bold">Allerta normativa</p>
+    </div>
+    <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-6">
+      Dal 2 febbraio 2025,<br>se il tuo team usa ChatGPT<br>
+      <span class="text-[#d4a747]">sei fuori norma.</span>
+    </h2>
+    <p class="text-lg md:text-xl text-white/75 max-w-3xl leading-relaxed mb-10">
+      L'<strong>AI Act europeo</strong> obbliga le aziende ad assicurare un percorso di alfabetizzazione AI
+      a tutti i dipendenti che usano strumenti di intelligenza artificiale al lavoro. La Legge italiana 132/2025
+      rafforza il quadro. Le sanzioni arrivano fino al 7% del fatturato globale.
+      La maggioranza delle PMI italiane non ha fatto nulla. <strong>Ancora.</strong>
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4">
+      <a href="#contatti" class="bg-[#d4a747] text-[#143d5c] px-8 py-4 rounded-full font-bold hover:bg-white transition">
+        Audit AI Act gratuito in 15 min →
+      </a>
+      <a href="#contatti" class="border-2 border-white/30 px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition">
+        Scarica la guida per PMI
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section id="pricing" class="py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-16 text-center max-w-3xl mx-auto">
+      <p class="text-sm uppercase tracking-widest text-[#143d5c]/50 font-semibold mb-4"><span class="accent-line"></span>Pricing trasparente</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-6">
+        Quanto costa?<br>
+        <span class="text-[#143d5c]/50">Te lo diciamo subito.</span>
+      </h2>
+      <p class="text-lg text-[#143d5c]/60">
+        Odiamo i "preventivi su richiesta". Tu hai bisogno di sapere, noi abbiamo bisogno di gente seria.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-6">
+
+      <div class="price-card card rounded-2xl p-8">
+        <p class="text-xs uppercase tracking-widest text-[#143d5c]/50 font-bold mb-3">Audit</p>
+        <h3 class="price-title text-2xl font-bold mb-2 text-[#143d5c]">Ailiv Start Audit</h3>
+        <div class="price-value text-4xl font-bold mb-6 text-[#143d5c]">€ 490 <span class="text-base font-normal text-[#143d5c]/50">una tantum</span></div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> Call 45 min + analisi dati</li>
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> Report scritto con roadmap</li>
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> Compliance AI Act incluso</li>
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> Deducibile dal pacchetto dopo</li>
+        </ul>
+        <a href="#contatti" class="btn-primary block text-center px-6 py-3 rounded-full font-semibold text-sm">Prenota audit</a>
+      </div>
+
+      <div class="price-card card rounded-2xl p-8">
+        <p class="text-xs uppercase tracking-widest text-[#143d5c]/50 font-bold mb-3">Setup</p>
+        <h3 class="price-title text-2xl font-bold mb-2 text-[#143d5c]">Ailiv Start</h3>
+        <div class="price-value text-4xl font-bold mb-6 text-[#143d5c]">€ 2.900 <span class="text-base font-normal text-[#143d5c]/50">una tantum</span></div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> 1 processo AI in produzione</li>
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> Setup completo in 14 giorni</li>
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> 30 giorni supporto incluso</li>
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> Formazione team base</li>
+        </ul>
+        <a href="#contatti" class="btn-primary block text-center px-6 py-3 rounded-full font-semibold text-sm">Inizia con Start</a>
+      </div>
+
+      <div class="price-card card rounded-2xl p-8 featured">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-xs uppercase tracking-widest font-bold opacity-80">Core offer</p>
+          <span class="text-xs px-3 py-1 rounded-full bg-[#d4a747] text-[#143d5c] font-bold">POPOLARE</span>
+        </div>
+        <h3 class="price-title text-2xl font-bold mb-2">Ailiv Grow</h3>
+        <div class="price-value text-4xl font-bold mb-1">€ 12.900</div>
+        <p class="price-feature text-sm mb-6">+ € 890/mese mantenimento</p>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="price-feature flex gap-2"><span class="text-[#d4a747]">✓</span> Progetto AI completo custom</li>
+          <li class="price-feature flex gap-2"><span class="text-[#d4a747]">✓</span> Go-live in 30-45 giorni</li>
+          <li class="price-feature flex gap-2"><span class="text-[#d4a747]">✓</span> Formazione team estesa</li>
+          <li class="price-feature flex gap-2"><span class="text-[#d4a747]">✓</span> Retainer 12 mesi incluso</li>
+          <li class="price-feature flex gap-2"><span class="text-[#d4a747]">✓</span> Accesso incentivi Transizione 5.0</li>
+        </ul>
+        <a href="#contatti" class="btn-primary block text-center px-6 py-3 rounded-full font-semibold text-sm">Scegli Grow</a>
+      </div>
+
+      <div class="price-card card rounded-2xl p-8">
+        <p class="text-xs uppercase tracking-widest text-[#143d5c]/50 font-bold mb-3">Enterprise PMI</p>
+        <h3 class="price-title text-2xl font-bold mb-2 text-[#143d5c]">Ailiv Scale</h3>
+        <div class="price-value text-4xl font-bold mb-6 text-[#143d5c]">da € 30k <span class="text-base font-normal text-[#143d5c]/50">custom</span></div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> Stack AI integrato multi-processo</li>
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> Roadmap 90 giorni a sprint</li>
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> Governance AI Act completa</li>
+          <li class="price-feature text-[#143d5c]/70 flex gap-2"><span class="text-[#d4a747]">✓</span> Assessment incentivi + voucher</li>
+        </ul>
+        <a href="#contatti" class="btn-primary block text-center px-6 py-3 rounded-full font-semibold text-sm">Parliamone</a>
+      </div>
+
+    </div>
+
+    <p class="text-center text-sm text-[#143d5c]/50 mt-8">
+      Prezzi IVA esclusa. Tutti i pacchetti rispettano i requisiti di Transizione 5.0 e voucher regionali.
+    </p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="py-24 px-6 bg-[#f5f3ee]">
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-16 text-center">
+      <p class="text-sm uppercase tracking-widest text-[#143d5c]/50 font-semibold mb-4"><span class="accent-line"></span>Domande ricorrenti</p>
+      <h2 class="text-4xl md:text-5xl font-bold tracking-tight leading-[1.05]">Prima che ci chiami.</h2>
+    </div>
+
+    <div class="space-y-3">
+      <details class="card rounded-xl p-6 group">
+        <summary class="flex justify-between items-center cursor-pointer font-semibold text-lg">
+          Quanto tempo ci vuole per avere il primo risultato?
+          <svg class="w-5 h-5 text-[#143d5c]/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        </summary>
+        <p class="mt-4 text-[#143d5c]/70">Il primo processo AI in produzione richiede tipicamente 14 giorni dalla firma del pacchetto Start. Per progetti Grow siamo live in 30-45 giorni. L'audit preliminare lo chiudiamo in 5 giorni lavorativi.</p>
+      </details>
+
+      <details class="card rounded-xl p-6 group">
+        <summary class="flex justify-between items-center cursor-pointer font-semibold text-lg">
+          Posso provare prima di impegnarmi?
+          <svg class="w-5 h-5 text-[#143d5c]/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        </summary>
+        <p class="mt-4 text-[#143d5c]/70">Sì. Parti con l'Audit (€ 490) che è deducibile dal pacchetto successivo se decidi di continuare. Inoltre puoi provare subito un nostro agente AI in produzione: apri amanoamanoboccea.it e chatta con Manino.</p>
+      </details>
+
+      <details class="card rounded-xl p-6 group">
+        <summary class="flex justify-between items-center cursor-pointer font-semibold text-lg">
+          I miei dati sono al sicuro?
+          <svg class="w-5 h-5 text-[#143d5c]/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        </summary>
+        <p class="mt-4 text-[#143d5c]/70">Sì. Operiamo in conformità GDPR e AI Act. Scegliamo stack e fornitori AI con data residency europea dove possibile. Per progetti Scale implementiamo soluzioni on-premise o edge (Cloudflare Workers).</p>
+      </details>
+
+      <details class="card rounded-xl p-6 group">
+        <summary class="flex justify-between items-center cursor-pointer font-semibold text-lg">
+          Serve che abbia già tools o infrastruttura?
+          <svg class="w-5 h-5 text-[#143d5c]/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        </summary>
+        <p class="mt-4 text-[#143d5c]/70">No. Ci adattiamo a quello che hai: gestionale, sito, CRM, social, foglio Excel. Se sei partito da zero meglio: scegliamo noi lo stack più efficiente per il tuo caso.</p>
+      </details>
+
+      <details class="card rounded-xl p-6 group">
+        <summary class="flex justify-between items-center cursor-pointer font-semibold text-lg">
+          Posso accedere a Transizione 5.0 o voucher regionali?
+          <svg class="w-5 h-5 text-[#143d5c]/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        </summary>
+        <p class="mt-4 text-[#143d5c]/70">In molti casi sì. Transizione 5.0 mette a disposizione fino al 45% di credito d'imposta. I voucher regionali arrivano fino a € 150.000. Con il pacchetto Scale facciamo l'assessment incentivi all'interno del progetto.</p>
+      </details>
+
+      <details class="card rounded-xl p-6 group">
+        <summary class="flex justify-between items-center cursor-pointer font-semibold text-lg">
+          Siamo compliant con l'AI Act?
+          <svg class="w-5 h-5 text-[#143d5c]/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        </summary>
+        <p class="mt-4 text-[#143d5c]/70">Probabilmente no. Dal 2 febbraio 2025 chiunque usi AI al lavoro deve aver ricevuto un percorso di AI literacy. Con l'Audit verifichiamo la tua situazione e ti diamo un piano per metterti in regola in 30 giorni.</p>
+      </details>
+
+      <details class="card rounded-xl p-6 group">
+        <summary class="flex justify-between items-center cursor-pointer font-semibold text-lg">
+          Lavorate solo su Roma?
+          <svg class="w-5 h-5 text-[#143d5c]/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        </summary>
+        <p class="mt-4 text-[#143d5c]/70">No. Base operativa a Roma, clienti su tutta Italia. Il 95% del lavoro è remoto, ma veniamo in azienda per i kickoff dei progetti Grow e Scale.</p>
+      </details>
+
+      <details class="card rounded-xl p-6 group">
+        <summary class="flex justify-between items-center cursor-pointer font-semibold text-lg">
+          Cosa succede se cambio fornitore dopo?
+          <svg class="w-5 h-5 text-[#143d5c]/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        </summary>
+        <p class="mt-4 text-[#143d5c]/70">Il codice è tuo, la documentazione è tua, gli account sono intestati a te. Zero lock-in. Se vuoi andare via, ti consegniamo tutto in 48 ore.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTATTI ============ -->
+<section id="contatti" class="py-24 px-6 relative overflow-hidden">
+  <div class="blob bg-[#143d5c] w-[500px] h-[500px] top-0 left-1/2 -translate-x-1/2"></div>
+  <div class="max-w-3xl mx-auto text-center relative z-10">
+    <p class="text-sm uppercase tracking-widest text-[#143d5c]/50 font-semibold mb-6"><span class="accent-line"></span>Parliamone</p>
+    <h2 class="text-5xl md:text-7xl font-bold tracking-tight leading-[0.95] mb-6 headline">
+      Facciamo<br>qualcosa di fico.
+    </h2>
+    <p class="text-lg md:text-xl text-[#143d5c]/70 mb-12 max-w-xl mx-auto">
+      Raccontaci il tuo problema. Ti rispondiamo entro 24 ore con una prima lettura.
+      Niente form a 30 campi: scrivici come scriveresti a un amico.
     </p>
 
-    <div class="w-full max-w-xs mx-auto h-[3px] rounded-full bar-track overflow-hidden mb-12 fade d4">
-      <div class="bar-fill h-full w-full"></div>
-    </div>
-
-    <div class="fade d5">
-      <a href="mailto:ciao@ailiv.it" class="btn-navy inline-block px-8 py-4 rounded-full font-semibold text-base">
-        ciao@ailiv.it →
+    <div class="flex flex-col md:flex-row gap-4 justify-center mb-10">
+      <a href="mailto:ciao@ailiv.it?subject=Progetto AI per la mia azienda" class="btn-primary px-10 py-5 rounded-full font-bold text-lg">
+        ciao@ailiv.it
+      </a>
+      <a href="https://wa.me/393000000000" target="_blank" rel="noopener" class="btn-ghost px-10 py-5 rounded-full font-bold text-lg">
+        WhatsApp
       </a>
     </div>
 
-    <p class="text-[#143d5c]/40 text-xs mt-16 tracking-wide fade d5">
-      © 2026 AILIV — Consulenza e Ottimizzazione AI
+    <p class="text-sm text-[#143d5c]/50">
+      Preferisci prenotare direttamente? <a href="mailto:ciao@ailiv.it?subject=Richiesta Audit AI 490" class="underline font-semibold text-[#143d5c] hover:text-[#2a6fa3]">Prenota l'Audit AI · € 490 →</a>
     </p>
+  </div>
+</section>
 
-  </main>
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-[#143d5c]/10 py-12 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
+      <div class="flex items-center gap-3">
+        <img src="assets/bollino-ailiv.png" alt="Ailiv" class="h-10 w-auto">
+        <div>
+          <div class="font-bold text-[#143d5c]">ailiv<span class="text-[#143d5c]/40">.</span></div>
+          <div class="text-xs text-[#143d5c]/50">Consulenza e Ottimizzazione AI</div>
+        </div>
+      </div>
+      <div class="flex gap-8 text-sm text-[#143d5c]/60">
+        <a href="#servizi" class="hover:text-[#143d5c] transition">Servizi</a>
+        <a href="#lavori" class="hover:text-[#143d5c] transition">Lavori</a>
+        <a href="#pricing" class="hover:text-[#143d5c] transition">Pricing</a>
+        <a href="#ai-act" class="hover:text-[#143d5c] transition">AI Act</a>
+        <a href="mailto:ciao@ailiv.it" class="hover:text-[#143d5c] transition">Contatti</a>
+      </div>
+    </div>
+    <div class="pt-8 border-t border-[#143d5c]/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#143d5c]/40">
+      <p>© 2026 Ailiv — Consulenza e Ottimizzazione AI · Italia</p>
+      <p>Sistemi in produzione dal 2023 · <a href="https://github.com/ChatMano/ailiv-sito" target="_blank" rel="noopener" class="hover:text-[#143d5c]">Open source</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SCROLL REVEAL ============ -->
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
