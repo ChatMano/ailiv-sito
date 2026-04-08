@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ailiv — Agenzia Digitale</title>
+<meta name="description" content="Ailiv. Agenzia digitale specializzata in ristorazione. Siti, marketing, automazioni.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  html { font-family: 'Space Grotesk', sans-serif; scroll-behavior: smooth; }
+  body { background: #0a0a0a; color: #fafafa; }
+  .gradient-text { background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .glow { box-shadow: 0 0 80px rgba(255,255,255,0.08); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.35; pointer-events: none; z-index: 0; }
+  .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); transition: all .3s; }
+  .card:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-4px); }
+  @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-20px) } }
+  .float { animation: float 6s ease-in-out infinite; }
+</style>
+</head>
+<body class="overflow-x-hidden">
+
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/40 border-b border-white/5">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#" class="text-2xl font-bold tracking-tight">ailiv<span class="text-white/40">.</span></a>
+    <div class="hidden md:flex gap-8 text-sm text-white/70">
+      <a href="#servizi" class="hover:text-white transition">Servizi</a>
+      <a href="#lavori" class="hover:text-white transition">Lavori</a>
+      <a href="#contatti" class="hover:text-white transition">Contatti</a>
+    </div>
+    <a href="#contatti" class="text-sm bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-white/90 transition">Parliamone</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="relative min-h-screen flex items-center justify-center px-6 pt-20">
+  <div class="blob bg-purple-600 w-[500px] h-[500px] top-10 -left-40"></div>
+  <div class="blob bg-blue-600 w-[500px] h-[500px] bottom-0 -right-40"></div>
+  <div class="relative z-10 max-w-5xl text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs text-white/70 mb-8">
+      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+      Disponibili per nuovi progetti
+    </div>
+    <h1 class="text-5xl md:text-8xl font-bold tracking-tighter leading-none mb-6 gradient-text">
+      Digitale che<br>fa vendere.
+    </h1>
+    <p class="text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-10">
+      Siti, marketing e automazioni per ristoranti e attività che vogliono crescere davvero. Niente fuffa, solo risultati.
+    </p>
+    <div class="flex gap-4 justify-center flex-wrap">
+      <a href="#contatti" class="bg-white text-black px-8 py-4 rounded-full font-medium hover:scale-105 transition glow">Inizia un progetto →</a>
+      <a href="#lavori" class="border border-white/20 px-8 py-4 rounded-full font-medium hover:bg-white/5 transition">Vedi i lavori</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIZI -->
+<section id="servizi" class="relative py-32 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-16">
+      <p class="text-sm uppercase tracking-widest text-white/40 mb-4">Cosa facciamo</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight">Tutto quello che ti serve,<br><span class="text-white/40">in un unico posto.</span></h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="card rounded-2xl p-8">
+        <div class="text-4xl mb-4">◆</div>
+        <h3 class="text-xl font-bold mb-3">Siti Web</h3>
+        <p class="text-white/60 text-sm leading-relaxed">Siti veloci, belli e pensati per convertire. Ordini online, prenotazioni, menu digitali.</p>
+      </div>
+      <div class="card rounded-2xl p-8">
+        <div class="text-4xl mb-4">▲</div>
+        <h3 class="text-xl font-bold mb-3">Meta Ads</h3>
+        <p class="text-white/60 text-sm leading-relaxed">Campagne su Facebook e Instagram che portano clienti veri. Setup, gestione, ottimizzazione.</p>
+      </div>
+      <div class="card rounded-2xl p-8">
+        <div class="text-4xl mb-4">●</div>
+        <h3 class="text-xl font-bold mb-3">Automazioni AI</h3>
+        <p class="text-white/60 text-sm leading-relaxed">Chatbot, email automatiche, report WhatsApp. L'AI che lavora per te 24/7.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAVORI -->
+<section id="lavori" class="relative py-32 px-6 bg-white/[0.02]">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-16">
+      <p class="text-sm uppercase tracking-widest text-white/40 mb-4">Lavori recenti</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight">I nostri clienti<br><span class="text-white/40">crescono con noi.</span></h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <a href="https://amanoamanoboccea.it" target="_blank" class="card rounded-2xl p-10 block group">
+        <div class="flex justify-between items-start mb-20">
+          <span class="text-xs uppercase tracking-widest text-white/40">Ristorazione</span>
+          <span class="text-white/40 group-hover:text-white transition">→</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">A Mano A Mano</h3>
+        <p class="text-white/60 text-sm">Pizzeria — Sito, ordini online, chatbot AI</p>
+      </a>
+      <div class="card rounded-2xl p-10">
+        <div class="flex justify-between items-start mb-20">
+          <span class="text-xs uppercase tracking-widest text-white/40">Beauty</span>
+          <span class="text-white/40">→</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">CL Felice Estetica</h3>
+        <p class="text-white/60 text-sm">Centro estetico — Sito e prenotazioni online</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATTI -->
+<section id="contatti" class="relative py-32 px-6">
+  <div class="blob bg-purple-600 w-[400px] h-[400px] top-0 left-1/2 -translate-x-1/2"></div>
+  <div class="relative z-10 max-w-3xl mx-auto text-center">
+    <h2 class="text-5xl md:text-7xl font-bold tracking-tighter mb-6 gradient-text">Facciamo<br>qualcosa di fico.</h2>
+    <p class="text-white/60 text-lg mb-10">Raccontaci il tuo progetto. Ti rispondiamo entro 24 ore.</p>
+    <div class="flex flex-col md:flex-row gap-4 justify-center">
+      <a href="mailto:ciao@ailiv.it" class="bg-white text-black px-8 py-4 rounded-full font-medium hover:scale-105 transition glow">ciao@ailiv.it</a>
+      <a href="https://wa.me/393000000000" class="border border-white/20 px-8 py-4 rounded-full font-medium hover:bg-white/5 transition">WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-white/5 py-10 px-6 text-center text-white/40 text-sm">
+  <p>© 2026 Ailiv — Tutti i diritti riservati</p>
+</footer>
+
+</body>
+</html>
