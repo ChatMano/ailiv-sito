@@ -1,565 +1,521 @@
 /* ============================================================================
-   AILIV · LAB BUILDER
-   Quiz profilato per settore (20 settori) + workflow animato stile GHL.
-   Step 1 = settore · Step 2 = pain specifici · Step 3 = ore · Step 4 = goal
-   I nodi appaiono progressivamente; i nodi già mostrati non si ri-animano.
+   AILIV · LAB BUILDER — Costruisci il tuo funnel, passo per passo
+   L'utente sceglie settore -> parte il trigger iniziale nel canvas ->
+   a ogni domanda sceglie un bivio (manuale vs automatico) che AGGIUNGE 1 nodo.
+   Nessun workflow pre-fatto: tutto si costruisce cliccando.
    ========================================================================= */
 
-// Shorthand per costruire i workflow
-const T = (icon, label, desc="") => ({ icon, label, desc, type: "trigger", tag: "Trigger" });
-const A = (icon, label, desc="") => ({ icon, label, desc, type: "action", tag: "Automatico" });
+// Helper
+const M = (icon, label, tag="Manuale") => ({ icon, label, type: "manual", tag });
+const AU = (icon, label, tag="Automatico") => ({ icon, label, type: "auto", tag });
+const TR = (icon, label) => ({ icon, label, type: "trigger", tag: "Inizio" });
 
 // ============================================================================
-// 20 SETTORI — ogni task ha LABEL pain-forward
+// 20 SETTORI — ognuno con trigger + 4 bivi + goal
 // ============================================================================
 const SECTORS = {
   ristorante: {
     name: "Ristorante / Pizzeria", icon: "🍕",
-    manualTasks: [
-      { emoji: "💬", label: "Spiegare 100 volte menu, orari, celiaci, parcheggio", title: "Info automatica ai clienti", workflow: [
-        T("💬", "Cliente chiede info", "WhatsApp · Instagram · Google"),
-        A("🤖", "Assistente risponde subito", "Menu, orari, delivery, allergeni"),
-        A("📝", "Salva contatto per promo future")
+    trigger: TR("💬", "Un cliente ti scrive per info / prenotazione"),
+    steps: [
+      { q: "Cosa succede quando arriva il messaggio?", options: [
+        { emoji: "🤷", label: "Lo leggo quando posso (se me lo ricordo)", node: M("👤", "Risposta manuale quando riesco", "Ritardo variabile") },
+        { emoji: "🤖", label: "Un assistente AI risponde entro 30 secondi", node: AU("🤖", "Assistente AI risponde subito", "24/7") }
       ]},
-      { emoji: "😱", label: "Il terrore del no-show (tavolo prenotato e saltato)", title: "Anti no-show", workflow: [
-        T("📅", "Tavolo prenotato"),
-        A("📱", "Conferma immediata WhatsApp"),
-        A("⏰", "Promemoria 2h prima", "Meno no-show, sala piena")
+      { q: "Il cliente vuole prenotare un tavolo. Come fa?", options: [
+        { emoji: "📞", label: "Chiama, prendo io al telefono", node: M("👤", "Prenotazione a voce, scritta su agenda") },
+        { emoji: "📅", label: "Gli mando un link e prenota da solo", node: AU("📅", "Prenotazione online + conferma istantanea") }
       ]},
-      { emoji: "⭐", label: "Il concorrente ha 300 recensioni Google, io 40", title: "Recensioni post-cena", workflow: [
-        T("✅", "Cena completata / scontrino"),
-        A("⏱️", "Attendi 2 ore"),
-        A("⭐", "Link recensione Google", "Se negativa resta interna")
+      { q: "2 ore prima dell'orario del tavolo?", options: [
+        { emoji: "😬", label: "Niente, speriamo si ricordi", node: M("❌", "Nessun promemoria", "Rischio no-show alto") },
+        { emoji: "⏰", label: "Promemoria automatico WhatsApp", node: AU("⏰", "Promemoria 2h prima", "Riduce no-show ~60%") }
       ]},
-      { emoji: "💔", label: "Clienti che provano una volta e non tornano", title: "Riattivazione clienti", workflow: [
-        T("🕐", "30 giorni senza visita"),
-        A("💌", "Messaggio col loro piatto preferito"),
-        A("🎁", "Offerta dedicata", "Dessert omaggio, sconto coppia")
+      { q: "Dopo la cena, cosa mandi al cliente?", options: [
+        { emoji: "👋", label: "Niente, \"alla prossima\"", node: M("👤", "Addio cliente", "Nessun ritorno indotto") },
+        { emoji: "⭐", label: "Richiesta recensione Google automatica", node: AU("⭐", "Richiesta recensione 2h dopo") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel completo: dal primo messaggio alla recensione Google"
   },
+
   palestra: {
     name: "Palestra / Fitness", icon: "💪",
-    manualTasks: [
-      { emoji: "💬", label: "Rispondere a 50 \"quanto costa l'abbonamento?\" al mese", title: "Info abbonamenti automatica", workflow: [
-        T("💬", "Interessato scrive per info"),
-        A("🤖", "Spiega abbonamenti + prova gratuita"),
-        A("📝", "Salva interesse (pesi/yoga/corsi)")
+    trigger: TR("💬", "Qualcuno chiede info abbonamenti / corsi"),
+    steps: [
+      { q: "Come gestisci la richiesta info?", options: [
+        { emoji: "🤷", label: "Rispondo io quando arrivo in palestra", node: M("👤", "Risposta a ore sparse") },
+        { emoji: "🤖", label: "Bot invia listino + invito a prova gratuita", node: AU("🤖", "Info + trial automatico") }
       ]},
-      { emoji: "🏃", label: "Posti corsi sprecati per disdette last-minute", title: "Gestione disdette corsi", workflow: [
-        T("📅", "Iscritto prenota un corso"),
-        A("📱", "Conferma + promemoria 2h prima"),
-        A("🔄", "Se disdice, avvisa chi è in lista d'attesa")
+      { q: "Come prenota un corso collettivo?", options: [
+        { emoji: "📋", label: "Scrive al gruppo WhatsApp della palestra", node: M("👤", "Gestione caotica via chat") },
+        { emoji: "📅", label: "Prenota da solo sul calendario online", node: AU("📅", "Prenotazione self-service") }
       ]},
-      { emoji: "⭐", label: "La palestra nuova in zona ha più recensioni di noi", title: "Recensioni Google", workflow: [
-        T("🗓️", "30gg dall'iscrizione"),
-        A("💬", "Come va l'allenamento?"),
-        A("⭐", "Link recensione Google")
+      { q: "Se disdice un posto 2h prima del corso?", options: [
+        { emoji: "😬", label: "Il posto rimane vuoto", node: M("❌", "Posto sprecato") },
+        { emoji: "🔄", label: "Lista d'attesa chiamata automaticamente", node: AU("🔄", "Auto-riallocazione posto") }
       ]},
-      { emoji: "💔", label: "Iscritti che smettono di venire dopo 2 settimane", title: "Riattivazione iscritti", workflow: [
-        T("🕐", "14gg senza check-in"),
-        A("💪", "Ti aspettiamo + foto del tuo corso"),
-        A("🎟️", "Sessione PT omaggio")
+      { q: "Iscritto che non viene da 2 settimane?", options: [
+        { emoji: "🤷", label: "Lascio perdere, si rifarà vivo", node: M("👤", "Nessuna riattivazione") },
+        { emoji: "💪", label: "Messaggio \"ti aspettiamo\" + sessione PT omaggio", node: AU("💪", "Riattivazione automatica") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel da info a retention abbonati"
   },
+
   estetica: {
     name: "Centro estetico", icon: "💆",
-    manualTasks: [
-      { emoji: "💬", label: "Rispiegare prezzi e come funziona il trattamento X", title: "Info trattamenti", workflow: [
-        T("💬", "Cliente chiede info"),
-        A("💆", "Listino + foto risultati"),
-        A("🎁", "Propone consulenza viso gratuita")
+    trigger: TR("💬", "Cliente chiede info su trattamenti / prezzi"),
+    steps: [
+      { q: "Come rispondi alla richiesta?", options: [
+        { emoji: "🤷", label: "Rispondo a più persone alla volta quando posso", node: M("👤", "Risposta manuale multipla") },
+        { emoji: "🤖", label: "Assistente AI invia listino + foto risultati", node: AU("🤖", "Info + portfolio automatico") }
       ]},
-      { emoji: "😱", label: "Cliente che salta l'appuntamento senza avvisare", title: "Anti no-show", workflow: [
-        T("📅", "Appuntamento fissato"),
-        A("📋", "Conferma + consigli pre-trattamento"),
-        A("⏰", "Promemoria 24h e 2h prima")
+      { q: "Vuole prenotare una seduta?", options: [
+        { emoji: "📞", label: "Al telefono, vedo io sul registro", node: M("👤", "Prenotazione a voce") },
+        { emoji: "💳", label: "Online con piccola caparra (evita no-show)", node: AU("💳", "Prenotazione online + caparra") }
       ]},
-      { emoji: "⭐", label: "Le clienti felici non mi lasciano la recensione", title: "Recensioni post-trattamento", workflow: [
-        T("✨", "Trattamento completato"),
-        A("⏱️", "Attendi 3 ore"),
-        A("⭐", "Feedback + link Google")
+      { q: "Prima dell'appuntamento?", options: [
+        { emoji: "😬", label: "Se si ricorda viene", node: M("❌", "Nessun promemoria") },
+        { emoji: "⏰", label: "Promemoria 24h e 2h prima su WA", node: AU("⏰", "Doppio promemoria") }
       ]},
-      { emoji: "💔", label: "Non tornano per il mantenimento del risultato", title: "Mantenimento risultati", workflow: [
-        T("🕐", "45gg senza trattamento"),
-        A("💆", "Mantieni il risultato: prenota il richiamo"),
-        A("🎁", "Offerta fidelity trattamento preferito")
+      { q: "Dopo il trattamento?", options: [
+        { emoji: "👋", label: "\"Buona giornata!\"", node: M("👤", "Nessun follow-up") },
+        { emoji: "⭐", label: "Richiesta recensione + richiamo in 45gg per mantenimento", node: AU("⭐", "Review + richiamo auto 45gg") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel dalla richiesta al mantenimento"
   },
+
   parrucchiere: {
     name: "Parrucchiere / Barber", icon: "💇",
-    manualTasks: [
-      { emoji: "💬", label: "\"Quanto mi fai di mèches?\" su WhatsApp, 10 volte al giorno", title: "Info salone", workflow: [
-        T("💬", "Cliente chiede info su WhatsApp/IG"),
-        A("💇", "Listino + slot disponibili + foto look"),
-        A("📆", "Link prenotazione diretta")
+    trigger: TR("💬", "Cliente scrive \"che disponibilità avete?\""),
+    steps: [
+      { q: "Come rispondi?", options: [
+        { emoji: "🤷", label: "Guardo l'agenda, rispondo quando posso", node: M("👤", "Check agenda manuale") },
+        { emoji: "🤖", label: "Bot invia slot liberi + link prenotazione", node: AU("🤖", "Slot liberi in tempo reale") }
       ]},
-      { emoji: "📅", label: "Buchi agenda a mezzogiorno nei giorni feriali", title: "Conferme + riempi buchi", workflow: [
-        T("📅", "Taglio/colore prenotato"),
-        A("📱", "Conferma + durata servizio + prezzo"),
-        A("⏰", "Promemoria 3h prima")
+      { q: "Prenotazione del taglio?", options: [
+        { emoji: "📞", label: "Al telefono", node: M("👤", "Prenotazione a voce") },
+        { emoji: "💳", label: "Self-service con caparra (blocca i no-show)", node: AU("💳", "Self-booking + caparra") }
       ]},
-      { emoji: "⭐", label: "Il salone di fronte ha 400 recensioni Google", title: "Recensioni salone", workflow: [
-        T("✂️", "Appuntamento concluso"),
-        A("⏱️", "Attendi 2h"),
-        A("⭐", "Come ti piace il look? + link")
+      { q: "Poche ore prima dell'appuntamento?", options: [
+        { emoji: "😬", label: "Niente", node: M("❌", "Rischio salta il posto") },
+        { emoji: "⏰", label: "Promemoria 3h prima", node: AU("⏰", "Promemoria WhatsApp") }
       ]},
-      { emoji: "💔", label: "Clienti che provano un altro salone e non tornano", title: "Richiamo taglio", workflow: [
-        T("🕐", "30-45gg dall'ultimo taglio"),
-        A("💇", "I tuoi capelli hanno bisogno di te"),
-        A("🎁", "10% sul prossimo taglio")
+      { q: "Dopo il taglio?", options: [
+        { emoji: "👋", label: "\"A presto!\"", node: M("👤", "Fine corsa") },
+        { emoji: "⭐", label: "Richiesta recensione + richiamo dopo 30gg per ritocco", node: AU("⭐", "Review + richiamo 30gg") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel dal primo DM alla fidelizzazione"
   },
+
   dentista: {
     name: "Studio dentistico", icon: "🦷",
-    manualTasks: [
-      { emoji: "💬", label: "Spiegare preventivi al telefono e non si decidono mai", title: "Info + qualifica", workflow: [
-        T("💬", "Richiesta info / preventivo"),
-        A("🦷", "Info consulenza gratuita + listino"),
-        A("📋", "Pre-qualifica tipo di cura")
+    trigger: TR("💬", "Paziente chiede preventivo / info cure"),
+    steps: [
+      { q: "Risposta info?", options: [
+        { emoji: "🤷", label: "Segretaria risponde, spesso con ritardo", node: M("👤", "Risposta segretaria manuale") },
+        { emoji: "🤖", label: "Info automatiche + prequalifica caso", node: AU("🤖", "Pre-qualifica automatica") }
       ]},
-      { emoji: "😱", label: "Pazienti che cancellano 1 ora prima (o non si presentano)", title: "Anti no-show", workflow: [
-        T("📅", "Appuntamento fissato"),
-        A("📋", "Istruzioni pre-cura"),
-        A("⏰", "Promemoria 48h e 2h prima")
+      { q: "Accetta il preventivo?", options: [
+        { emoji: "🤷", label: "Ci pensa, magari richiama", node: M("👤", "Attesa decisione") },
+        { emoji: "🔄", label: "Follow-up educativo (video, FAQ, testimonianze)", node: AU("🔄", "Nurture automatico fino alla scelta") }
       ]},
-      { emoji: "⭐", label: "I pazienti felici non scrivono mai su Google", title: "Feedback paziente", workflow: [
-        T("✅", "Terapia completata"),
-        A("⏱️", "Attendi 1 giorno"),
-        A("⭐", "Feedback + link Google / Doctolib")
+      { q: "Giorno della visita?", options: [
+        { emoji: "😬", label: "Se si ricorda viene", node: M("❌", "Rischio cancellazione 1h prima") },
+        { emoji: "⏰", label: "Promemoria 48h e 2h prima", node: AU("⏰", "Doppio promemoria") }
       ]},
-      { emoji: "💔", label: "Nessuno si ricorda del controllo annuale", title: "Controllo periodico", workflow: [
-        T("🕐", "11 mesi dall'ultima visita"),
-        A("🦷", "È tempo del controllo semestrale"),
-        A("📆", "Proponi slot disponibili")
+      { q: "11 mesi dall'ultima visita?", options: [
+        { emoji: "🤷", label: "Spero si ricordi del controllo", node: M("👤", "Richiamo manuale o niente") },
+        { emoji: "🦷", label: "Richiamo automatico controllo annuale + slot", node: AU("🦷", "Richiamo annuale automatico") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel dal preventivo al controllo annuale"
   },
+
   medico: {
     name: "Studio medico / Fisio", icon: "🏥",
-    manualTasks: [
-      { emoji: "💬", label: "Segretaria intasata di chiamate per info di base", title: "Info + triage automatico", workflow: [
-        T("💬", "Paziente scrive"),
-        A("🏥", "Info servizi + ticket + orari"),
-        A("📋", "Pre-triage: problema specifico")
+    trigger: TR("💬", "Paziente scrive per prima visita"),
+    steps: [
+      { q: "Come gestisci la richiesta?", options: [
+        { emoji: "🤷", label: "Segretaria al telefono, linee occupate", node: M("👤", "Centralino intasato") },
+        { emoji: "🤖", label: "Bot: info costi, orari, ticket + triage iniziale", node: AU("🤖", "Info + triage automatico") }
       ]},
-      { emoji: "📅", label: "Pazienti che saltano le visite di controllo", title: "Conferme visite", workflow: [
-        T("📅", "Visita fissata"),
-        A("📋", "Istruzioni preparazione"),
-        A("⏰", "Promemoria + link Meet se online")
+      { q: "Prenotazione visita?", options: [
+        { emoji: "📞", label: "Al telefono", node: M("👤", "Prenotazione telefonica") },
+        { emoji: "📅", label: "Online con integrazione agenda", node: AU("📅", "Booking online sincronizzato") }
       ]},
-      { emoji: "⭐", label: "Pochissime recensioni su Doctolib/Google nonostante la qualità", title: "Feedback clinico", workflow: [
-        T("✅", "Visita conclusa"),
-        A("⏱️", "Attendi 4 ore"),
-        A("⭐", "Questionario + link Doctolib/Google")
+      { q: "Prima della visita?", options: [
+        { emoji: "😬", label: "Si presenta e basta", node: M("❌", "Niente preparazione") },
+        { emoji: "⏰", label: "Istruzioni + link Meet se online", node: AU("⏰", "Preparazione automatica") }
       ]},
-      { emoji: "💔", label: "Pazienti che fanno 2 sedute e poi mollano il percorso", title: "Aderenza percorso", workflow: [
-        T("🕐", "2 settimane senza sedute"),
-        A("🏥", "Come stai andando? Serve supporto?"),
-        A("📆", "Proponi prossimo slot")
+      { q: "Dopo la visita, pianifica la 2ª seduta?", options: [
+        { emoji: "🤷", label: "Se torna torna", node: M("👤", "Nessun follow-up") },
+        { emoji: "📅", label: "Invito automatico per seduta successiva", node: AU("📅", "Prosecuzione percorso") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel per aderenza al percorso clinico"
   },
+
   studio_pro: {
     name: "Avvocato / Commercialista", icon: "⚖️",
-    manualTasks: [
-      { emoji: "💬", label: "Spiegare la stessa cosa al potenziale cliente via mail 5 volte", title: "Qualifica nuovi clienti", workflow: [
-        T("💬", "Potenziale cliente contatta"),
-        A("⚖️", "Qualifica caso + info costi"),
-        A("📆", "Propone appuntamento conoscitivo")
+    trigger: TR("💬", "Potenziale cliente scrive per consulenza"),
+    steps: [
+      { q: "Risposta iniziale?", options: [
+        { emoji: "🤷", label: "Rispondo via email, spesso dopo giorni", node: M("👤", "Email in ritardo") },
+        { emoji: "🤖", label: "Qualifica caso + info costi + prenota", node: AU("🤖", "Qualifica + booking") }
       ]},
-      { emoji: "📋", label: "Clienti che non mandano mai i documenti in tempo", title: "Promemoria documenti", workflow: [
-        T("📅", "Appuntamento / scadenza fissata"),
-        A("📋", "Lista documenti con promemoria"),
-        A("⏰", "Secondo sollecito se mancanti a 7gg")
+      { q: "Conferma appuntamento?", options: [
+        { emoji: "📞", label: "Richiamo il giorno prima", node: M("👤", "Conferma a voce") },
+        { emoji: "📋", label: "Invio lista documenti + promemoria 24h", node: AU("📋", "Pre-appuntamento guidato") }
       ]},
-      { emoji: "⭐", label: "I clienti soddisfatti non mi fanno mai pubblicità", title: "Reputation Google", workflow: [
-        T("✅", "Pratica conclusa"),
-        A("⏱️", "Attendi 2 giorni"),
-        A("⭐", "Richiesta recensione + LinkedIn")
+      { q: "Pratica in corso, documenti mancanti?", options: [
+        { emoji: "📧", label: "Sollecito a mano, una volta ogni tanto", node: M("👤", "Sollecito manuale") },
+        { emoji: "🔄", label: "Promemoria automatici fino al ricevimento", node: AU("🔄", "Solleciti auto") }
       ]},
-      { emoji: "💔", label: "Clienti che mi cercano solo in urgenza, poi spariscono", title: "Relazione continuativa", workflow: [
-        T("🕐", "12 mesi senza contatto"),
-        A("📰", "Aggiornamento normativo su misura"),
-        A("📆", "Proponi check-up annuale")
+      { q: "Dopo la pratica conclusa?", options: [
+        { emoji: "👋", label: "\"Grazie, alla prossima\"", node: M("👤", "Nessun seguito") },
+        { emoji: "⭐", label: "Recensione + check-up annuale programmato", node: AU("⭐", "Review + rinnovo relazione") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel da lead a cliente a vita"
   },
+
   immobiliare: {
     name: "Agenzia immobiliare", icon: "🏠",
-    manualTasks: [
-      { emoji: "💬", label: "100 \"quanto vale questa casa?\" senza nemmeno vederla", title: "Qualifica lead annunci", workflow: [
-        T("💬", "Lead su annuncio web"),
-        A("🏠", "Scheda immobile + foto + disponibilità"),
-        A("📋", "Qualifica budget ed esigenze")
+    trigger: TR("💬", "Lead chiede info su un immobile"),
+    steps: [
+      { q: "Prima risposta?", options: [
+        { emoji: "🤷", label: "Richiamo quando riesco", node: M("👤", "Richiamo manuale") },
+        { emoji: "🤖", label: "Scheda immobile + foto + qualifica budget", node: AU("🤖", "Qualifica automatica") }
       ]},
-      { emoji: "📅", label: "Visite organizzate poi cancellate all'ultimo", title: "Conferme visite", workflow: [
-        T("📅", "Visita fissata"),
-        A("📍", "Indirizzo + mappa + dettagli"),
-        A("⏰", "Promemoria 2h prima")
+      { q: "Fissare una visita?", options: [
+        { emoji: "📞", label: "Al telefono", node: M("👤", "Appuntamento a voce") },
+        { emoji: "📅", label: "Prenotazione online + indirizzo + mappa", node: AU("📅", "Booking + logistica") }
       ]},
-      { emoji: "⭐", label: "Venduto il rogito, niente recensione", title: "Referenze post-vendita", workflow: [
-        T("✅", "Compravendita conclusa"),
-        A("⏱️", "Attendi 7 giorni"),
-        A("⭐", "Richiesta recensione + storia casa")
+      { q: "Prima della visita?", options: [
+        { emoji: "😬", label: "Niente, ci vediamo lì", node: M("❌", "Rischio visita saltata") },
+        { emoji: "⏰", label: "Promemoria 2h + contatto diretto agente", node: AU("⏰", "Promemoria con contatto") }
       ]},
-      { emoji: "💔", label: "Lead che spariscono per mesi, poi comprano dall'agenzia a fianco", title: "Follow-up lead freddi", workflow: [
-        T("🕐", "3 mesi di silenzio"),
-        A("🏠", "3 nuovi immobili compatibili"),
-        A("📆", "Proponi visita")
+      { q: "Lead che non compra entro 3 mesi?", options: [
+        { emoji: "👋", label: "Lo perdo, cerca altrove", node: M("👤", "Lead perso") },
+        { emoji: "🏠", label: "Invio automatico 3 nuovi immobili compatibili", node: AU("🏠", "Rinurturing immobili") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel dall'annuncio al rogito (incl. lead freddi)"
   },
+
   auto: {
     name: "Autosalone / Officina", icon: "🚗",
-    manualTasks: [
-      { emoji: "💬", label: "\"Quanto mi fai per un tagliando?\" senza vedere la macchina", title: "Info preventivi", workflow: [
-        T("💬", "Info auto / tagliando"),
-        A("🚗", "Preventivo + foto auto in stock"),
-        A("📆", "Invito test drive / officina")
+    trigger: TR("💬", "Richiesta preventivo / tagliando"),
+    steps: [
+      { q: "Risposta al preventivo?", options: [
+        { emoji: "🤷", label: "Calcolo e richiamo quando posso", node: M("👤", "Preventivo manuale") },
+        { emoji: "🤖", label: "Preventivo istantaneo + slot officina", node: AU("🤖", "Preventivo + booking") }
       ]},
-      { emoji: "📅", label: "Officina mezza vuota il lunedì e il martedì", title: "Riempi officina", workflow: [
-        T("📅", "Appuntamento officina"),
-        A("🔧", "Stima tempi + costo"),
-        A("⏰", "Promemoria + info auto sostitutiva")
+      { q: "Accetta l'appuntamento?", options: [
+        { emoji: "📞", label: "Al telefono", node: M("👤", "Conferma verbale") },
+        { emoji: "📅", label: "Online con ricevuta + info auto sostitutiva", node: AU("📅", "Booking + logistica auto") }
       ]},
-      { emoji: "⭐", label: "Nessuno scrive su Facebook della bella esperienza", title: "Feedback post-lavoro", workflow: [
-        T("✅", "Lavoro completato"),
-        A("⏱️", "Attendi 24h"),
-        A("⭐", "Richiesta recensione + Facebook")
+      { q: "Dopo il lavoro?", options: [
+        { emoji: "👋", label: "\"Alla prossima\"", node: M("👤", "Fine corsa") },
+        { emoji: "⭐", label: "Richiesta recensione + check tagliando futuro", node: AU("⭐", "Review + pianifica tagliando") }
       ]},
-      { emoji: "💔", label: "I clienti tornano solo quando si rompe qualcosa", title: "Richiamo tagliando", workflow: [
-        T("🕐", "10 mesi dal tagliando"),
-        A("🚗", "È tempo del tagliando"),
-        A("🎁", "Offerta stagionale + slot officina")
+      { q: "10 mesi dopo il tagliando?", options: [
+        { emoji: "🤷", label: "Spero si ricordi", node: M("👤", "Speranza") },
+        { emoji: "🔔", label: "Richiamo auto tagliando + slot + offerta stagionale", node: AU("🔔", "Richiamo tagliando") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel retention cliente auto"
   },
+
   retail: {
     name: "Negozio / Retail", icon: "🛍️",
-    manualTasks: [
-      { emoji: "💬", label: "Gente che chiede info su IG ma non passa mai in negozio", title: "Info + invito in store", workflow: [
-        T("💬", "Cliente chiede info su WhatsApp/IG"),
-        A("🛍️", "Foto prodotto + taglie + prezzo"),
-        A("📦", "\"Te lo metto da parte\" + slot visita")
+    trigger: TR("💬", "Cliente chiede info su prodotto (IG/WA)"),
+    steps: [
+      { q: "Risposta?", options: [
+        { emoji: "🤷", label: "Rispondo quando ho un attimo", node: M("👤", "Risposta manuale") },
+        { emoji: "🤖", label: "Foto + taglie + invito in negozio", node: AU("🤖", "Info + push in-store") }
       ]},
-      { emoji: "📅", label: "Personal shopper prenotato, poi non si presenta", title: "Conferme consulenze", workflow: [
-        T("📅", "Consulenza prenotata"),
-        A("📋", "Questionario stile pre-visita"),
-        A("⏰", "Promemoria con look consigliati")
+      { q: "Viene in negozio?", options: [
+        { emoji: "👤", label: "Aspetto che arrivi", node: M("👤", "Attesa passiva") },
+        { emoji: "📱", label: "\"Te lo metto da parte\" + promemoria visita", node: AU("📱", "Hold + promemoria") }
       ]},
-      { emoji: "⭐", label: "Clienti contenti ma nessuna recensione Google", title: "Recensioni post-acquisto", workflow: [
-        T("🛒", "Vendita completata"),
-        A("⏱️", "Attendi 3 giorni"),
-        A("⭐", "Come ti sta? + link recensione")
+      { q: "Dopo l'acquisto?", options: [
+        { emoji: "👋", label: "\"Grazie!\"", node: M("👤", "Nessun seguito") },
+        { emoji: "⭐", label: "Recensione + wishlist upsell", node: AU("⭐", "Review + upsell mirato") }
       ]},
-      { emoji: "💔", label: "Chi compra una volta non torna più", title: "Rilancio collezione", workflow: [
-        T("🕐", "60gg senza visita"),
-        A("👗", "Nuova collezione arrivata"),
-        A("🎁", "Invito preview privata")
+      { q: "Cliente fermo da 60 giorni?", options: [
+        { emoji: "🤷", label: "Se torna bene, sennò pace", node: M("👤", "Cliente dormiente") },
+        { emoji: "🎁", label: "Invito preview privata nuova collezione", node: AU("🎁", "Riattivazione retail") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel retail → cliente fedele"
   },
+
   ecommerce: {
     name: "E-commerce / Online", icon: "🛒",
-    manualTasks: [
-      { emoji: "💬", label: "Domande ripetitive (taglie, resi, spedizione) da gestire a mano", title: "Supporto cliente auto", workflow: [
-        T("💬", "Domanda su chatbot/email"),
-        A("🤖", "Risposta istantanea + consigli"),
-        A("📝", "Se dubbi, coupon incentivo")
+    trigger: TR("🛒", "Visitatore aggiunge prodotto al carrello"),
+    steps: [
+      { q: "Esce dal sito senza acquistare. Cosa succede?", options: [
+        { emoji: "😬", label: "Niente, l'ho perso", node: M("❌", "Carrello perso") },
+        { emoji: "📧", label: "Email recupero dopo 1 ora", node: AU("📧", "Recovery email #1") }
       ]},
-      { emoji: "🛒", label: "50% dei carrelli abbandonati senza recupero", title: "Recupero carrelli", workflow: [
-        T("🛒", "Carrello abbandonato 24h"),
-        A("📧", "Promemoria + spedizione gratis"),
-        A("💸", "Dopo 72h: coupon 10%")
+      { q: "Dopo 24h ancora non compra?", options: [
+        { emoji: "👋", label: "Pazienza, cliente perso", node: M("👤", "Abbandono definitivo") },
+        { emoji: "💸", label: "Seconda email con coupon 10%", node: AU("💸", "Recovery email #2 + sconto") }
       ]},
-      { emoji: "⭐", label: "Tanti ordini, pochissime recensioni", title: "Review prodotto", workflow: [
-        T("📦", "Pacco consegnato"),
-        A("⏱️", "Attendi 3 giorni"),
-        A("⭐", "Ti è piaciuto? + link Trustpilot")
+      { q: "Dopo l'acquisto riuscito?", options: [
+        { emoji: "👋", label: "Ordine spedito, fine", node: M("👤", "Nessuna review") },
+        { emoji: "⭐", label: "Review automatica 3 giorni dopo la consegna", node: AU("⭐", "Review post-consegna") }
       ]},
-      { emoji: "💔", label: "Un acquisto, poi il cliente sparisce per sempre", title: "Second order", workflow: [
-        T("🕐", "30gg dal primo ordine"),
-        A("📧", "\"Abbiamo pensato a te\" + correlati"),
-        A("🎁", "Coupon return customer")
+      { q: "Cliente che non torna da 30 giorni?", options: [
+        { emoji: "🤷", label: "Pazienza", node: M("👤", "One-shot customer") },
+        { emoji: "🎁", label: "Proposta \"potrebbe piacerti\" + coupon ritorno", node: AU("🎁", "Second order trigger") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel da carrello a cliente ricorrente"
   },
+
   hotel: {
     name: "Hotel / B&B", icon: "🏨",
-    manualTasks: [
-      { emoji: "💬", label: "\"Avete disponibilità?\" 50 volte al giorno, su 4 canali", title: "Info + bypass OTA", workflow: [
-        T("💬", "Info prezzi/date"),
-        A("🏨", "Disponibilità + tariffe + foto"),
-        A("💰", "Sconto prenotazione diretta (no Booking)")
+    trigger: TR("💬", "Richiesta disponibilità per soggiorno"),
+    steps: [
+      { q: "Risposta info?", options: [
+        { emoji: "🤷", label: "Controllo booking manualmente", node: M("👤", "Risposta manuale") },
+        { emoji: "🤖", label: "Disponibilità + sconto prenotazione diretta", node: AU("🤖", "Bypass OTA automatico") }
       ]},
-      { emoji: "🔑", label: "Check-in alle 22, ospiti stanchi, caos in reception", title: "Check-in pre-arrivo", workflow: [
-        T("📅", "Prenotazione confermata"),
-        A("✉️", "Welcome + come arrivare + consigli city"),
-        A("🔑", "Check-in online 1gg prima")
+      { q: "Dopo la prenotazione?", options: [
+        { emoji: "📧", label: "Email di conferma generica", node: M("📧", "Email standard") },
+        { emoji: "✉️", label: "Welcome + come arrivare + consigli city", node: AU("✉️", "Welcome esperienziale") }
       ]},
-      { emoji: "⭐", label: "Voti alti su Booking, zero recensioni dirette Google", title: "Recensioni dirette", workflow: [
-        T("🚪", "Check-out effettuato"),
-        A("⏱️", "Attendi 4h"),
-        A("⭐", "Grazie + link TripAdvisor/Google")
+      { q: "Prima del check-in?", options: [
+        { emoji: "🔑", label: "Check-in in reception al loro arrivo", node: M("👤", "Coda in reception") },
+        { emoji: "🔑", label: "Check-in online 1 giorno prima", node: AU("🔑", "Check-in automatico") }
       ]},
-      { emoji: "💔", label: "Ospiti del 2023 che non sono mai tornati", title: "Ospiti ricorrenti", workflow: [
-        T("🗓️", "1 anno dal soggiorno"),
-        A("📸", "Un anno fa eri qui... + foto"),
-        A("🎁", "Offerta return ospite fedele")
+      { q: "Dopo il check-out?", options: [
+        { emoji: "👋", label: "Fine, cambio camera", node: M("👤", "Ospite dimenticato") },
+        { emoji: "⭐", label: "Recensione diretta (bypass Booking) + offerta return", node: AU("⭐", "Review + return guest") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel guest → return guest (con bypass OTA)"
   },
+
   bar: {
     name: "Bar / Pasticceria", icon: "☕",
-    manualTasks: [
-      { emoji: "💬", label: "Ordini catering persi nel weekend (non rispondo al telefono)", title: "Info ordini speciali", workflow: [
-        T("💬", "Richiesta torte/catering"),
-        A("🎂", "Listino + foto + disponibilità"),
-        A("📋", "Qualifica data, persone, stile")
+    trigger: TR("💬", "Richiesta ordine catering o torta su misura"),
+    steps: [
+      { q: "Risposta all'ordine?", options: [
+        { emoji: "🤷", label: "Al telefono quando posso (weekend perso)", node: M("👤", "Telefono intasato") },
+        { emoji: "🤖", label: "Listino + disponibilità + qualifica ordine", node: AU("🤖", "Qualifica automatica") }
       ]},
-      { emoji: "📅", label: "Ordine da 200€ annullato all'ultimo (senza caparra)", title: "Ordini + caparra", workflow: [
-        T("✍️", "Ordine torta/catering"),
-        A("💳", "Conferma + caparra 30%"),
-        A("⏰", "Promemoria 48h prima del ritiro")
+      { q: "Conferma ordine?", options: [
+        { emoji: "👤", label: "Parola data, vediamo", node: M("👤", "Nessuna garanzia") },
+        { emoji: "💳", label: "Caparra 30% + conferma automatica", node: AU("💳", "Ordine blindato") }
       ]},
-      { emoji: "⭐", label: "Clienti abituali, zero recensioni online", title: "Feedback post-evento", workflow: [
-        T("🎉", "Ordine consegnato"),
-        A("⏱️", "Attendi 1 giorno"),
-        A("⭐", "Foto + link recensione")
+      { q: "Prima del ritiro?", options: [
+        { emoji: "😬", label: "Niente", node: M("❌", "Rischio ritiro dimenticato") },
+        { emoji: "⏰", label: "Promemoria 48h e 2h prima", node: AU("⏰", "Promemoria ritiro") }
       ]},
-      { emoji: "💔", label: "Quello del cappuccino ogni mattina è sparito", title: "Riattivazione abituali", workflow: [
-        T("🕐", "2 settimane senza colazione"),
-        A("☕", "Il tuo cappuccino è pronto"),
-        A("🎁", "Offerta brioche omaggio")
+      { q: "Dopo la consegna?", options: [
+        { emoji: "👋", label: "Fine", node: M("👤", "Nessun ritorno") },
+        { emoji: "⭐", label: "Foto + recensione + promo prossimo ordine", node: AU("⭐", "Review + fidelity") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel ordine → cliente fidelizzato"
   },
+
   wedding: {
     name: "Wedding planner / Eventi", icon: "🎊",
-    manualTasks: [
-      { emoji: "💬", label: "\"Quanto costa un matrimonio?\" ogni giorno sugli IG", title: "Qualifica preventivi", workflow: [
-        T("💬", "Info nozze/evento"),
-        A("💍", "Pacchetti base + portfolio"),
-        A("📋", "Qualifica budget + data + stile")
+    trigger: TR("💬", "Coppia chiede preventivo matrimonio"),
+    steps: [
+      { q: "Risposta iniziale?", options: [
+        { emoji: "🤷", label: "Invio materiale quando riesco", node: M("👤", "Risposta tardiva") },
+        { emoji: "🤖", label: "Pacchetti + portfolio + qualifica budget/data", node: AU("🤖", "Qualifica automatica") }
       ]},
-      { emoji: "📅", label: "Coppie che prenotano la consulenza e poi spariscono", title: "Consulenze serie", workflow: [
-        T("📅", "Consulenza prenotata"),
-        A("🎨", "Questionario ispirazioni pre-call"),
-        A("⏰", "Promemoria con mood-board")
+      { q: "Consulenza conoscitiva?", options: [
+        { emoji: "📞", label: "Richiamo per fissare", node: M("👤", "Booking a voce") },
+        { emoji: "📅", label: "Prenotazione online + mood-board pre-call", node: AU("📅", "Booking + ispirazioni") }
       ]},
-      { emoji: "⭐", label: "Sposi felici, pubblicano su IG ma non fanno review Google", title: "Review post-evento", workflow: [
-        T("🎉", "Matrimonio/evento concluso"),
-        A("⏱️", "Attendi 3 giorni"),
-        A("⭐", "Recensione + tag foto social")
+      { q: "Dopo consulenza, indecisi non prenotano?", options: [
+        { emoji: "🤷", label: "Aspetto che si facciano vivi", node: M("👤", "Attesa passiva") },
+        { emoji: "🔄", label: "3 email nurture (portfolio, testimonial, offerta)", node: AU("🔄", "Nurture sequence") }
       ]},
-      { emoji: "💔", label: "Referral da amici degli sposi quasi zero", title: "Anniversario + referral", workflow: [
-        T("🗓️", "6 mesi dall'evento"),
-        A("💕", "Anniversario! Come sta andando?"),
-        A("🎁", "Bonus per referral di amici")
+      { q: "Dopo il matrimonio?", options: [
+        { emoji: "👋", label: "Alla prossima", node: M("👤", "Nessun referral") },
+        { emoji: "💕", label: "Anniversario + bonus referral amici", node: AU("💕", "Referral engine") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel da preventivo a referral amici"
   },
+
   fotografo: {
     name: "Fotografo", icon: "📷",
-    manualTasks: [
-      { emoji: "💬", label: "Preventivi \"parcheggiati\" per mesi, poi boh", title: "Qualifica shooting", workflow: [
-        T("💬", "Info matrimoni/ritratti"),
-        A("📸", "Pacchetti + portfolio + disponibilità"),
-        A("📋", "Qualifica tipo servizio + budget")
+    trigger: TR("💬", "Richiesta info shooting"),
+    steps: [
+      { q: "Come rispondi?", options: [
+        { emoji: "🤷", label: "Invio portfolio quando riesco", node: M("👤", "Risposta a mano") },
+        { emoji: "🤖", label: "Pacchetti + portfolio + qualifica automatica", node: AU("🤖", "Qualifica auto") }
       ]},
-      { emoji: "📅", label: "Shooting rinviato 3 volte, poi cancellato", title: "Conferme con caparra", workflow: [
-        T("📅", "Shooting prenotato"),
-        A("💳", "Caparra + brief creativo"),
-        A("⏰", "Promemoria 48h + outfit consigliati")
+      { q: "Conferma shooting?", options: [
+        { emoji: "📞", label: "Parola data, vediamo", node: M("👤", "Impegno orale") },
+        { emoji: "💳", label: "Caparra + questionario stile", node: AU("💳", "Caparra + brief creativo") }
       ]},
-      { emoji: "⭐", label: "Consegno le foto, ringraziano, niente recensione", title: "Review post-consegna", workflow: [
-        T("📦", "Foto consegnate"),
-        A("⏱️", "Attendi 3 giorni"),
-        A("⭐", "Recensione + tag social")
+      { q: "Consegna foto?", options: [
+        { emoji: "📧", label: "Upload e basta", node: M("👤", "Semplice delivery") },
+        { emoji: "📧", label: "Gallery privata + feedback + tag social", node: AU("📧", "Gallery + engagement") }
       ]},
-      { emoji: "💔", label: "Clienti una tantum, mai tornano per foto famiglia", title: "Ritratti annuali", workflow: [
-        T("🗓️", "1 anno dallo shooting"),
-        A("👨‍👩‍👧", "I tuoi figli sono cresciuti"),
-        A("🎁", "Offerta nuovo shooting familiare")
+      { q: "A un anno dallo shooting?", options: [
+        { emoji: "🤷", label: "Magari si fa vivo", node: M("👤", "Cliente one-shot") },
+        { emoji: "📷", label: "Promemoria shooting annuale famiglia", node: AU("📷", "Ricorrenza annuale") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel da preventivo a cliente ricorrente"
   },
+
   psicologo: {
     name: "Psicologo / Counselor", icon: "🧠",
-    manualTasks: [
-      { emoji: "💬", label: "Primo contatto difficile: scrivono e poi spariscono", title: "Primo colloquio facilitato", workflow: [
-        T("💬", "Richiesta info seduta"),
-        A("🧠", "Info approccio + costi + modalità"),
-        A("🎁", "Propone primo colloquio gratuito")
+    trigger: TR("💬", "Prima richiesta info seduta"),
+    steps: [
+      { q: "Risposta delicata al primo contatto?", options: [
+        { emoji: "🤷", label: "Rispondo quando libera, con calma", node: M("👤", "Risposta manuale") },
+        { emoji: "🤖", label: "Info approccio + primo colloquio gratuito", node: AU("🤖", "Accoglienza automatica") }
       ]},
-      { emoji: "📅", label: "Pazienti che saltano sedute senza avvisare", title: "Conferme delicate", workflow: [
-        T("📅", "Seduta fissata"),
-        A("💻", "Link Meet o indirizzo studio"),
-        A("⏰", "Promemoria 24h + possibilità rimando")
+      { q: "Conferma seduta?", options: [
+        { emoji: "📞", label: "Richiamo per confermare", node: M("👤", "Conferma vocale") },
+        { emoji: "📅", label: "Prenotazione online + link Meet", node: AU("📅", "Booking online") }
       ]},
-      { emoji: "📊", label: "Non riesco a tenere traccia dell'evoluzione del percorso", title: "Monitoraggio percorso", workflow: [
-        T("🗓️", "Ogni 10 sedute"),
-        A("📋", "Questionario: come ti senti?"),
-        A("📊", "Report privato per la discussione")
+      { q: "Paziente salta una seduta?", options: [
+        { emoji: "🤷", label: "Lo richiamo più tardi", node: M("👤", "Recupero manuale") },
+        { emoji: "❤️", label: "Messaggio delicato + possibilità di riprogrammare", node: AU("❤️", "Recupero empatico") }
       ]},
-      { emoji: "💔", label: "Chi finisce il percorso, non mi sa più niente", title: "Follow-up post-chiusura", workflow: [
-        T("🕐", "3 mesi dalla fine del percorso"),
-        A("💬", "Come stai?"),
-        A("📆", "Se serve, nuova disponibilità")
+      { q: "Fine del percorso?", options: [
+        { emoji: "👋", label: "Saluto e fine", node: M("👤", "Nessun follow-up") },
+        { emoji: "💬", label: "Follow-up 3 mesi dopo per supporto", node: AU("💬", "Check-in post-percorso") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel da primo contatto ad aderenza al percorso"
   },
+
   scuola: {
     name: "Scuola / Formazione", icon: "🎓",
-    manualTasks: [
-      { emoji: "💬", label: "1000 richieste info \"quando parte?\", \"quanto dura?\"", title: "Lead corsi automatica", workflow: [
-        T("💬", "Richiesta info"),
-        A("🎓", "Programma + prezzi + calendario"),
-        A("🎁", "Lezione prova gratuita")
+    trigger: TR("💬", "Richiesta info corsi / calendario"),
+    steps: [
+      { q: "Risposta?", options: [
+        { emoji: "🤷", label: "Email quando posso", node: M("👤", "Email manuali") },
+        { emoji: "🤖", label: "Programma + prezzi + lezione prova", node: AU("🤖", "Info + trial") }
       ]},
-      { emoji: "✍️", label: "Chi si iscrive ma non comincia il corso", title: "Onboarding studente", workflow: [
-        T("✍️", "Iscrizione perfezionata"),
-        A("📚", "Welcome + materiali + Classroom"),
-        A("⏰", "Promemoria giornata iniziale")
+      { q: "Iscrizione?", options: [
+        { emoji: "📝", label: "Modulo cartaceo/manuale", node: M("👤", "Iscrizione manuale") },
+        { emoji: "💳", label: "Form online con pagamento + welcome", node: AU("💳", "Iscrizione + onboarding") }
       ]},
-      { emoji: "⭐", label: "Fine corso, nessuno lascia feedback pubblico", title: "Review fine corso", workflow: [
-        T("🎓", "Corso concluso"),
-        A("⏱️", "Attendi 2 giorni"),
-        A("⭐", "Questionario + link Google")
+      { q: "Studente non inizia il corso?", options: [
+        { emoji: "🤷", label: "Addio, ho già il pagamento", node: M("👤", "Abbandono silenzioso") },
+        { emoji: "📚", label: "Welcome + materiali + promemoria partenza", node: AU("📚", "Onboarding proattivo") }
       ]},
-      { emoji: "💔", label: "Ex-studenti che non passano al secondo livello", title: "Upsell continuità", workflow: [
-        T("🕐", "3 mesi fine corso"),
-        A("📚", "Continua col livello avanzato"),
-        A("🎁", "Sconto ex-studente")
+      { q: "Dopo il corso?", options: [
+        { emoji: "👋", label: "Congratulazioni", node: M("👤", "Fine relazione") },
+        { emoji: "🎓", label: "Review + proposta livello avanzato", node: AU("🎓", "Upsell continuità") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel info → iscrizione → continuità"
   },
+
   coach: {
     name: "Personal trainer / Coach", icon: "🏃",
-    manualTasks: [
-      { emoji: "💬", label: "DM continui \"come funzionano i programmi?\"", title: "Info coaching auto", workflow: [
-        T("💬", "Interesse percorso coaching"),
-        A("🏃", "Pacchetti + testimonial"),
-        A("🎁", "Body check o consulenza gratis")
+    trigger: TR("💬", "DM \"come funzionano i programmi?\""),
+    steps: [
+      { q: "Risposta?", options: [
+        { emoji: "🤷", label: "Rispondo quando libera", node: M("👤", "Risposta manuale") },
+        { emoji: "🤖", label: "Pacchetti + testimonial + body check gratis", node: AU("🤖", "Qualifica + check gratis") }
       ]},
-      { emoji: "📅", label: "No-show sessioni (salto personal pagati)", title: "Conferme allenamento", workflow: [
-        T("📅", "Sessione prenotata"),
-        A("📋", "Obiettivi del giorno"),
-        A("⏰", "Promemoria + warm-up pre-sessione")
+      { q: "Prima sessione?", options: [
+        { emoji: "📞", label: "Conferma a voce", node: M("👤", "Conferma vocale") },
+        { emoji: "📅", label: "Prenotazione online + obiettivi pre-sessione", node: AU("📅", "Booking + brief") }
       ]},
-      { emoji: "📊", label: "Clienti che mollano senza dirmi perché", title: "Monitoraggio cliente", workflow: [
-        T("🗓️", "Fine mese di coaching"),
-        A("📸", "Misurazioni + foto before/after"),
-        A("⭐", "Se progressi, richiesta recensione")
+      { q: "A metà percorso?", options: [
+        { emoji: "🤷", label: "Se va bene va bene", node: M("👤", "Zero monitoraggio") },
+        { emoji: "📊", label: "Misurazioni + foto + feedback mensile", node: AU("📊", "Tracking progressi") }
       ]},
-      { emoji: "💔", label: "Finito il mese di prova, non rinnovano", title: "Riattivazione percorso", workflow: [
-        T("🕐", "15gg senza sessione"),
-        A("💪", "Riprendi dove avevi lasciato"),
-        A("🎁", "Piano a domicilio 7gg")
+      { q: "Fine mese di coaching?", options: [
+        { emoji: "🤷", label: "Se vuole rinnova", node: M("👤", "Passivo") },
+        { emoji: "💪", label: "Rinnovo + proposta upgrade", node: AU("💪", "Retention proattiva") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel retention coaching"
   },
+
   nail_tatto: {
     name: "Nail / Tatuatore", icon: "💅",
-    manualTasks: [
-      { emoji: "💬", label: "DM continui \"quando sei libera?\", \"quanto costa?\"", title: "Info disponibilità", workflow: [
-        T("💬", "Info e slot"),
-        A("📸", "Portfolio + prezzi + slot liberi"),
-        A("🎨", "Raccogli stile/riferimento desiderato")
+    trigger: TR("💬", "DM \"quando sei libera?\""),
+    steps: [
+      { q: "Risposta?", options: [
+        { emoji: "🤷", label: "Controllo agenda e rispondo", node: M("👤", "Check manuale") },
+        { emoji: "🤖", label: "Slot disponibili + portfolio + prezzi", node: AU("🤖", "Slot + portfolio") }
       ]},
-      { emoji: "📅", label: "Disdette 1 ora prima (lettera buco 2h)", title: "Caparra + conferme", workflow: [
-        T("📅", "Appuntamento preso"),
-        A("💳", "Caparra + istruzioni"),
-        A("⏰", "Promemoria 24h + tips pre-sessione")
+      { q: "Prenotazione?", options: [
+        { emoji: "📞", label: "A voce", node: M("👤", "Prenotazione informale") },
+        { emoji: "💳", label: "Online con caparra (riduce disdette)", node: AU("💳", "Booking blindato") }
       ]},
-      { emoji: "⭐", label: "Esce felice, niente recensione", title: "Review dopo servizio", workflow: [
-        T("✅", "Servizio concluso"),
-        A("⏱️", "Attendi 1 ora"),
-        A("⭐", "Foto + recensione + sconto prossimo")
+      { q: "Dopo il servizio?", options: [
+        { emoji: "👋", label: "Ciao e grazie", node: M("👤", "Fine servizio") },
+        { emoji: "⭐", label: "Foto + recensione + sconto prossimo", node: AU("⭐", "Review + loyalty") }
       ]},
-      { emoji: "💔", label: "Va a farsi fare il ritocco da un'altra", title: "Richiamo mantenimento", workflow: [
-        T("🕐", "20gg (nail) / 60gg (retouch)"),
-        A("💅", "Pronta per la manutenzione?"),
-        A("📆", "Slot prenotabili")
+      { q: "Dopo 20-60 giorni?", options: [
+        { emoji: "🤷", label: "Se torna torna", node: M("👤", "Cliente disperso") },
+        { emoji: "💅", label: "Richiamo automatico mantenimento", node: AU("💅", "Richiamo periodico") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel cliente fedele"
   },
+
   pet: {
     name: "Toelettatura / Pet", icon: "🐾",
-    manualTasks: [
-      { emoji: "💬", label: "\"Quanto costa lavare il cane?\" ripetuto 10 volte al giorno", title: "Info servizi pet", workflow: [
-        T("💬", "Cliente chiede info"),
-        A("🐾", "Listino per razza + durata + prezzi"),
-        A("📋", "Qualifica animale")
+    trigger: TR("💬", "Info prezzi toelettatura"),
+    steps: [
+      { q: "Risposta?", options: [
+        { emoji: "🤷", label: "Rispondo quando ho tempo", node: M("👤", "Risposta manuale") },
+        { emoji: "🤖", label: "Listino per razza + durata + prenotazione", node: AU("🤖", "Info + booking") }
       ]},
-      { emoji: "📅", label: "Padroni che dimenticano l'appuntamento", title: "Promemoria toelettatura", workflow: [
-        T("📅", "Toelettatura prenotata"),
-        A("📋", "Istruzioni pre-appuntamento"),
-        A("⏰", "Promemoria 24h + 2h")
+      { q: "Prenotazione?", options: [
+        { emoji: "📞", label: "A voce", node: M("👤", "Prenotazione vocale") },
+        { emoji: "📅", label: "Online + istruzioni pre-appuntamento", node: AU("📅", "Booking con istruzioni") }
       ]},
-      { emoji: "⭐", label: "Zero recensioni Google anche se il cane esce felice", title: "Review post-servizio", workflow: [
-        T("✨", "Servizio concluso"),
-        A("⏱️", "Attendi 3h"),
-        A("📸", "Foto cucciolo + link recensione")
+      { q: "Prima dell'appuntamento?", options: [
+        { emoji: "😬", label: "Niente", node: M("❌", "Nessun promemoria") },
+        { emoji: "⏰", label: "Promemoria 24h + 2h + istruzioni", node: AU("⏰", "Promemoria + istruzioni") }
       ]},
-      { emoji: "💔", label: "Padroni che cambiano toelettatore dopo qualche volta", title: "Richiamo periodico", workflow: [
-        T("🕐", "5 sett (cane) / 8 sett (gatto)"),
-        A("🐾", "È ora della toelettatura?"),
-        A("🎁", "Slot + offerta fedeltà")
+      { q: "Dopo il servizio?", options: [
+        { emoji: "👋", label: "Arrivederci", node: M("👤", "Nessun ritorno") },
+        { emoji: "📸", label: "Foto cucciolo + recensione + richiamo 5 sett", node: AU("📸", "Review + richiamo auto") }
       ]}
-    ]
+    ],
+    goalLabel: "Funnel retention pet"
   }
 };
-
-// ============================================================================
-// DOMANDE FISSE (Q3 e Q4)
-// ============================================================================
-const HOURS_OPTIONS = [
-  { emoji: "⏱️", label: "1–3 ore a settimana", desc: "\"Non è tantissimo... ma si sommano\"", hours: 2 },
-  { emoji: "⏰", label: "4–8 ore a settimana", desc: "Mezza giornata lavorativa intera", hours: 6 },
-  { emoji: "🕐", label: "Oltre 10 ore", desc: "Più di una giornata e mezza, ogni settimana", hours: 12 }
-];
-
-const GOAL_OPTIONS = [
-  { emoji: "💼", label: "Svilupperei nuovi clienti", desc: "Vendite, partnership, sviluppo", goalIcon: "💼", goalLabel: "Più tempo per far crescere il business" },
-  { emoji: "👨‍👩‍👧", label: "Starei con la mia famiglia", desc: "Un'ora in più a tavola, il weekend libero", goalIcon: "👨‍👩‍👧", goalLabel: "Tempo per la tua vita" },
-  { emoji: "🚀", label: "Migliorerei quello che offro", desc: "Cura, qualità, innovazione", goalIcon: "🚀", goalLabel: "Prodotto e servizio migliori" },
-  { emoji: "😌", label: "Finalmente respirerei", desc: "Niente corse, niente to-do infinita", goalIcon: "😌", goalLabel: "Meno stress, più lucidità" }
-];
 
 // ============================================================================
 // STATE
 // ============================================================================
 const LabState = {
-  step: 0,
+  view: "sector",   // "sector" | "builder" | "result"
   sector: null,
-  manual: [],
-  hours: null,
-  goal: null,
-  prevManual: [],
-  prevHours: null,
-  prevGoal: null,
-  prevSector: null
+  stepIdx: 0,       // quale bivio stiamo presentando
+  chosenNodes: [],  // nodi scelti finora (per canvas)
+  prevCount: 0      // quanti nodi erano presenti al precedente render (per animazione delta)
 };
 
 function openLab() {
-  LabState.step = 0;
+  LabState.view = "sector";
   LabState.sector = null;
-  LabState.manual = [];
-  LabState.hours = null;
-  LabState.goal = null;
-  LabState.prevManual = [];
-  LabState.prevHours = null;
-  LabState.prevGoal = null;
-  LabState.prevSector = null;
+  LabState.stepIdx = 0;
+  LabState.chosenNodes = [];
+  LabState.prevCount = 0;
   document.getElementById('labModal').classList.add('active');
   document.getElementById('labModal').setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
-  renderStep();
+  renderView();
 }
 
 function closeLab() {
@@ -569,36 +525,29 @@ function closeLab() {
 }
 
 // ============================================================================
-// RENDERING
+// VIEWS
 // ============================================================================
-function renderStep() {
-  if (LabState.step === 0) return renderSectorStep();
-  return renderWorkflowStep();
+function renderView() {
+  if (LabState.view === "sector") return renderSectorView();
+  if (LabState.view === "result") return renderResult();
+  return renderBuilderView();
 }
 
-function renderSectorStep() {
+function renderSectorView() {
   const cards = Object.entries(SECTORS).map(([key, s]) => `
-    <button onclick="selectSector('${key}')" class="sector-card ${LabState.sector === key ? 'selected' : ''}">
+    <button onclick="selectSector('${key}')" class="sector-card">
       <div class="text-3xl mb-2">${s.icon}</div>
       <div class="text-xs font-semibold text-[#143d5c] leading-tight">${s.name}</div>
     </button>
   `).join('');
 
   document.getElementById('labContent').innerHTML = `
-    <div class="mb-4 flex items-center justify-between flex-wrap gap-2">
-      <span class="lab-badge">🧪 Costruisci il tuo workflow</span>
-      <span class="text-xs text-[#143d5c]/50 font-semibold">1 di 4</span>
-    </div>
-    <div class="flex items-center gap-2 mb-5">
-      <div class="progress-dot active"></div>
-      <div class="progress-dot"></div>
-      <div class="progress-dot"></div>
-      <div class="progress-dot"></div>
-      <span class="text-xs font-semibold text-[#143d5c]/60 ml-2">Partiamo dal tuo business</span>
+    <div class="mb-4">
+      <span class="lab-badge">🧪 Costruisci il tuo funnel</span>
     </div>
 
     <h3 class="text-2xl md:text-3xl font-bold text-[#143d5c] leading-tight mb-2">Qual è il tuo business?</h3>
-    <p class="text-[#143d5c]/60 text-sm mb-6">Seleziona il settore più vicino al tuo. Le prossime domande saranno specifiche al tuo pain.</p>
+    <p class="text-[#143d5c]/60 text-sm mb-6">Costruiamo insieme il funnel giusto per te. Un passo alla volta — scegli tu cosa automatizzare.</p>
 
     <div class="sector-grid">${cards}</div>
   `;
@@ -606,258 +555,233 @@ function renderSectorStep() {
 
 function selectSector(key) {
   LabState.sector = key;
-  LabState.step = 1;
-  if (LabState.prevSector !== key) {
-    LabState.manual = [];
-    LabState.prevManual = [];
-  }
-  LabState.prevSector = key;
-  renderStep();
+  LabState.view = "builder";
+  LabState.stepIdx = 0;
+  // Il primo nodo visibile nel canvas è il trigger
+  LabState.chosenNodes = [SECTORS[key].trigger];
+  LabState.prevCount = 0; // il trigger sarà "nuovo" alla prima render
+  renderView();
 }
 
-function renderWorkflowStep() {
+function renderBuilderView() {
   const sector = SECTORS[LabState.sector];
-  if (!sector) { LabState.step = 0; return renderStep(); }
+  if (!sector) { LabState.view = "sector"; return renderView(); }
 
-  let q, help, options, canNext, mode;
-
-  if (LabState.step === 1) {
-    q = `Cosa ti toglie il sonno nella tua <em class="text-[#D4998D]">${sector.name.toLowerCase()}</em>?`;
-    help = "Seleziona tutti i dolori che ti suonano familiari. Il workflow si costruirà davanti ai tuoi occhi.";
-    mode = "Selezione multipla";
-    options = sector.manualTasks.map((t, i) => `
-      <button class="quiz-option ${LabState.manual.includes(i) ? 'selected' : ''}" onclick="toggleManual(${i})">
-        <span class="text-3xl leading-none flex-shrink-0">${t.emoji}</span>
-        <div class="min-w-0">
-          <div class="font-semibold text-[#143d5c] mb-1 leading-snug">${t.label}</div>
-          <div class="text-xs text-[#D4998D] font-semibold uppercase tracking-wide">→ ${t.title}</div>
-        </div>
-      </button>
-    `).join('');
-    canNext = LabState.manual.length > 0;
-  } else if (LabState.step === 2) {
-    q = "Quante ore ci perdi a settimana?";
-    help = "Stima onesta. Sono ore tue.";
-    mode = "Una risposta";
-    options = HOURS_OPTIONS.map((o, i) => `
-      <button class="quiz-option ${LabState.hours === i ? 'selected' : ''}" onclick="selectHours(${i})">
-        <span class="text-3xl leading-none flex-shrink-0">${o.emoji}</span>
-        <div class="min-w-0">
-          <div class="font-semibold text-[#143d5c] mb-1">${o.label}</div>
-          <div class="text-sm text-[#143d5c]/65 leading-snug">${o.desc}</div>
-        </div>
-      </button>
-    `).join('');
-    canNext = LabState.hours !== null;
-  } else {
-    q = "Se te le restituissimo, cosa ci faresti?";
-    help = "La parte più importante. Quella che ti motiva davvero.";
-    mode = "Una risposta";
-    options = GOAL_OPTIONS.map((o, i) => `
-      <button class="quiz-option ${LabState.goal === i ? 'selected' : ''}" onclick="selectGoal(${i})">
-        <span class="text-3xl leading-none flex-shrink-0">${o.emoji}</span>
-        <div class="min-w-0">
-          <div class="font-semibold text-[#143d5c] mb-1">${o.label}</div>
-          <div class="text-sm text-[#143d5c]/65 leading-snug">${o.desc}</div>
-        </div>
-      </button>
-    `).join('');
-    canNext = LabState.goal !== null;
-  }
-
-  const progressDots = [0, 1, 2, 3].map(i => {
-    if (i < LabState.step) return '<div class="progress-dot done"></div>';
-    if (i === LabState.step) return '<div class="progress-dot active"></div>';
-    return '<div class="progress-dot"></div>';
-  }).join('');
+  const stepsCount = sector.steps.length;
+  const currentStep = sector.steps[LabState.stepIdx];
+  const allDone = LabState.stepIdx >= stepsCount;
 
   const canvasHtml = buildCanvas();
-  const isLast = LabState.step === 3;
+
+  // pannello delle scelte (o CTA finale)
+  let rightSide = '';
+  if (allDone) {
+    rightSide = `
+      <div class="bg-gradient-to-br from-[#d4a747] to-[#e0c179] text-[#143d5c] rounded-2xl p-6">
+        <p class="text-xs uppercase tracking-widest font-bold mb-3">🎉 Funnel costruito</p>
+        <h4 class="text-xl md:text-2xl font-bold leading-snug mb-3">Bravo. Hai fatto il tuo funnel.</h4>
+        <p class="text-sm leading-relaxed mb-4">Adesso la domanda vera: <strong>ti piacerebbe parlarne con noi?</strong> Lo valutiamo insieme. Se ha senso per il tuo business, te lo mettiamo in produzione.</p>
+        <button onclick="LabState.view='result';renderView();" class="bg-[#143d5c] text-white px-6 py-3 rounded-full font-bold text-sm hover:bg-[#0e2c43] transition">
+          Parliamone →
+        </button>
+      </div>
+    `;
+  } else {
+    const opts = currentStep.options.map((o, i) => `
+      <button class="quiz-option" onclick="chooseOption(${i})">
+        <span class="text-3xl leading-none flex-shrink-0">${o.emoji}</span>
+        <div class="min-w-0">
+          <div class="font-semibold text-[#143d5c] mb-1 leading-snug">${o.label}</div>
+          <div class="text-xs uppercase tracking-wide font-semibold ${o.node.type === 'auto' ? 'text-[#D4998D]' : 'text-[#143d5c]/40'}">
+            ${o.node.type === 'auto' ? '✨ Automatizzato' : '👤 Manuale'}
+          </div>
+        </div>
+      </button>
+    `).join('');
+
+    rightSide = `
+      <h4 class="text-xl md:text-2xl font-bold text-[#143d5c] leading-tight mb-2">${currentStep.q}</h4>
+      <p class="text-[#143d5c]/55 text-xs mb-5">Scegli come vuoi gestirlo. Ogni scelta aggiunge un nodo al tuo funnel.</p>
+      <div class="space-y-3">${opts}</div>
+    `;
+  }
+
+  const progress = `
+    <div class="flex items-center gap-2 mb-6">
+      ${Array.from({length: stepsCount + 1}, (_, i) => {
+        const done = i < LabState.stepIdx + 1 || allDone;
+        const active = !allDone && i === LabState.stepIdx + 1;
+        if (allDone || i <= LabState.stepIdx) return '<div class="progress-dot done"></div>';
+        if (active) return '<div class="progress-dot active"></div>';
+        return '<div class="progress-dot"></div>';
+      }).join('')}
+      <span class="text-xs font-semibold text-[#143d5c]/60 ml-2">
+        ${allDone ? 'Funnel completato' : `Bivio ${LabState.stepIdx + 1} di ${stepsCount}`}
+      </span>
+    </div>
+  `;
 
   document.getElementById('labContent').innerHTML = `
     <div class="mb-4 flex items-center justify-between flex-wrap gap-2">
       <span class="lab-badge">${sector.icon} ${sector.name}</span>
-      <span class="text-xs text-[#143d5c]/50 font-semibold">${mode}</span>
+      <button onclick="resetBuilder()" class="text-xs text-[#143d5c]/50 hover:text-[#143d5c] font-semibold">↺ Ricomincia</button>
     </div>
-    <div class="flex items-center gap-2 mb-6">
-      ${progressDots}
-      <span class="text-xs font-semibold text-[#143d5c]/60 ml-2">${LabState.step + 1} di 4</span>
-    </div>
+    ${progress}
 
     <div class="lab-split">
       <div>
-        <h3 class="text-2xl md:text-3xl font-bold text-[#143d5c] leading-tight mb-2">${q}</h3>
-        <p class="text-[#143d5c]/60 text-sm mb-5">${help}</p>
-        <div class="space-y-3">${options}</div>
-      </div>
-      <div>
         <p class="text-xs uppercase tracking-widest text-[#143d5c]/50 font-bold mb-2 flex items-center gap-2">
-          <span class="inline-block w-2 h-2 rounded-full bg-[#D4998D] dot"></span> Il tuo workflow live
+          <span class="inline-block w-2 h-2 rounded-full bg-[#D4998D] dot"></span> Il tuo funnel live
         </p>
         ${canvasHtml}
+      </div>
+      <div>
+        ${rightSide}
       </div>
     </div>
 
     <div class="flex justify-between items-center mt-6 pt-6 border-t border-[#143d5c]/10">
-      <button onclick="prevStep()" class="text-[#143d5c]/60 hover:text-[#143d5c] font-semibold text-sm flex items-center gap-1">← Indietro</button>
-      <button onclick="nextStep()" ${canNext ? '' : 'disabled'}
-              class="btn-coral px-6 py-3 rounded-full font-semibold text-sm inline-flex items-center gap-2 ${canNext ? '' : 'opacity-40 cursor-not-allowed'}">
-        ${isLast ? 'Vedi il risultato' : 'Prossima'} <span>→</span>
-      </button>
+      <button onclick="backBuilder()" class="text-[#143d5c]/60 hover:text-[#143d5c] font-semibold text-sm flex items-center gap-1">← Indietro</button>
+      <span class="text-xs text-[#143d5c]/40">${LabState.chosenNodes.length} ${LabState.chosenNodes.length === 1 ? 'nodo' : 'nodi'} nel funnel</span>
     </div>
   `;
 }
 
+function chooseOption(optIdx) {
+  const sector = SECTORS[LabState.sector];
+  const step = sector.steps[LabState.stepIdx];
+  const choice = step.options[optIdx];
+  LabState.chosenNodes.push(choice.node);
+  LabState.stepIdx += 1;
+  renderView();
+}
+
+function backBuilder() {
+  if (LabState.stepIdx === 0) {
+    // torna allo step settore
+    LabState.view = "sector";
+    LabState.chosenNodes = [];
+    LabState.prevCount = 0;
+    renderView();
+    return;
+  }
+  LabState.stepIdx -= 1;
+  LabState.chosenNodes.pop();
+  renderView();
+}
+
+function resetBuilder() {
+  const sector = SECTORS[LabState.sector];
+  LabState.stepIdx = 0;
+  LabState.chosenNodes = [sector.trigger];
+  LabState.prevCount = 0;
+  renderView();
+}
+
 // ============================================================================
-// CANVAS BUILDER (animazione solo sui nodi NUOVI)
+// CANVAS (ogni click aggiunge 1 nodo animato, i vecchi non si ri-animano)
 // ============================================================================
 function buildCanvas() {
   const sector = SECTORS[LabState.sector];
   if (!sector) return '';
-  if (LabState.manual.length === 0 && LabState.hours === null && LabState.goal === null) {
-    return `<div class="wf-canvas"><div class="wf-empty">↓ Il tuo workflow apparirà qui ↓<br><span class="text-xs opacity-60">a ogni risposta</span></div></div>`;
+  const nodes = LabState.chosenNodes;
+  const goalAdded = LabState.stepIdx >= sector.steps.length;
+
+  if (nodes.length === 0) {
+    return `<div class="wf-canvas"><div class="wf-empty">↓ Il tuo funnel apparirà qui ↓</div></div>`;
   }
 
   let html = '<div class="wf-canvas">';
-  const STEP_DELAY = 280;
-  let newIndex = 0;
+  const prev = LabState.prevCount;
 
-  // Header ore
-  if (LabState.hours !== null) {
-    const isNew = LabState.prevHours !== LabState.hours;
-    const h = HOURS_OPTIONS[LabState.hours].hours;
-    const monthly = h * 4;
-    const yearly = h * 52;
-    const days = Math.round(yearly / 8);
-    if (isNew) newIndex++;
-    const delay = isNew ? 0 : -1;
-    html += `<div class="wf-header" style="${delay >= 0 ? `animation-delay:${delay}ms` : 'animation:none;opacity:1;transform:scale(1);'}">⏰ ${h}h/sett · ${monthly}h/mese · ${days} giornate/anno</div>`;
-  }
+  nodes.forEach((node, i) => {
+    const isNew = i >= prev;
+    const animStyle = isNew ? `animation-delay:${(i - prev) * 150}ms` : 'animation:none;opacity:1;transform:translateY(0);';
+    const arrowStyle = isNew ? `animation-delay:${(i - prev) * 150 - 50}ms` : 'animation:none;opacity:1;';
 
-  // Workflow selezionati
-  LabState.manual.forEach((optIdx, wfIdx) => {
-    const task = sector.manualTasks[optIdx];
-    const isNewTask = !LabState.prevManual.includes(optIdx);
-
-    const sepDelay = isNewTask ? (newIndex * STEP_DELAY) : -1;
-    if (isNewTask) newIndex++;
-    html += `<div class="wf-block"><div class="wf-node wf-node--sep" style="${sepDelay >= 0 ? `animation-delay:${sepDelay}ms` : 'animation:none;opacity:1;transform:translateY(0);'}">${wfIdx === 0 ? task.title : '+ ' + task.title}</div></div>`;
-
-    task.workflow.forEach((node) => {
-      const nodeDelay = isNewTask ? (newIndex * STEP_DELAY) : -1;
-      if (isNewTask) newIndex++;
-      html += `<div class="wf-arrow" style="${nodeDelay >= 0 ? `animation-delay:${nodeDelay - 40}ms` : 'animation:none;opacity:1;'}"></div>`;
-      html += `
-        <div class="wf-block">
-          <div class="wf-node wf-node--${node.type}" style="${nodeDelay >= 0 ? `animation-delay:${nodeDelay}ms` : 'animation:none;opacity:1;transform:translateY(0);'}">
-            <span class="wf-icon">${node.icon}</span>
-            <div class="wf-body">
-              <div class="wf-label">${node.label}</div>
-              ${node.desc ? `<div class="wf-desc">${node.desc}</div>` : ''}
-            </div>
-            <span class="wf-tag">${node.tag}</span>
-          </div>
-        </div>
-      `;
-    });
-  });
-
-  // Goal
-  if (LabState.goal !== null) {
-    const isNewGoal = LabState.prevGoal !== LabState.goal;
-    const goal = GOAL_OPTIONS[LabState.goal];
-    const goalDelay = isNewGoal ? (newIndex * STEP_DELAY) : -1;
-    if (isNewGoal) newIndex++;
-    html += `<div class="wf-arrow" style="${goalDelay >= 0 ? `animation-delay:${goalDelay - 40}ms` : 'animation:none;opacity:1;'}"></div>`;
+    if (i > 0) {
+      html += `<div class="wf-arrow" style="${arrowStyle}"></div>`;
+    }
     html += `
       <div class="wf-block">
-        <div class="wf-node wf-node--goal" style="${goalDelay >= 0 ? `animation-delay:${goalDelay}ms` : 'animation:none;opacity:1;transform:translateY(0);'}">
-          <span class="wf-icon">${goal.goalIcon}</span>
+        <div class="wf-node wf-node--${node.type}" style="${animStyle}">
+          <span class="wf-icon">${node.icon}</span>
           <div class="wf-body">
-            <div class="wf-label">${goal.goalLabel}</div>
-            <div class="wf-desc" style="opacity:0.8;">${goal.desc}</div>
+            <div class="wf-label">${node.label}</div>
           </div>
-          <span class="wf-tag">🎯 Il tuo obiettivo</span>
+          <span class="wf-tag">${node.tag}</span>
+        </div>
+      </div>
+    `;
+  });
+
+  // Goal finale se funnel completo
+  if (goalAdded) {
+    const goalIsNew = prev < nodes.length + 1;
+    const goalDelay = goalIsNew ? (nodes.length - prev) * 150 : 0;
+    const goalAnim = goalIsNew ? `animation-delay:${goalDelay}ms` : 'animation:none;opacity:1;transform:translateY(0);';
+    html += `<div class="wf-arrow" style="${goalIsNew ? `animation-delay:${goalDelay - 50}ms` : 'animation:none;opacity:1;'}"></div>`;
+    html += `
+      <div class="wf-block">
+        <div class="wf-node wf-node--goal" style="${goalAnim}">
+          <span class="wf-icon">🎯</span>
+          <div class="wf-body">
+            <div class="wf-label">${sector.goalLabel}</div>
+          </div>
+          <span class="wf-tag">Obiettivo</span>
         </div>
       </div>
     `;
   }
 
   html += '</div>';
-
-  LabState.prevManual = [...LabState.manual];
-  LabState.prevHours = LabState.hours;
-  LabState.prevGoal = LabState.goal;
-
+  LabState.prevCount = nodes.length + (goalAdded ? 1 : 0);
   return html;
 }
 
 // ============================================================================
-// SELECT HANDLERS
-// ============================================================================
-function toggleManual(i) {
-  const idx = LabState.manual.indexOf(i);
-  if (idx >= 0) LabState.manual.splice(idx, 1);
-  else LabState.manual.push(i);
-  renderStep();
-}
-function selectHours(i) { LabState.hours = i; renderStep(); }
-function selectGoal(i) { LabState.goal = i; renderStep(); }
-
-function nextStep() {
-  if (LabState.step === 0 && !LabState.sector) return;
-  if (LabState.step === 1 && LabState.manual.length === 0) return;
-  if (LabState.step === 2 && LabState.hours === null) return;
-  if (LabState.step === 3) { renderResult(); return; }
-  LabState.step += 1;
-  renderStep();
-}
-
-function prevStep() {
-  if (LabState.step === 0) { closeLab(); return; }
-  LabState.step -= 1;
-  renderStep();
-}
-
-// ============================================================================
-// FINAL RESULT
+// FINAL RESULT (mostra funnel completo + form GHL)
 // ============================================================================
 function renderResult() {
   const sector = SECTORS[LabState.sector];
-  const h = HOURS_OPTIONS[LabState.hours].hours;
-  const yearly = h * 52;
-  const days = Math.round(yearly / 8);
-  const goalOpt = GOAL_OPTIONS[LabState.goal];
-  const activeWorkflows = LabState.manual.length;
+  const autoCount = LabState.chosenNodes.filter(n => n.type === 'auto').length;
+  const manualCount = LabState.chosenNodes.filter(n => n.type === 'manual').length;
 
-  LabState.prevManual = [...LabState.manual];
-  LabState.prevHours = LabState.hours;
-  LabState.prevGoal = LabState.goal;
+  // forza ri-render canvas con tutti i nodi visibili (nessuna animazione)
+  LabState.prevCount = LabState.chosenNodes.length + 1;
   const canvasHtml = buildCanvas();
+
+  let verdict;
+  if (autoCount >= 3) {
+    verdict = `<strong>Ottima scelta.</strong> Il tuo funnel è quasi tutto automatizzato: ti libera dalle mansioni ripetitive e crea un flusso di clienti che cresce da solo.`;
+  } else if (autoCount >= 2) {
+    verdict = `Ci sei quasi. Il tuo funnel ha <strong>${autoCount} automazioni</strong> e ${manualCount} passaggi ancora manuali: possiamo migliorarlo per farti risparmiare più tempo.`;
+  } else {
+    verdict = `Il tuo funnel è ancora molto manuale. <strong>Ecco perché il tempo non basta mai</strong>: quasi tutto dipende dalle tue mani. Si può cambiare.`;
+  }
 
   document.getElementById('labContent').innerHTML = `
     <div class="mb-4">
-      <span class="lab-badge" style="background:rgba(212,167,71,0.18);color:#9a7818;">✅ WORKFLOW COMPLETATO</span>
+      <span class="lab-badge" style="background:rgba(212,167,71,0.18);color:#9a7818;">✅ FUNNEL COMPLETATO</span>
     </div>
 
     <h3 class="text-3xl md:text-4xl font-bold text-[#143d5c] leading-tight mb-3">
-      ${sector.icon} La tua ${sector.name.toLowerCase()} ti sta rubando <span class="headline-coral">~${h} ore</span> a settimana.
+      ${sector.icon} Hai costruito il funnel della tua <span class="headline-coral">${sector.name.toLowerCase()}</span>.
     </h3>
     <p class="text-[#143d5c]/75 text-lg leading-relaxed mb-6">
-      Sono <strong>${yearly} ore all'anno</strong>. Circa <strong>${days} giornate lavorative</strong> perse a fare cose ripetitive che un sistema farebbe da solo.<br>
-      Qui sotto ${activeWorkflows > 1 ? `i ${activeWorkflows} workflow` : 'il workflow'} che attiveremmo per te.
+      ${verdict}
     </p>
 
     <div class="mb-6">
-      <p class="text-xs uppercase tracking-widest text-[#143d5c]/50 font-bold mb-2">Ecco cosa attiveremmo</p>
+      <p class="text-xs uppercase tracking-widest text-[#143d5c]/50 font-bold mb-2">Il funnel che hai disegnato</p>
       ${canvasHtml}
     </div>
 
     <div class="bg-[#143d5c] text-white rounded-2xl p-6 mb-5">
-      <p class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2">Il risultato per te</p>
-      <p class="text-xl md:text-2xl font-bold leading-snug mb-2"><span class="text-[#D4998D]">${days} giornate all'anno</span> per: <em>${goalOpt.goalLabel.toLowerCase()}</em>.</p>
+      <p class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2">E adesso?</p>
+      <p class="text-xl md:text-2xl font-bold leading-snug mb-3">Ti piacerebbe parlarne con noi per mettere in produzione <em>davvero</em> questo funnel?</p>
       <p class="text-white/80 text-sm leading-relaxed">
-        Lasciaci 2 info qui sotto. <strong>In 24 ore</strong> ti mandiamo una proposta su misura per la tua ${sector.name.toLowerCase()} — o ti diciamo onestamente se non siamo il fit giusto.
+        Lasciaci 2 info qui sotto. In 24 ore ti diciamo se ha senso per il tuo business, quanto costa e in quanto tempo lo attiviamo. Se non siamo il fit giusto te lo diciamo noi.
       </p>
     </div>
 
@@ -876,7 +800,7 @@ function renderResult() {
 
     <div class="mt-5 flex justify-between items-center text-sm">
       <button onclick="openLab()" class="text-[#143d5c]/60 hover:text-[#143d5c] font-semibold flex items-center gap-1">
-        🔄 Rifai il test
+        🔄 Rifai il funnel (altro settore?)
       </button>
       <button onclick="closeLab()" class="text-[#143d5c]/60 hover:text-[#143d5c] font-semibold">
         Chiudi

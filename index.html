@@ -260,6 +260,15 @@
   }
   .wf-node--trigger { border-left: 4px solid #2a6fa3; }
   .wf-node--action { border-left: 4px solid #D4998D; }
+  .wf-node--auto { border-left: 4px solid #D4998D; }
+  .wf-node--manual {
+    border-left: 4px solid rgba(20,61,92,0.35);
+    border-style: dashed;
+    background: #f8f7f4;
+    color: rgba(20,61,92,0.75);
+  }
+  .wf-node--manual .wf-label { color: rgba(20,61,92,0.8); }
+  .wf-node--manual .wf-icon { filter: grayscale(0.6); opacity: 0.85; }
   .wf-node--goal {
     border: none; background: linear-gradient(135deg, #d4a747, #e0c179);
     color: #143d5c; box-shadow: 0 10px 30px rgba(212,167,71,0.4);
@@ -285,6 +294,8 @@
   }
   .wf-node--trigger .wf-tag { background: rgba(42,111,163,0.15); color: #2a6fa3; }
   .wf-node--action .wf-tag { background: rgba(212,153,141,0.18); color: #B5776A; }
+  .wf-node--auto .wf-tag { background: rgba(212,153,141,0.18); color: #B5776A; }
+  .wf-node--manual .wf-tag { background: rgba(20,61,92,0.08); color: rgba(20,61,92,0.55); }
   .wf-node--goal .wf-tag { background: rgba(20,61,92,0.15); color: #143d5c; }
 
   .wf-arrow {
@@ -625,10 +636,10 @@
     <div class="text-center mb-12 max-w-3xl mx-auto">
       <span class="lab-badge mb-6">🧪 Il Laboratorio Ailiv</span>
       <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mt-4 mb-6">
-        Scegli il tuo settore.<br><span class="headline-coral">Ti costruiamo il workflow.</span>
+        Costruisci il tuo funnel.<br><span class="headline-coral">Un bivio alla volta.</span>
       </h2>
       <p class="text-lg md:text-xl text-[#143d5c]/70 leading-relaxed">
-        Ristorante, palestra, studio medico, estetica, retail… <strong>20 settori, domande specifiche ai tuoi pain reali</strong>.<br>Il workflow si disegna davanti ai tuoi occhi mentre rispondi. 2 minuti.
+        Scegli il tuo settore. A ogni domanda decidi tu cosa far succedere <strong>quando il cliente arriva</strong>, <strong>quando prenota</strong>, <strong>quando se ne va</strong>. Ogni scelta aggiunge un nodo al tuo funnel.
       </p>
     </div>
 
@@ -1010,7 +1021,7 @@
 </footer>
 
 <!-- ============ LAB BUILDER JS ============ -->
-<script src="assets/lab-builder.js?v=3"></script>
+<script src="assets/lab-builder.js?v=4"></script>
 
 <!-- ============ GHL form loader ============ -->
 <script src="https://link.msgsndr.com/js/form_embed.js"></script>
