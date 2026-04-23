@@ -215,6 +215,97 @@
     border: 1px solid rgba(20,61,92,0.08);
     backdrop-filter: blur(10px);
   }
+
+  /* Workflow builder (GHL-style canvas) */
+  .lab-split { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+  @media (min-width: 860px) {
+    .lab-split { grid-template-columns: 1.1fr 1fr; gap: 2rem; }
+    .lab-modal { max-width: 1020px; }
+  }
+
+  .wf-canvas {
+    background: linear-gradient(180deg, #fafaf7 0%, #f5f3ee 100%);
+    border: 1px dashed rgba(20,61,92,0.15);
+    border-radius: 20px;
+    padding: 1.25rem .75rem;
+    min-height: 360px;
+    max-height: 560px; overflow-y: auto;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0; position: relative;
+  }
+  .wf-empty {
+    margin: auto; color: rgba(20,61,92,0.4);
+    font-size: .9rem; text-align: center; font-style: italic;
+    padding: 2rem 1rem;
+  }
+  .wf-header {
+    background: linear-gradient(135deg, #D4998D, #B5776A);
+    color: #fff; padding: .6rem 1.1rem;
+    border-radius: 9999px; font-size: .8rem; font-weight: 700;
+    letter-spacing: 0.02em; margin-bottom: .75rem;
+    opacity: 0; transform: scale(0.85);
+    animation: wfPop .5s ease forwards;
+    box-shadow: 0 8px 25px rgba(212,153,141,0.4);
+    text-align: center; line-height: 1.3;
+  }
+  .wf-block { width: 100%; max-width: 340px; display: flex; flex-direction: column; align-items: center; }
+  .wf-node {
+    background: #fff; border: 1.5px solid rgba(20,61,92,0.1);
+    border-radius: 14px; padding: .85rem 1rem;
+    display: flex; align-items: center; gap: .8rem;
+    width: 100%; min-height: 56px;
+    opacity: 0; transform: translateY(14px);
+    animation: wfIn .45s cubic-bezier(.2,.7,.3,1) forwards;
+    box-shadow: 0 2px 10px rgba(20,61,92,0.05);
+  }
+  .wf-node--trigger { border-left: 4px solid #2a6fa3; }
+  .wf-node--action { border-left: 4px solid #D4998D; }
+  .wf-node--goal {
+    border: none; background: linear-gradient(135deg, #d4a747, #e0c179);
+    color: #143d5c; box-shadow: 0 10px 30px rgba(212,167,71,0.4);
+  }
+  .wf-node--sep {
+    background: rgba(20,61,92,0.04); border: 1px dashed rgba(20,61,92,0.2);
+    border-left: 1px dashed rgba(20,61,92,0.2);
+    justify-content: center; padding: .35rem .9rem;
+    min-height: auto; font-size: .7rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: rgba(20,61,92,0.55); text-align: center;
+    box-shadow: none;
+  }
+  .wf-icon { font-size: 1.5rem; line-height: 1; flex-shrink: 0; }
+  .wf-body { flex: 1; min-width: 0; }
+  .wf-label { font-weight: 600; font-size: .9rem; line-height: 1.25; color: inherit; }
+  .wf-desc { font-size: .72rem; opacity: 0.65; margin-top: .15rem; line-height: 1.3; }
+  .wf-tag {
+    font-size: .6rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.08em; padding: .2rem .5rem; border-radius: 9999px;
+    flex-shrink: 0; white-space: nowrap;
+    background: rgba(20,61,92,0.08); color: rgba(20,61,92,0.7);
+  }
+  .wf-node--trigger .wf-tag { background: rgba(42,111,163,0.15); color: #2a6fa3; }
+  .wf-node--action .wf-tag { background: rgba(212,153,141,0.18); color: #B5776A; }
+  .wf-node--goal .wf-tag { background: rgba(20,61,92,0.15); color: #143d5c; }
+
+  .wf-arrow {
+    width: 2px; height: 22px;
+    background: repeating-linear-gradient(to bottom,
+      rgba(212,153,141,0.6) 0 4px, transparent 4px 8px);
+    position: relative; opacity: 0;
+    animation: wfArrowIn .3s ease forwards;
+  }
+  .wf-arrow::after {
+    content: ''; position: absolute; bottom: -4px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid rgba(212,153,141,0.8);
+  }
+
+  @keyframes wfIn { to { opacity: 1; transform: translateY(0); } }
+  @keyframes wfArrowIn { to { opacity: 1; } }
+  @keyframes wfPop { to { opacity: 1; transform: scale(1); } }
 </style>
 </head>
 <body>
@@ -331,52 +422,52 @@
         <div class="val">Con Ailiv PRO</div>
       </div>
       <div class="compare-row">
-        <div>📧 <strong>Email marketing illimitato</strong><br><span class="text-xs text-[#143d5c]/50">(Mailchimp, ActiveCampaign, Brevo)</span></div>
+        <div>📧 <strong>Mandare email ai clienti</strong><br><span class="text-xs text-[#143d5c]/50">Newsletter, offerte, promemoria</span></div>
         <div class="val no">50 – 200 €/mese</div>
-        <div class="val yes">✅ Incluso</div>
+        <div class="val yes">✅ Illimitato</div>
       </div>
       <div class="compare-row">
-        <div>📇 <strong>Database clienti illimitato</strong><br><span class="text-xs text-[#143d5c]/50">(tipo HubSpot, Pipedrive, Zoho)</span></div>
+        <div>📇 <strong>Tenere tutti i clienti in un posto</strong><br><span class="text-xs text-[#143d5c]/50">Contatti, trattative, storico</span></div>
         <div class="val no">60 – 500 €/mese</div>
         <div class="val yes">✅ Incluso</div>
       </div>
       <div class="compare-row">
-        <div>🗓️ <strong>Calendari e prenotazioni</strong><br><span class="text-xs text-[#143d5c]/50">(Calendly, Acuity)</span></div>
-        <div class="val no">15 €/utente</div>
-        <div class="val yes">✅ Illimitati</div>
+        <div>🗓️ <strong>Prenotazioni e appuntamenti online</strong><br><span class="text-xs text-[#143d5c]/50">Il cliente sceglie da solo giorno e ora</span></div>
+        <div class="val no">15 €/persona del team</div>
+        <div class="val yes">✅ Illimitato</div>
       </div>
       <div class="compare-row">
-        <div>🌐 <strong>Siti, funnel, landing page</strong><br><span class="text-xs text-[#143d5c]/50">(ClickFunnels, Webflow, Leadpages)</span></div>
+        <div>🌐 <strong>Sito web, landing, pagine di offerta</strong><br><span class="text-xs text-[#143d5c]/50">Da mostrare al cliente online</span></div>
         <div class="val no">97 – 297 €/mese</div>
         <div class="val yes">✅ Illimitati</div>
       </div>
       <div class="compare-row">
-        <div>📱 <strong>WhatsApp marketing ufficiale</strong><br><span class="text-xs text-[#143d5c]/50">(Respond.io, Wati, Zoko)</span></div>
+        <div>📱 <strong>Mandare WhatsApp ai clienti</strong><br><span class="text-xs text-[#143d5c]/50">Con il numero ufficiale autorizzato</span></div>
         <div class="val no">50 – 200 €/mese</div>
-        <div class="val yes">✅ API ufficiale inclusa</div>
+        <div class="val yes">✅ Incluso</div>
       </div>
       <div class="compare-row">
-        <div>🤖 <strong>Chatbot AI & conversational</strong><br><span class="text-xs text-[#143d5c]/50">(Intercom, Drift, ManyChat Pro)</span></div>
+        <div>🤖 <strong>Un assistente che chatta coi clienti</strong><br><span class="text-xs text-[#143d5c]/50">Risponde 24/7 su sito e WhatsApp</span></div>
         <div class="val no">50 – 500 €/mese</div>
         <div class="val yes">✅ Incluso</div>
       </div>
       <div class="compare-row">
-        <div>⭐ <strong>Richiesta recensioni automatica</strong><br><span class="text-xs text-[#143d5c]/50">(Birdeye, Podium, Trustpilot Pro)</span></div>
+        <div>⭐ <strong>Raccogliere recensioni Google</strong><br><span class="text-xs text-[#143d5c]/50">Chiesta in automatico dopo la vendita</span></div>
         <div class="val no">99 – 299 €/mese</div>
         <div class="val yes">✅ Incluso</div>
       </div>
       <div class="compare-row">
-        <div>🎓 <strong>Area membri + corsi online</strong><br><span class="text-xs text-[#143d5c]/50">(Kajabi, Thinkific, Teachable)</span></div>
+        <div>🎓 <strong>Area riservata e corsi online</strong><br><span class="text-xs text-[#143d5c]/50">Vendi contenuti o crei un "club"</span></div>
         <div class="val no">99 – 399 €/mese</div>
         <div class="val yes">✅ Illimitati</div>
       </div>
       <div class="compare-row">
-        <div>📲 <strong>App mobile brandizzata</strong><br><span class="text-xs text-[#143d5c]/50">(Sviluppatore iOS/Android)</span></div>
-        <div class="val no">500 – 3.000 € setup + canone</div>
-        <div class="val yes">✅ Inclusa (white-label)</div>
+        <div>📲 <strong>Un'app mobile col tuo nome</strong><br><span class="text-xs text-[#143d5c]/50">I clienti la scaricano dagli store</span></div>
+        <div class="val no">500 – 3.000 € + canone</div>
+        <div class="val yes">✅ Inclusa</div>
       </div>
       <div class="compare-row">
-        <div>💳 <strong>Pagamenti, fatture, subscription</strong><br><span class="text-xs text-[#143d5c]/50">(Stripe Billing, SamCart)</span></div>
+        <div>💳 <strong>Ricevere pagamenti online</strong><br><span class="text-xs text-[#143d5c]/50">Anche abbonamenti ricorrenti</span></div>
         <div class="val no">29 – 99 €/mese</div>
         <div class="val yes">✅ Incluso</div>
       </div>
@@ -409,26 +500,26 @@
     </div>
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="feature-item"><div class="text-2xl mb-2">📇</div><h4 class="font-bold mb-1 text-sm">Rubrica clienti intelligente</h4><p class="text-xs text-[#143d5c]/65">Contatti illimitati, etichette, storico conversazioni, note.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">💬</div><h4 class="font-bold mb-1 text-sm">Bacheca conversazioni</h4><p class="text-xs text-[#143d5c]/65">Email, SMS, WhatsApp, DM IG/FB, Google Business in un posto.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">📧</div><h4 class="font-bold mb-1 text-sm">Email marketing</h4><p class="text-xs text-[#143d5c]/65">Editor drag-drop, template, invii illimitati, A/B test.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">📱</div><h4 class="font-bold mb-1 text-sm">SMS & WhatsApp</h4><p class="text-xs text-[#143d5c]/65">Campagne, 1-to-1, automazioni. API WhatsApp ufficiale (PRO+).</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">🌐</div><h4 class="font-bold mb-1 text-sm">Sito, funnel, landing</h4><p class="text-xs text-[#143d5c]/65">Builder drag-drop, hosting + SSL, dominio custom.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">🗓️</div><h4 class="font-bold mb-1 text-sm">Calendari smart</h4><p class="text-xs text-[#143d5c]/65">Prenotazioni, sync Google/Outlook, reminder automatici.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">🎯</div><h4 class="font-bold mb-1 text-sm">Pipeline vendite</h4><p class="text-xs text-[#143d5c]/65">Opportunità, stage, previsioni. Niente trattativa persa.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">🤖</div><h4 class="font-bold mb-1 text-sm">Chatbot AI</h4><p class="text-xs text-[#143d5c]/65">Risponde 24/7 su sito e WhatsApp. Qualifica i lead.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">⭐</div><h4 class="font-bold mb-1 text-sm">Recensioni automatiche</h4><p class="text-xs text-[#143d5c]/65">Richiesta post-vendita, risposta AI, dashboard rating.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">⚙️</div><h4 class="font-bold mb-1 text-sm">Automazioni illimitate</h4><p class="text-xs text-[#143d5c]/65">Se-questo-allora-quello. Drag-drop. Zero codice.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">💳</div><h4 class="font-bold mb-1 text-sm">E-commerce & pagamenti</h4><p class="text-xs text-[#143d5c]/65">Catalogo, carrello, Stripe, subscription, fatture.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">📝</div><h4 class="font-bold mb-1 text-sm">Form e sondaggi</h4><p class="text-xs text-[#143d5c]/65">Embeddabili ovunque, logica condizionale, salvati in rubrica.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">🎓</div><h4 class="font-bold mb-1 text-sm">Area membri + corsi</h4><p class="text-xs text-[#143d5c]/65">Vendi corsi video, abbonamenti, contenuti riservati.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">📲</div><h4 class="font-bold mb-1 text-sm">App mobile brandizzata</h4><p class="text-xs text-[#143d5c]/65">iOS + Android con il tuo logo (disponibile PRO+).</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">📣</div><h4 class="font-bold mb-1 text-sm">Social planner</h4><p class="text-xs text-[#143d5c]/65">Pubblica su FB, IG, LinkedIn, Google Business da un solo posto.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">📊</div><h4 class="font-bold mb-1 text-sm">Dashboard & report</h4><p class="text-xs text-[#143d5c]/65">KPI chiari, ads reporting, conversion tracking.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">🔌</div><h4 class="font-bold mb-1 text-sm">70+ integrazioni native</h4><p class="text-xs text-[#143d5c]/65">Zapier, Make, Stripe, Shopify, WooCommerce, Meta, Google.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">👥</div><h4 class="font-bold mb-1 text-sm">Utenti illimitati</h4><p class="text-xs text-[#143d5c]/65">Permessi granulari per ruolo, team management.</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">🗣️</div><h4 class="font-bold mb-1 text-sm">Voice AI</h4><p class="text-xs text-[#143d5c]/65">Agente AI che risponde alle chiamate in entrata (PRO+).</p></div>
-      <div class="feature-item"><div class="text-2xl mb-2">🏢</div><h4 class="font-bold mb-1 text-sm">Multi-sede / multi-brand</h4><p class="text-xs text-[#143d5c]/65">Gestisci più punti vendita o brand separati (PRO+).</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📇</div><h4 class="font-bold mb-1 text-sm">Tutti i clienti in un posto</h4><p class="text-xs text-[#143d5c]/65">Nomi, numeri, storico, note. Ritrovi tutto in un secondo.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">💬</div><h4 class="font-bold mb-1 text-sm">Tutte le chat su una pagina</h4><p class="text-xs text-[#143d5c]/65">Email, WhatsApp, Instagram, Facebook, Google: mai più "chi gli aveva risposto?".</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📧</div><h4 class="font-bold mb-1 text-sm">Mandi email ai clienti</h4><p class="text-xs text-[#143d5c]/65">Quante ne vuoi, anche a 10.000 contatti. Zero sovrapprezzo.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📱</div><h4 class="font-bold mb-1 text-sm">Mandi SMS e WhatsApp</h4><p class="text-xs text-[#143d5c]/65">Conferme, promemoria, promozioni. Anche in gruppo.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🌐</div><h4 class="font-bold mb-1 text-sm">Sito, landing e pagine offerta</h4><p class="text-xs text-[#143d5c]/65">Li costruisci da solo (o te li facciamo noi).</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🗓️</div><h4 class="font-bold mb-1 text-sm">Il cliente prenota da solo</h4><p class="text-xs text-[#143d5c]/65">Sceglie giorno e ora. Tu ricevi la notifica, lui la conferma.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🎯</div><h4 class="font-bold mb-1 text-sm">Non ti perdi più una trattativa</h4><p class="text-xs text-[#143d5c]/65">Sai sempre chi ti ha chiesto cosa, e a che punto è.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🤖</div><h4 class="font-bold mb-1 text-sm">Un assistente che chatta per te</h4><p class="text-xs text-[#143d5c]/65">Risponde 24/7 su sito e WhatsApp. Anche quando dormi.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">⭐</div><h4 class="font-bold mb-1 text-sm">Recensioni Google da sole</h4><p class="text-xs text-[#143d5c]/65">Dopo la vendita parte il messaggio col link. Tu non fai nulla.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">⚙️</div><h4 class="font-bold mb-1 text-sm">Le cose ripetitive le fa lui</h4><p class="text-xs text-[#143d5c]/65">Le imposti una volta, girano per sempre.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">💳</div><h4 class="font-bold mb-1 text-sm">Ricevi pagamenti online</h4><p class="text-xs text-[#143d5c]/65">Carta, carrello, abbonamenti, fatture — tutto dentro.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📝</div><h4 class="font-bold mb-1 text-sm">Moduli e sondaggi</h4><p class="text-xs text-[#143d5c]/65">Sul sito o dove vuoi — le risposte finiscono nella rubrica.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🎓</div><h4 class="font-bold mb-1 text-sm">Area riservata e corsi</h4><p class="text-xs text-[#143d5c]/65">Per vendere contenuti, formazione o "club" dei clienti fedeli.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📲</div><h4 class="font-bold mb-1 text-sm">App col tuo logo</h4><p class="text-xs text-[#143d5c]/65">I clienti la scaricano dagli store — con il tuo nome (PRO+).</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📣</div><h4 class="font-bold mb-1 text-sm">Posti sui social</h4><p class="text-xs text-[#143d5c]/65">Instagram, Facebook, LinkedIn — da un solo posto.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📊</div><h4 class="font-bold mb-1 text-sm">Vedi i numeri del tuo business</h4><p class="text-xs text-[#143d5c]/65">Clienti nuovi, quelli che tornano, fatturato del giorno.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🔌</div><h4 class="font-bold mb-1 text-sm">Si collega a quello che usi</h4><p class="text-xs text-[#143d5c]/65">Oltre 70 collegamenti già pronti (Stripe, Shopify, Google, Facebook…).</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">👥</div><h4 class="font-bold mb-1 text-sm">Tutto il team dentro</h4><p class="text-xs text-[#143d5c]/65">Quante persone vuoi, ognuno col suo ruolo e i suoi permessi.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🗣️</div><h4 class="font-bold mb-1 text-sm">Rispondi alle chiamate anche se non ci sei</h4><p class="text-xs text-[#143d5c]/65">Un assistente vocale le gestisce al posto tuo (PRO+).</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🏢</div><h4 class="font-bold mb-1 text-sm">Più negozi o più brand</h4><p class="text-xs text-[#143d5c]/65">Gestisci punti vendita o marchi separati (PRO+).</p></div>
     </div>
 
     <p class="text-center text-sm text-[#143d5c]/50 mt-8">
@@ -502,15 +593,15 @@
     <div class="text-center mb-12 max-w-3xl mx-auto">
       <span class="lab-badge mb-6">🧪 Il Laboratorio Ailiv</span>
       <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mt-4 mb-6">
-        Scopri la tua<br>prima automazione.
+        Quanto tempo ti sta<br><span class="headline-coral">rubando</span> il tuo business?
       </h2>
       <p class="text-lg md:text-xl text-[#143d5c]/70 leading-relaxed">
-        3 domande. 2 minuti. Ti diciamo <strong>quale processo</strong> nel tuo business gira in automatico per primo — e <strong>cosa serve</strong> per farlo partire.
+        Rispondi a 3 domande. <strong>Guarda costruirsi davanti ai tuoi occhi</strong> il workflow che ti toglierebbe ore di lavoro manuale — e quante giornate all'anno ti restituirebbe.
       </p>
     </div>
 
     <div class="text-center">
-      <button onclick="openLab('automazione')" class="btn-coral px-10 py-5 rounded-full font-bold text-lg inline-flex items-center gap-3">
+      <button onclick="openLab()" class="btn-coral px-10 py-5 rounded-full font-bold text-lg inline-flex items-center gap-3">
         🧪 Avvia il quiz <span>→</span>
       </button>
       <p class="text-sm text-[#143d5c]/50 mt-5">Nessuna email richiesta per fare il test · Risultati subito</p>
@@ -550,18 +641,18 @@
           <p class="text-xs text-[#143d5c]/50 mt-1">annuale · <span class="text-[#D4998D]">€ 119/mese sul mensile</span></p>
         </div>
         <ul class="space-y-2 text-sm text-[#143d5c]/75 mb-8">
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Rubrica clienti illimitata</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Tutti i clienti in un posto (illimitati)</li>
           <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Email marketing illimitato</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> SMS + WhatsApp marketing</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Siti, funnel, landing illimitati</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Calendari + prenotazioni</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Automazioni illimitate</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Chatbot AI base</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> E-commerce + pagamenti Stripe</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Recensioni automatiche</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Utenti illimitati</li>
-          <li class="flex gap-2 text-[#143d5c]/50"><span>—</span> Setup self-serve guidato</li>
-          <li class="flex gap-2 text-[#143d5c]/50"><span>—</span> Supporto email + videoguide</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> SMS e WhatsApp ai clienti</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Sito web, landing e pagine offerta</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Prenotazioni e appuntamenti</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Automazioni "le cose girano da sole"</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Assistente AI che chatta coi clienti</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Pagamenti online + fatture</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Raccolta recensioni automatica</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Tutto il tuo team dentro</li>
+          <li class="flex gap-2 text-[#143d5c]/50"><span>—</span> Setup guidato con video in italiano</li>
+          <li class="flex gap-2 text-[#143d5c]/50"><span>—</span> Supporto email + centro assistenza</li>
         </ul>
         <a href="#contatti" class="btn-ghost block text-center px-6 py-3 rounded-full font-semibold text-sm">Inizia con LITE</a>
       </div>
@@ -577,17 +668,17 @@
           <p class="text-xs opacity-60 mt-1">annuale · <span class="text-[#D4998D]">€ 237/mese sul mensile</span></p>
         </div>
         <ul class="space-y-2 text-sm mb-8">
-          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> <strong>Tutto di LITE</strong></li>
-          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> WhatsApp Business <strong>API ufficiale</strong></li>
-          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Voice AI inbound (chiamate)</li>
-          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Conversation AI avanzata</li>
-          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Review AI (risposta auto recensioni)</li>
-          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> App mobile <strong>nativa brandizzata</strong> iOS+Android</li>
-          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Membership + corsi online</li>
-          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Multi-sede / multi-brand (2 location)</li>
-          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Ads reporting Meta + Google</li>
-          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Supporto prioritario WhatsApp</li>
-          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> 1h onboarding 1-to-1 incluso</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> <strong>Tutto del LITE</strong></li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> WhatsApp <strong>ufficiale</strong> (numero verificato)</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Assistente vocale per le chiamate</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Chatbot AI avanzato (capisce il contesto)</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Risposte automatiche alle recensioni</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> <strong>App mobile col tuo nome</strong> (iPhone + Android)</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Area riservata e corsi online</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Fino a 2 punti vendita / marchi</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Misuri le pubblicità Facebook e Google</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Supporto WhatsApp prioritario</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> 1h di avvio insieme a un nostro tecnico</li>
         </ul>
         <a href="#contatti" class="block text-center px-6 py-3 rounded-full font-bold text-sm bg-white text-[#143d5c] hover:bg-[#f5f3ee] transition">Voglio il PRO</a>
       </div>
@@ -602,14 +693,14 @@
           <p class="text-xs text-[#143d5c]/50 mt-1">annuale · <span class="text-[#D4998D]">€ 477/mese sul mensile</span></p>
         </div>
         <ul class="space-y-2 text-sm text-[#143d5c]/75 mb-8">
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> <strong>Tutto di PRO</strong></li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Fino a <strong>5 sub-account</strong> (multi-brand/rivendita)</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> White-label <strong>dominio custom</strong></li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Call strategica mensile con senior</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> <strong>Setup 1-to-1 completo incluso</strong></li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Reportistica custom dashboard</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> SLA risposta 4h</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> 2 sessioni formazione team (90' cad.)</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> <strong>Tutto del PRO</strong></li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Fino a <strong>5 attività separate</strong> (brand diversi, punti vendita, franchising)</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> La piattaforma gira sul <strong>tuo dominio</strong></li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> 1 call al mese con un nostro esperto</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> <strong>Avvio completo fatto da noi</strong></li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Report personalizzati sulla tua attività</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Ti rispondiamo entro 4 ore (garantito)</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> 2 sessioni di formazione per il tuo team (90' ciascuna)</li>
         </ul>
         <a href="#contatti" class="btn-primary block text-center px-6 py-3 rounded-full font-semibold text-sm">Parliamone</a>
       </div>
@@ -627,23 +718,23 @@
             Hai il noleggio.<br>Ti serve anche <span class="text-[#D4998D]">l'autista</span>?
           </h3>
           <p class="text-white/85 text-lg leading-relaxed mb-4">
-            <strong>AILIV FACCIAMO NOI</strong> — tu non tocchi la piattaforma. La usiamo noi per conto tuo.
+            <strong>AILIV FACCIAMO NOI</strong> — tu non tocchi la piattaforma. La guidiamo noi per conto tuo.
           </p>
           <p class="text-white/75 leading-relaxed">
-            Campagne Meta/Google gestite. Email e WhatsApp scritti e schedulati. Chatbot AI custom sul tuo brand. Sito e funnel costruiti e mantenuti. Automazioni complesse. Integrazioni API verso il tuo gestionale. <strong>Account manager dedicato.</strong>
+            Pubblicità su Facebook e Google. Email e WhatsApp scritti da noi al momento giusto. Assistente AI su misura per il tuo business. Sito e pagine offerta costruiti e mantenuti. <strong>Una persona del nostro team dedicata a te.</strong>
           </p>
         </div>
         <div class="bg-white/10 rounded-2xl p-6 backdrop-blur">
           <p class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-3">Pacchetto include</p>
           <ul class="space-y-2 text-sm text-white/90 mb-6">
-            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Piano Ailiv (PRO o ELITE)</li>
-            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Campagne Meta + Google gestite</li>
-            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Email + WhatsApp scritti da noi</li>
-            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Chatbot AI custom sviluppato</li>
-            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Sito + funnel costruiti e mantenuti</li>
-            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Integrazioni API custom</li>
-            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Report mensile + call strategica</li>
-            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Account manager dedicato</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Un piano Ailiv (PRO o ELITE)</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Pubblicità Facebook + Google gestite</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Email e WhatsApp scritti da noi</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Assistente AI sul tuo business</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Sito e pagine di vendita mantenuti</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Collegamenti al tuo gestionale</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Report mensile + call con te</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Una persona dedicata solo a te</li>
           </ul>
           <a href="#contatti" class="btn-coral block text-center px-6 py-3 rounded-full font-bold text-sm">Raccontaci cosa fai →</a>
         </div>
@@ -751,7 +842,7 @@
           <span class="font-semibold text-lg">Posso migrare i miei contatti attuali?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Sì. Supportiamo import da CSV, Excel, Mailchimp, ActiveCampaign, HubSpot, Pipedrive, Klaviyo, Brevo e altri. Su PRO ed ELITE la migrazione è inclusa. Su LITE è inclusa per contatti puri (CSV); se parti da un altro gestionale complesso ti quotiamo la migrazione.</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Sì. Partiamo dal tuo elenco attuale (file Excel, CSV, export dai programmi che già usi) e portiamo tutto dentro Ailiv. Su PRO ed ELITE la migrazione è inclusa. Su LITE è gratis se hai un semplice elenco in Excel; se parti da un gestionale complesso ti facciamo un preventivo chiaro per la migrazione.</p>
       </details>
 
       <details class="card rounded-xl p-5 cursor-pointer">
@@ -759,7 +850,7 @@
           <span class="font-semibold text-lg">Cosa succede ai miei dati se vado via?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Sono tuoi. Puoi esportare contatti, conversazioni, automazioni (struttura), form risposte in CSV/JSON in qualunque momento. Nessun lock-in, nessun riscatto dei dati.</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Sono tuoi. Puoi scaricarti tutto (clienti, conversazioni, vendite) in un file in qualunque momento. Nessuno li tiene "in ostaggio". Se decidi di andartene, te li porti via.</p>
       </details>
 
       <details class="card rounded-xl p-5 cursor-pointer">
@@ -767,7 +858,7 @@
           <span class="font-semibold text-lg">SMS e WhatsApp sono davvero illimitati?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Onestà: gli invii sul nostro lato sono illimitati (non c'è fair use). Ma SMS e WhatsApp hanno un costo **teleco** che paga chi li usa al mondo (circa 3–5 cent per SMS in Italia, costo variabile WhatsApp per categoria messaggio). È il costo dei provider, non un nostro margine. Ti mostriamo in dashboard quanto stai spendendo in tempo reale.</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Diciamolo chiaro: noi non ti facciamo pagare gli invii. Ma SMS e WhatsApp hanno un piccolo costo dei gestori telefonici (circa 3–5 cent per SMS in Italia, pochi cent per WhatsApp). Lo paghi solo al consumo effettivo. Vedi in diretta quanto stai spendendo — nessuna sorpresa.</p>
       </details>
 
       <details class="card rounded-xl p-5 cursor-pointer">
@@ -783,7 +874,7 @@
           <span class="font-semibold text-lg">Perché dovrei scegliere voi invece di Squadd / Delera / HubSpot?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Se ti serve **solo la piattaforma**, siamo in linea di prezzo con i competitor italiani — la scelta la fai sul supporto e sul fit. La vera differenza Ailiv è il **back-end "Facciamo Noi"**: gli altri ti danno gli strumenti e ti lasciano lì. Noi possiamo anche **usare gli strumenti al posto tuo**: campagne, chatbot custom, automazioni complesse, integrazioni API sul tuo gestionale. Nessuno degli altri fa questo a questo livello tecnico.</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Se vuoi solo la piattaforma, siamo in linea di prezzo — la scelta la fai sul supporto e sul fit. La differenza Ailiv arriva quando <strong>non vuoi essere tu a usare la piattaforma</strong>: col pacchetto "Facciamo Noi" la guidiamo noi per conto tuo (campagne pubblicitarie, scrittura email, chatbot su misura, collegamenti al tuo gestionale). Gli altri ti danno lo strumento e ti lasciano lì. Noi possiamo fare anche quello.</p>
       </details>
 
       <details class="card rounded-xl p-5 cursor-pointer">
