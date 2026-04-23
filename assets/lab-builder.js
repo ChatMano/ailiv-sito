@@ -365,10 +365,19 @@ function renderResult() {
   }
 }
 
-// Chiudi con ESC o click fuori
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && document.getElementById('labModal').classList.contains('active')) closeLab();
-});
-document.getElementById('labModal').addEventListener('click', (e) => {
-  if (e.target.id === 'labModal') closeLab();
-});
+// Chiudi con ESC o click fuori (con guard sul DOM)
+function initLabListeners() {
+  const modal = document.getElementById('labModal');
+  if (!modal) return;
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) closeLab();
+  });
+  modal.addEventListener('click', (e) => {
+    if (e.target.id === 'labModal') closeLab();
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLabListeners);
+} else {
+  initLabListeners();
+}
