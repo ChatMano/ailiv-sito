@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" width="600" height="340" role="img" aria-label="Ailiv — Consulenza e Ottimizzazione AI">
+  <defs>
+    <style type="text/css"><![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=Inter:wght@500;600&amp;display=swap');
+      .main { font-family: 'Archivo Black', 'Arial Black', sans-serif; font-weight: 900; fill: #143d5c; }
+      .sub  { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; font-weight: 600; fill: #143d5c; opacity: 0.6; letter-spacing: 0.08em; }
+    ]]></style>
+  </defs>
+
+  <!-- Curved AI swash: starts inside A, arcs through first I (stylized monogram element) -->
+  <path d="M 112 198 C 180 240, 240 150, 288 90"
+        stroke="#143d5c" stroke-width="18" fill="none" stroke-linecap="round"/>
+
+  <!-- AILIV wordmark -->
+  <text x="300" y="218" class="main" font-size="200" text-anchor="middle" letter-spacing="-6">AILIV</text>
+
+  <!-- Divider -->
+  <line x1="90" y1="258" x2="510" y2="258" stroke="#143d5c" stroke-width="1" opacity="0.2"/>
+
+  <!-- Subtitle -->
+  <text x="300" y="298" class="sub" font-size="22" text-anchor="middle">CONSULENZA E OTTIMIZZAZIONE AI</text>
+</svg>
