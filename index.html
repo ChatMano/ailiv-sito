@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ailiv — Ti portiamo l'AI in azienda. Senza sbatti.</title>
-<meta name="description" content="Ailiv è l'agenzia italiana di consulenza AI per PMI. Marketing automatizzato, controllo di gestione, consulenza strategica e CRM in white label. Sistemi chiavi in mano — facciamo tutto noi.">
-<meta name="keywords" content="agenzia AI Italia, consulenza intelligenza artificiale PMI, automazione marketing PMI, controllo di gestione AI, CRM white label, AI Act PMI, chatbot PMI, Ailiv">
-<meta property="og:title" content="Ailiv — Ti portiamo l'AI in azienda. Senza sbatti.">
-<meta property="og:description" content="Sistemi AI chiavi in mano per PMI italiane. Marketing, gestione, consulenza. Facciamo tutto noi.">
+<title>Ailiv — Il quartier generale digitale delle PMI italiane</title>
+<meta name="description" content="Ailiv è il gestionale tutto-in-uno che fa girare il tuo business: clienti, email, WhatsApp, siti, funnel, chatbot AI, automazioni. Canone fisso, illimitato, supporto italiano. Da €97/mese.">
+<meta name="keywords" content="gestionale PMI, piattaforma tutto in uno PMI, marketing automation italiano, gestionale clienti, automazioni PMI, CRM PMI Italia, Ailiv">
+<meta property="og:title" content="Ailiv — Il quartier generale digitale delle PMI italiane">
+<meta property="og:description" content="Clienti, marketing, AI, WhatsApp, siti e automazioni. Tutto in un posto. Canone fisso da €97/mese.">
 <meta property="og:image" content="https://ailiv.it/assets/logo-ailiv.png">
 <meta property="og:url" content="https://ailiv.it">
 <meta property="og:type" content="website">
@@ -28,6 +28,8 @@
     --coral: #D4998D;
     --coral-light: #E5B4A8;
     --coral-dark: #B5776A;
+    --danger: #dc2626;
+    --success: #16a34a;
   }
   * { -webkit-font-smoothing: antialiased; }
   html { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
@@ -66,7 +68,7 @@
   .nav-blur {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    background: rgba(250,250,247,0.8);
+    background: rgba(250,250,247,0.85);
     border-bottom: 1px solid rgba(20,61,92,0.06);
   }
 
@@ -89,31 +91,57 @@
     letter-spacing: -0.03em;
   }
 
-  .stat-number { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
-
   .accent-line { width: 48px; height: 3px; background: var(--gold); display: inline-block; vertical-align: middle; margin-right: 12px; }
   .accent-line-coral { background: var(--coral); }
 
+  /* Feature grid */
+  .feature-item {
+    background: #fff; border: 1px solid rgba(20,61,92,0.08);
+    border-radius: 14px; padding: 1.25rem; transition: all .25s;
+  }
+  .feature-item:hover { border-color: var(--coral); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(20,61,92,0.08); }
+
+  /* Compare table */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid rgba(20,61,92,0.08);
+    padding: 1rem 1.25rem;
+    align-items: center;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row .val { font-weight: 600; text-align: center; font-size: .9rem; }
+  .compare-row .val.no { color: var(--danger); }
+  .compare-row .val.yes { color: var(--success); }
+  @media (max-width: 640px) {
+    .compare-row { grid-template-columns: 1fr; gap: .5rem; padding: 1rem; }
+    .compare-row .val { text-align: left; }
+    .compare-row .val.no::before { content: "Senza Ailiv: "; color: rgba(20,61,92,0.5); font-weight: 500; font-size: .8rem; }
+    .compare-row .val.yes::before { content: "Con Ailiv: "; color: rgba(20,61,92,0.5); font-weight: 500; font-size: .8rem; }
+  }
+
+  /* Benefit card */
+  .benefit-card {
+    background: #fff; border-left: 4px solid var(--coral);
+    border-radius: 0 14px 14px 0;
+    padding: 1.5rem 1.75rem;
+    transition: all .25s;
+  }
+  .benefit-card:hover { border-left-color: var(--navy); transform: translateX(4px); }
+
+  /* Lab section */
   .lab-section {
     background:
-      radial-gradient(circle at 20% 30%, rgba(212,153,141,0.12) 0%, transparent 50%),
+      radial-gradient(circle at 20% 30%, rgba(212,153,141,0.14) 0%, transparent 50%),
       radial-gradient(circle at 80% 70%, rgba(42,111,163,0.08) 0%, transparent 50%),
       #fff;
     position: relative;
   }
-  .lab-card {
-    background: #fff;
-    border: 2px solid rgba(212,153,141,0.25);
-    border-radius: 24px;
-    transition: all .3s;
-    cursor: pointer;
-  }
-  .lab-card:hover { border-color: var(--coral); transform: translateY(-6px); box-shadow: 0 25px 60px rgba(212,153,141,0.25); }
-
   .lab-badge {
     display: inline-flex; align-items: center; gap: .5rem;
     padding: .4rem 1rem; border-radius: 9999px;
-    background: rgba(212,153,141,0.12);
+    background: rgba(212,153,141,0.15);
     color: var(--coral-dark);
     font-weight: 700; font-size: .75rem;
     letter-spacing: 0.15em; text-transform: uppercase;
@@ -122,10 +150,8 @@
   .lab-modal-bg {
     position: fixed; inset: 0; z-index: 100;
     background: rgba(14,44,67,0.75);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    display: none;
-    align-items: flex-start; justify-content: center;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    display: none; align-items: flex-start; justify-content: center;
     overflow-y: auto; padding: 2rem 1rem;
   }
   .lab-modal-bg.active { display: flex; }
@@ -149,48 +175,43 @@
   .lab-close:hover { background: var(--navy); color: #fff; }
 
   .quiz-option {
-    border: 2px solid rgba(20,61,92,0.1);
-    border-radius: 16px;
-    padding: 1.1rem 1.25rem;
-    cursor: pointer;
-    transition: all .2s;
-    background: #fff;
-    text-align: left;
-    width: 100%;
+    border: 2px solid rgba(20,61,92,0.1); border-radius: 16px;
+    padding: 1.1rem 1.25rem; cursor: pointer; transition: all .2s;
+    background: #fff; text-align: left; width: 100%;
     display: flex; align-items: flex-start; gap: 1rem;
   }
   .quiz-option:hover { border-color: var(--coral); background: rgba(212,153,141,0.04); transform: translateX(4px); }
   .quiz-option.selected { border-color: var(--coral); background: rgba(212,153,141,0.08); box-shadow: 0 10px 30px rgba(212,153,141,0.2); }
 
-  .progress-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: rgba(20,61,92,0.15);
-    transition: all .3s;
-  }
+  .progress-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(20,61,92,0.15); transition: all .3s; }
   .progress-dot.done { background: var(--coral); }
   .progress-dot.active { background: var(--navy); transform: scale(1.4); }
 
   .timeline-step {
-    flex: 1; text-align: center;
-    padding: .75rem .5rem;
+    flex: 1; text-align: center; padding: .75rem .5rem;
     border-radius: 12px;
     background: rgba(20,61,92,0.04);
-    border: 1px dashed rgba(20,61,92,0.15);
-    min-width: 0;
+    border: 1px dashed rgba(20,61,92,0.15); min-width: 0;
   }
-  .timeline-step.filled {
-    background: rgba(212,153,141,0.12);
-    border: 1px solid var(--coral);
-  }
+  .timeline-step.filled { background: rgba(212,153,141,0.12); border: 1px solid var(--coral); }
   .timeline-step .label { font-size: .65rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(20,61,92,0.5); font-weight: 700; }
   .timeline-step .value { font-size: .8rem; color: var(--navy); font-weight: 600; margin-top: .25rem; min-height: 1.2rem; }
 
+  /* Pricing */
+  .price-card.featured {
+    background: var(--navy); color: #fff; transform: scale(1.04);
+    box-shadow: 0 30px 80px rgba(20,61,92,0.3);
+  }
+  .price-card.featured .price-title, .price-card.featured .price-value { color: #fff; }
+  .price-card.featured .price-feature { color: rgba(255,255,255,0.9); }
+
+  /* FAQ */
   details[open] summary svg { transform: rotate(45deg); }
   summary svg { transition: transform .3s; }
   summary::-webkit-details-marker { display: none; }
 
   .hero-proof {
-    background: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.55);
     border: 1px solid rgba(20,61,92,0.08);
     backdrop-filter: blur(10px);
   }
@@ -200,18 +221,18 @@
 
 <!-- ============ NAV ============ -->
 <nav class="fixed top-0 left-0 right-0 z-50 nav-blur">
-  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+  <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
     <a href="#" class="flex items-center">
       <img src="assets/logo-ailiv.png" alt="Ailiv — Consulenza e ottimizzazione AI" class="h-10 md:h-12 w-auto">
     </a>
     <div class="hidden md:flex gap-7 text-sm font-medium text-[#143d5c]/80">
-      <a href="#servizi" class="hover:text-[#143d5c] transition">Servizi</a>
+      <a href="#cosa" class="hover:text-[#143d5c] transition">Cosa include</a>
       <a href="#lab" class="hover:text-[#D4998D] transition">🧪 Lab</a>
-      <a href="#crm" class="hover:text-[#143d5c] transition">CRM</a>
+      <a href="#benefici" class="hover:text-[#143d5c] transition">Benefici</a>
+      <a href="#piani" class="hover:text-[#143d5c] transition">Piani</a>
       <a href="#lavori" class="hover:text-[#143d5c] transition">Casi</a>
-      <a href="#pricing" class="hover:text-[#143d5c] transition">Pricing</a>
     </div>
-    <a href="#contatti" class="btn-primary text-sm px-5 py-2.5 rounded-full font-semibold hidden sm:inline-block">Check-up gratuito</a>
+    <a href="#contatti" class="btn-primary text-sm px-5 py-2.5 rounded-full font-semibold hidden sm:inline-block">Parliamone</a>
   </div>
 </nav>
 
@@ -224,30 +245,28 @@
     <div class="max-w-4xl">
       <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#143d5c]/15 bg-white/80 backdrop-blur text-xs font-semibold text-[#143d5c] mb-8 reveal visible">
         <span class="w-2 h-2 rounded-full bg-green-500 dot"></span>
-        CONSULENZA &amp; SISTEMI AI · PER PMI ITALIANE
+        IL GESTIONALE TUTTO-IN-UNO · PMI ITALIANE
       </div>
 
       <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.95] mb-6 headline reveal visible">
-        Ti portiamo l'AI<br>in azienda.<br>
-        <span class="headline-coral">Senza sbatti.</span>
+        Paghi 10 software.<br>
+        <span class="headline-coral">Nessuno vende<br>al posto tuo.</span>
       </h1>
 
-      <p class="text-xl md:text-2xl text-[#143d5c]/75 max-w-2xl mb-4 leading-relaxed reveal visible">
-        Marketing automatizzato. Controllo di gestione. Consulenza strategica.<br class="hidden md:block">
-        <strong>Facciamo tutto noi. Tu ricevi i risultati.</strong>
+      <p class="text-xl md:text-2xl text-[#143d5c]/80 max-w-2xl mb-4 leading-relaxed reveal visible">
+        <strong>Basta.</strong> Con Ailiv gestisci clienti, marketing, chatbot AI, WhatsApp, siti, funnel e automazioni — <strong>tutto in un posto, a canone fisso</strong>.
       </p>
 
-      <p class="text-base md:text-lg text-[#143d5c]/55 max-w-2xl mb-10 leading-relaxed reveal visible">
-        Niente corsi. Niente "ti affianchiamo". Niente slide.<br>
-        Costruiamo il sistema AI del tuo business, lo mettiamo in produzione, lo manteniamo — e ti mandiamo il report ogni mattina.
+      <p class="text-base md:text-lg text-[#143d5c]/60 max-w-2xl mb-10 leading-relaxed reveal visible">
+        Un solo strumento al posto di 10. Una sola bolletta al mese. Il supporto in italiano via WhatsApp. E se non hai tempo di farlo girare tu, <strong>lo facciamo noi</strong>.
       </p>
 
-      <div class="flex flex-col sm:flex-row gap-4 mb-12 reveal visible">
-        <a href="#lab" class="btn-coral px-8 py-4 rounded-full font-semibold text-center inline-flex items-center justify-center gap-2">
-          🧪 Prova il Lab <span class="text-sm opacity-80">(2 min)</span>
+      <div class="flex flex-col sm:flex-row gap-4 mb-10 reveal visible">
+        <a href="#piani" class="btn-coral px-8 py-4 rounded-full font-semibold text-center inline-flex items-center justify-center gap-2">
+          Vedi i piani (da €97/mese) →
         </a>
-        <a href="#contatti" class="btn-primary px-8 py-4 rounded-full font-semibold text-center">
-          Prenota un check-up gratuito →
+        <a href="#lab" class="btn-ghost px-8 py-4 rounded-full font-semibold text-center inline-flex items-center justify-center gap-2">
+          🧪 Prova il Lab (2 min)
         </a>
       </div>
 
@@ -267,28 +286,210 @@
 <section class="py-20 px-6 bg-[#f5f3ee]">
   <div class="max-w-6xl mx-auto">
     <div class="mb-14 text-center max-w-3xl mx-auto">
-      <p class="text-sm uppercase tracking-widest text-[#D4998D] font-semibold mb-4"><span class="accent-line accent-line-coral"></span>La promessa Ailiv</p>
+      <p class="text-sm uppercase tracking-widest text-[#D4998D] font-semibold mb-4"><span class="accent-line accent-line-coral"></span>Perché Ailiv</p>
       <h2 class="text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]">
-        Tu hai un business da portare avanti.<br>
-        <span class="text-[#143d5c]/50">L'AI la costruiamo noi.</span>
+        Il tuo business su<br>
+        <span class="text-[#143d5c]/50">una sola piattaforma.</span>
       </h2>
     </div>
 
     <div class="grid md:grid-cols-3 gap-6">
       <div class="card rounded-2xl p-8">
-        <div class="w-14 h-14 rounded-2xl bg-[#D4998D]/15 flex items-center justify-center text-3xl mb-5">🛠️</div>
-        <h3 class="text-xl font-bold mb-3">Facciamo tutto noi</h3>
-        <p class="text-[#143d5c]/70 leading-relaxed">Audit, design, sviluppo, deploy, integrazioni, test, formazione team: tutto dentro. Non devi scegliere tool, non devi gestire fornitori.</p>
+        <div class="w-14 h-14 rounded-2xl bg-[#D4998D]/15 flex items-center justify-center text-3xl mb-5">🧩</div>
+        <h3 class="text-xl font-bold mb-3">Tutto in un posto</h3>
+        <p class="text-[#143d5c]/70 leading-relaxed">Clienti, email, WhatsApp, siti, funnel, calendari, pagamenti, chatbot AI. Stop a mille abbonamenti sparsi. Una piattaforma, una fattura, un supporto.</p>
       </div>
       <div class="card rounded-2xl p-8">
-        <div class="w-14 h-14 rounded-2xl bg-[#D4998D]/15 flex items-center justify-center text-3xl mb-5">⚡</div>
-        <h3 class="text-xl font-bold mb-3">Primo risultato in 7 giorni</h3>
-        <p class="text-[#143d5c]/70 leading-relaxed">Dalla call di check-up al primo processo AI attivo: non aspettiamo il progetto triennale. Vediamo qualcosa girare entro una settimana.</p>
+        <div class="w-14 h-14 rounded-2xl bg-[#D4998D]/15 flex items-center justify-center text-3xl mb-5">⚙️</div>
+        <h3 class="text-xl font-bold mb-3">Setup in 7 giorni</h3>
+        <p class="text-[#143d5c]/70 leading-relaxed">Prendi un piano, noi configuriamo tutto sulla tua attività, migriamo i contatti se ne hai, ti diamo le prime automazioni pronte. In una settimana sei operativo.</p>
       </div>
       <div class="card rounded-2xl p-8">
-        <div class="w-14 h-14 rounded-2xl bg-[#D4998D]/15 flex items-center justify-center text-3xl mb-5">📬</div>
-        <h3 class="text-xl font-bold mb-3">Report ogni mattina</h3>
-        <p class="text-[#143d5c]/70 leading-relaxed">Cosa hanno fatto gli agenti AI mentre dormivi. Cassa, ordini, lead nuovi, anomalie. Arriva su WhatsApp o email, alle 8.</p>
+        <div class="w-14 h-14 rounded-2xl bg-[#D4998D]/15 flex items-center justify-center text-3xl mb-5">💬</div>
+        <h3 class="text-xl font-bold mb-3">Supporto italiano live</h3>
+        <p class="text-[#143d5c]/70 leading-relaxed">Ticket no grazie. Ci scrivi su WhatsApp, ti rispondiamo noi. In italiano. In giornata. Nessun "apri un ticket, ti richiamiamo lunedì".</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SENZA vs CON AILIV ============ -->
+<section class="py-24 px-6 bg-white">
+  <div class="max-w-5xl mx-auto">
+    <div class="mb-12 max-w-3xl">
+      <p class="text-sm uppercase tracking-widest text-[#D4998D] font-semibold mb-4"><span class="accent-line accent-line-coral"></span>Il confronto onesto</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+        Quanto stai spendendo <span class="text-[#143d5c]/50">davvero</span> oggi?
+      </h2>
+      <p class="text-lg text-[#143d5c]/65 mt-5">I tool B2B si pagano separati, mese su mese, senza che te ne accorgi. Fai i conti.</p>
+    </div>
+
+    <div class="card rounded-2xl overflow-hidden">
+      <div class="compare-row bg-[#f5f3ee] py-4 font-bold text-xs uppercase tracking-widest text-[#143d5c]/70" style="background:#f5f3ee;">
+        <div>Cosa ti serve</div>
+        <div class="val">Senza Ailiv</div>
+        <div class="val">Con Ailiv PRO</div>
+      </div>
+      <div class="compare-row">
+        <div>📧 <strong>Email marketing illimitato</strong><br><span class="text-xs text-[#143d5c]/50">(Mailchimp, ActiveCampaign, Brevo)</span></div>
+        <div class="val no">50 – 200 €/mese</div>
+        <div class="val yes">✅ Incluso</div>
+      </div>
+      <div class="compare-row">
+        <div>📇 <strong>Database clienti illimitato</strong><br><span class="text-xs text-[#143d5c]/50">(tipo HubSpot, Pipedrive, Zoho)</span></div>
+        <div class="val no">60 – 500 €/mese</div>
+        <div class="val yes">✅ Incluso</div>
+      </div>
+      <div class="compare-row">
+        <div>🗓️ <strong>Calendari e prenotazioni</strong><br><span class="text-xs text-[#143d5c]/50">(Calendly, Acuity)</span></div>
+        <div class="val no">15 €/utente</div>
+        <div class="val yes">✅ Illimitati</div>
+      </div>
+      <div class="compare-row">
+        <div>🌐 <strong>Siti, funnel, landing page</strong><br><span class="text-xs text-[#143d5c]/50">(ClickFunnels, Webflow, Leadpages)</span></div>
+        <div class="val no">97 – 297 €/mese</div>
+        <div class="val yes">✅ Illimitati</div>
+      </div>
+      <div class="compare-row">
+        <div>📱 <strong>WhatsApp marketing ufficiale</strong><br><span class="text-xs text-[#143d5c]/50">(Respond.io, Wati, Zoko)</span></div>
+        <div class="val no">50 – 200 €/mese</div>
+        <div class="val yes">✅ API ufficiale inclusa</div>
+      </div>
+      <div class="compare-row">
+        <div>🤖 <strong>Chatbot AI & conversational</strong><br><span class="text-xs text-[#143d5c]/50">(Intercom, Drift, ManyChat Pro)</span></div>
+        <div class="val no">50 – 500 €/mese</div>
+        <div class="val yes">✅ Incluso</div>
+      </div>
+      <div class="compare-row">
+        <div>⭐ <strong>Richiesta recensioni automatica</strong><br><span class="text-xs text-[#143d5c]/50">(Birdeye, Podium, Trustpilot Pro)</span></div>
+        <div class="val no">99 – 299 €/mese</div>
+        <div class="val yes">✅ Incluso</div>
+      </div>
+      <div class="compare-row">
+        <div>🎓 <strong>Area membri + corsi online</strong><br><span class="text-xs text-[#143d5c]/50">(Kajabi, Thinkific, Teachable)</span></div>
+        <div class="val no">99 – 399 €/mese</div>
+        <div class="val yes">✅ Illimitati</div>
+      </div>
+      <div class="compare-row">
+        <div>📲 <strong>App mobile brandizzata</strong><br><span class="text-xs text-[#143d5c]/50">(Sviluppatore iOS/Android)</span></div>
+        <div class="val no">500 – 3.000 € setup + canone</div>
+        <div class="val yes">✅ Inclusa (white-label)</div>
+      </div>
+      <div class="compare-row">
+        <div>💳 <strong>Pagamenti, fatture, subscription</strong><br><span class="text-xs text-[#143d5c]/50">(Stripe Billing, SamCart)</span></div>
+        <div class="val no">29 – 99 €/mese</div>
+        <div class="val yes">✅ Incluso</div>
+      </div>
+      <div class="compare-row" style="background:#fafaf7;">
+        <div class="font-bold">💰 TOTALE MENSILE</div>
+        <div class="val no text-lg">1.049 – 5.507 €/mese</div>
+        <div class="val yes text-lg">da 97 €/mese</div>
+      </div>
+    </div>
+
+    <div class="mt-8 bg-[#143d5c] text-white rounded-2xl p-6 md:p-8 text-center">
+      <p class="text-lg md:text-xl font-semibold leading-snug mb-2">
+        E a tutto questo si aggiungono le ore perse a sincronizzare i tool, il tempo delle persone a copiare dati da un software all'altro, e lo stress quando qualcosa non parla con qualcos'altro.
+      </p>
+      <p class="text-white/70 text-sm">Con Ailiv: <strong>una piattaforma, una bolletta, un supporto</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COSA INCLUDE — FEATURE GRID ============ -->
+<section id="cosa" class="py-24 px-6 bg-[#f5f3ee]">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-14 max-w-3xl">
+      <p class="text-sm uppercase tracking-widest text-[#143d5c]/50 font-semibold mb-4"><span class="accent-line"></span>Cosa include Ailiv</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+        Tutto quello che serve<br>
+        <span class="text-[#143d5c]/50">per far girare il business.</span>
+      </h2>
+      <p class="text-lg text-[#143d5c]/65 mt-5">Oltre 80 funzionalità attive dal giorno 1. Qui le principali — quelle che usi davvero.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="feature-item"><div class="text-2xl mb-2">📇</div><h4 class="font-bold mb-1 text-sm">Rubrica clienti intelligente</h4><p class="text-xs text-[#143d5c]/65">Contatti illimitati, etichette, storico conversazioni, note.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">💬</div><h4 class="font-bold mb-1 text-sm">Bacheca conversazioni</h4><p class="text-xs text-[#143d5c]/65">Email, SMS, WhatsApp, DM IG/FB, Google Business in un posto.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📧</div><h4 class="font-bold mb-1 text-sm">Email marketing</h4><p class="text-xs text-[#143d5c]/65">Editor drag-drop, template, invii illimitati, A/B test.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📱</div><h4 class="font-bold mb-1 text-sm">SMS & WhatsApp</h4><p class="text-xs text-[#143d5c]/65">Campagne, 1-to-1, automazioni. API WhatsApp ufficiale (PRO+).</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🌐</div><h4 class="font-bold mb-1 text-sm">Sito, funnel, landing</h4><p class="text-xs text-[#143d5c]/65">Builder drag-drop, hosting + SSL, dominio custom.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🗓️</div><h4 class="font-bold mb-1 text-sm">Calendari smart</h4><p class="text-xs text-[#143d5c]/65">Prenotazioni, sync Google/Outlook, reminder automatici.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🎯</div><h4 class="font-bold mb-1 text-sm">Pipeline vendite</h4><p class="text-xs text-[#143d5c]/65">Opportunità, stage, previsioni. Niente trattativa persa.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🤖</div><h4 class="font-bold mb-1 text-sm">Chatbot AI</h4><p class="text-xs text-[#143d5c]/65">Risponde 24/7 su sito e WhatsApp. Qualifica i lead.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">⭐</div><h4 class="font-bold mb-1 text-sm">Recensioni automatiche</h4><p class="text-xs text-[#143d5c]/65">Richiesta post-vendita, risposta AI, dashboard rating.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">⚙️</div><h4 class="font-bold mb-1 text-sm">Automazioni illimitate</h4><p class="text-xs text-[#143d5c]/65">Se-questo-allora-quello. Drag-drop. Zero codice.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">💳</div><h4 class="font-bold mb-1 text-sm">E-commerce & pagamenti</h4><p class="text-xs text-[#143d5c]/65">Catalogo, carrello, Stripe, subscription, fatture.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📝</div><h4 class="font-bold mb-1 text-sm">Form e sondaggi</h4><p class="text-xs text-[#143d5c]/65">Embeddabili ovunque, logica condizionale, salvati in rubrica.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🎓</div><h4 class="font-bold mb-1 text-sm">Area membri + corsi</h4><p class="text-xs text-[#143d5c]/65">Vendi corsi video, abbonamenti, contenuti riservati.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📲</div><h4 class="font-bold mb-1 text-sm">App mobile brandizzata</h4><p class="text-xs text-[#143d5c]/65">iOS + Android con il tuo logo (disponibile PRO+).</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📣</div><h4 class="font-bold mb-1 text-sm">Social planner</h4><p class="text-xs text-[#143d5c]/65">Pubblica su FB, IG, LinkedIn, Google Business da un solo posto.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">📊</div><h4 class="font-bold mb-1 text-sm">Dashboard & report</h4><p class="text-xs text-[#143d5c]/65">KPI chiari, ads reporting, conversion tracking.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🔌</div><h4 class="font-bold mb-1 text-sm">70+ integrazioni native</h4><p class="text-xs text-[#143d5c]/65">Zapier, Make, Stripe, Shopify, WooCommerce, Meta, Google.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">👥</div><h4 class="font-bold mb-1 text-sm">Utenti illimitati</h4><p class="text-xs text-[#143d5c]/65">Permessi granulari per ruolo, team management.</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🗣️</div><h4 class="font-bold mb-1 text-sm">Voice AI</h4><p class="text-xs text-[#143d5c]/65">Agente AI che risponde alle chiamate in entrata (PRO+).</p></div>
+      <div class="feature-item"><div class="text-2xl mb-2">🏢</div><h4 class="font-bold mb-1 text-sm">Multi-sede / multi-brand</h4><p class="text-xs text-[#143d5c]/65">Gestisci più punti vendita o brand separati (PRO+).</p></div>
+    </div>
+
+    <p class="text-center text-sm text-[#143d5c]/50 mt-8">
+      🔒 Dati in Europa · 🇮🇹 Interfaccia in italiano · 📲 App desktop + mobile · ⚡ Aggiornamenti continui
+    </p>
+  </div>
+</section>
+
+<!-- ============ 9 BENEFICI CONCRETI ============ -->
+<section id="benefici" class="py-24 px-6 bg-[#143d5c] text-white relative overflow-hidden">
+  <div class="blob w-[600px] h-[600px] top-0 right-0 bg-[#D4998D] opacity-20"></div>
+  <div class="blob w-[500px] h-[500px] bottom-0 left-0 bg-[#2a6fa3] opacity-30"></div>
+
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="mb-14 max-w-3xl">
+      <p class="text-sm uppercase tracking-widest text-[#D4998D] font-semibold mb-4"><span class="accent-line accent-line-coral"></span>Quello che cambia davvero</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-6">
+        Non promettiamo<br>
+        <span class="text-[#D4998D]">percentuali strappate.</span>
+      </h2>
+      <p class="text-xl text-white/80 leading-relaxed">
+        Promettiamo 9 cose concrete che succedono quando il tuo business gira su Ailiv. Il fatturato lo fai tu. Noi ti togliamo gli attriti.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="benefit-card">
+        <h3 class="font-bold text-[#143d5c] mb-2 text-lg">01. Nessun lead si perde più</h3>
+        <p class="text-[#143d5c]/75 text-sm leading-relaxed">Ogni opt-in riceve un messaggio di benvenuto entro 30 secondi. Chi non risponde, riceve un follow-up il giorno dopo, il terzo, il settimo. In automatico. Senza che tu ci pensi.</p>
+      </div>
+      <div class="benefit-card">
+        <h3 class="font-bold text-[#143d5c] mb-2 text-lg">02. Le recensioni Google arrivano da sole</h3>
+        <p class="text-[#143d5c]/75 text-sm leading-relaxed">Dopo ogni vendita o appuntamento parte il messaggio con il link diretto alla recensione. Se è negativa, la intercetti in privato prima che finisca pubblica.</p>
+      </div>
+      <div class="benefit-card">
+        <h3 class="font-bold text-[#143d5c] mb-2 text-lg">03. Gli appuntamenti non si dimenticano</h3>
+        <p class="text-[#143d5c]/75 text-sm leading-relaxed">Promemoria automatici al cliente (email + SMS + WhatsApp, ore X prima). Meno no-show, più agenda piena, più incasso.</p>
+      </div>
+      <div class="benefit-card">
+        <h3 class="font-bold text-[#143d5c] mb-2 text-lg">04. I compleanni diventano vendite</h3>
+        <p class="text-[#143d5c]/75 text-sm leading-relaxed">Il giorno del compleanno parte un'offerta dedicata. Chi è fermo da 60 giorni riceve una promo di riattivazione. Tutto già scritto, tutto già programmato.</p>
+      </div>
+      <div class="benefit-card">
+        <h3 class="font-bold text-[#143d5c] mb-2 text-lg">05. "Chi ha parlato con questo cliente?" — non lo chiedi più</h3>
+        <p class="text-[#143d5c]/75 text-sm leading-relaxed">Email, WhatsApp, DM Instagram, Google Business, SMS: tutto in un'unica bacheca, tutto lo storico del cliente sotto al suo nome.</p>
+      </div>
+      <div class="benefit-card">
+        <h3 class="font-bold text-[#143d5c] mb-2 text-lg">06. Smetti di pagare 10 software diversi</h3>
+        <p class="text-[#143d5c]/75 text-sm leading-relaxed">Email marketing, gestionale clienti, calendari, WhatsApp, sito, funnel, area corsi: oggi ti costano 300–1.500 €/mese. Con Ailiv è uno solo.</p>
+      </div>
+      <div class="benefit-card">
+        <h3 class="font-bold text-[#143d5c] mb-2 text-lg">07. Il tuo team lavora meno a mano</h3>
+        <p class="text-[#143d5c]/75 text-sm leading-relaxed">Invio promemoria, richiesta recensioni, welcome nuovo cliente, follow-up: tutto gira da solo. Le persone fanno le cose che contano davvero.</p>
+      </div>
+      <div class="benefit-card">
+        <h3 class="font-bold text-[#143d5c] mb-2 text-lg">08. Sai cosa sta succedendo, in tempo reale</h3>
+        <p class="text-[#143d5c]/75 text-sm leading-relaxed">Dashboard KPI chiara: lead nuovi, trattative aperte, conversione, fatturato del giorno. Niente più Excel da incrociare, niente più "ti rispondo a fine mese".</p>
+      </div>
+      <div class="benefit-card md:col-span-2">
+        <h3 class="font-bold text-[#143d5c] mb-2 text-lg">09. La chat coi clienti ti segue ovunque</h3>
+        <p class="text-[#143d5c]/75 text-sm leading-relaxed">App mobile brandizzata (iOS + Android): rispondi a un WhatsApp del cliente mentre sei in fila al bar. Il cliente vede la conversazione ordinata, tu pure. Anche quando sei fuori sede.</p>
       </div>
     </div>
   </div>
@@ -297,45 +498,23 @@
 <!-- ============ 🧪 LAB BUILDER ============ -->
 <section id="lab" class="lab-section py-24 px-6 overflow-hidden relative">
   <div class="blob w-[500px] h-[500px] top-10 right-0 bg-[#D4998D] opacity-20"></div>
-  <div class="max-w-6xl mx-auto relative z-10">
-    <div class="text-center mb-14 max-w-3xl mx-auto">
+  <div class="max-w-5xl mx-auto relative z-10">
+    <div class="text-center mb-12 max-w-3xl mx-auto">
       <span class="lab-badge mb-6">🧪 Il Laboratorio Ailiv</span>
       <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mt-4 mb-6">
-        Metti alla prova<br>il tuo business.
+        Scopri la tua<br>prima automazione.
       </h2>
       <p class="text-lg md:text-xl text-[#143d5c]/70 leading-relaxed">
-        3 diagnosi rapide per capire dove l'AI fa la differenza sul tuo business <strong>prima di spendere un euro</strong>.<br>
-        Rispondi a 3 domande. Ti facciamo vedere cosa costruiremmo.
+        3 domande. 2 minuti. Ti diciamo <strong>quale processo</strong> nel tuo business gira in automatico per primo — e <strong>cosa serve</strong> per farlo partire.
       </p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-6">
-      <div class="lab-card p-8" onclick="openLab('automazione')">
-        <div class="text-5xl mb-5">🤖</div>
-        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2 block">Quiz · Automazione</span>
-        <h3 class="text-2xl font-bold mb-3">Costruisci la tua prima automazione AI</h3>
-        <p class="text-[#143d5c]/65 text-sm leading-relaxed mb-5">Scopri quale processo automatizzare per primo nel tuo business. 3 domande, strategia chiavi in mano in uscita.</p>
-        <span class="inline-flex items-center gap-2 text-[#D4998D] font-semibold text-sm">Inizia il quiz <span>→</span></span>
-      </div>
-
-      <div class="lab-card p-8" onclick="openLab('aiact')">
-        <div class="text-5xl mb-5">⚖️</div>
-        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2 block">Quiz · Compliance</span>
-        <h3 class="text-2xl font-bold mb-3">AI Act: sei in regola?</h3>
-        <p class="text-[#143d5c]/65 text-sm leading-relaxed mb-5">Dal 2 febbraio 2025 c'è l'obbligo di AI literacy. Scopri il tuo livello di rischio in 3 domande: verde, giallo o rosso.</p>
-        <span class="inline-flex items-center gap-2 text-[#D4998D] font-semibold text-sm">Inizia il quiz <span>→</span></span>
-      </div>
-
-      <div class="lab-card p-8" onclick="openLab('shadow')">
-        <div class="text-5xl mb-5">🕳️</div>
-        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2 block">Quiz · Diagnosi</span>
-        <h3 class="text-2xl font-bold mb-3">Shadow AI: quanto sei esposto?</h3>
-        <p class="text-[#143d5c]/65 text-sm leading-relaxed mb-5">Il 74% delle PMI italiane usa AI "fuori controllo". Scopri quanto dei tuoi dati sta già passando da ChatGPT personale.</p>
-        <span class="inline-flex items-center gap-2 text-[#D4998D] font-semibold text-sm">Inizia il quiz <span>→</span></span>
-      </div>
+    <div class="text-center">
+      <button onclick="openLab('automazione')" class="btn-coral px-10 py-5 rounded-full font-bold text-lg inline-flex items-center gap-3">
+        🧪 Avvia il quiz <span>→</span>
+      </button>
+      <p class="text-sm text-[#143d5c]/50 mt-5">Nessuna email richiesta per fare il test · Risultati subito</p>
     </div>
-
-    <p class="text-center text-sm text-[#143d5c]/50 mt-10">⏱ 2 minuti · nessuna email richiesta per fare il test · risultati subito</p>
   </div>
 </section>
 
@@ -347,200 +526,137 @@
   </div>
 </div>
 
-<!-- ============ SERVIZI — 3 PILASTRI ============ -->
-<section id="servizi" class="py-24 px-6">
+<!-- ============ PIANI / PRICING ============ -->
+<section id="piani" class="py-24 px-6 bg-white">
   <div class="max-w-6xl mx-auto">
-    <div class="mb-14 max-w-3xl">
-      <p class="text-sm uppercase tracking-widest text-[#143d5c]/50 font-semibold mb-4"><span class="accent-line"></span>Cosa facciamo</p>
-      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
-        Tre pilastri operativi.<br>
-        <span class="text-[#143d5c]/50">Uno solo lo puoi comprare a pezzi.</span>
+    <div class="mb-14 text-center max-w-3xl mx-auto">
+      <p class="text-sm uppercase tracking-widest text-[#D4998D] font-semibold mb-4"><span class="accent-line accent-line-coral"></span>Piani e pricing</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-4">
+        Ti do le chiavi.<br>
+        <span class="text-[#143d5c]/50">Tu guidi.</span>
       </h2>
-      <p class="text-lg text-[#143d5c]/65 mt-5 max-w-2xl">Quando li prendi tutti e tre, iniziano a parlarsi tra loro. È lì che l'AI smette di essere "uno strumento" e diventa il modo in cui gira la tua azienda.</p>
+      <p class="text-lg text-[#143d5c]/65">Come un noleggio auto: prendi le chiavi e vai. Se invece vuoi anche l'autista, ce l'abbiamo — e te lo costruiamo su misura.</p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-6">
-      <div class="card rounded-2xl p-10 relative overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#D4998D] to-[#143d5c]"></div>
-        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-3 block">01 · Marketing automatizzato</span>
-        <h3 class="text-2xl font-bold mb-4">L'ufficio marketing che non dorme mai</h3>
-        <p class="text-[#143d5c]/70 leading-relaxed mb-5">
-          Lead generation, nurture, ads, chatbot, email, landing. Il tuo funnel lavora 24/7 — e sa a chi parlare, quando, e come.
-        </p>
-        <ul class="text-sm text-[#143d5c]/75 space-y-2 mb-5">
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> Chatbot AI su sito/WhatsApp che qualifica i lead</li>
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> Campagne Meta/Google gestite a performance</li>
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> Email e SMS automatizzati (welcome, carrello, recensioni)</li>
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> Landing, funnel e form integrati al CRM</li>
+    <!-- 3 PIANI FRONT-END -->
+    <div class="grid md:grid-cols-3 gap-5 mb-10">
+      <!-- LITE -->
+      <div class="card rounded-2xl p-8 relative">
+        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold block mb-2">Entry</span>
+        <h3 class="text-3xl font-bold mb-1">AILIV LITE</h3>
+        <p class="text-sm text-[#143d5c]/60 mb-6">Per freelance, studi piccoli, PMI monosede</p>
+        <div class="mb-6">
+          <div class="text-4xl font-bold">€ 97<span class="text-base font-normal text-[#143d5c]/50">/mese</span></div>
+          <p class="text-xs text-[#143d5c]/50 mt-1">annuale · <span class="text-[#D4998D]">€ 119/mese sul mensile</span></p>
+        </div>
+        <ul class="space-y-2 text-sm text-[#143d5c]/75 mb-8">
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Rubrica clienti illimitata</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Email marketing illimitato</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> SMS + WhatsApp marketing</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Siti, funnel, landing illimitati</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Calendari + prenotazioni</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Automazioni illimitate</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Chatbot AI base</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> E-commerce + pagamenti Stripe</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Recensioni automatiche</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Utenti illimitati</li>
+          <li class="flex gap-2 text-[#143d5c]/50"><span>—</span> Setup self-serve guidato</li>
+          <li class="flex gap-2 text-[#143d5c]/50"><span>—</span> Supporto email + videoguide</li>
         </ul>
-        <p class="text-xs text-[#143d5c]/50">Stack: Meta Ads · Google Ads · GoHighLevel · Cloudflare Workers · Claude Agent SDK</p>
+        <a href="#contatti" class="btn-ghost block text-center px-6 py-3 rounded-full font-semibold text-sm">Inizia con LITE</a>
       </div>
 
-      <div class="card rounded-2xl p-10 relative overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#143d5c] to-[#2a6fa3]"></div>
-        <span class="text-xs uppercase tracking-widest text-[#143d5c] font-bold mb-3 block">02 · Controllo di gestione AI</span>
-        <h3 class="text-2xl font-bold mb-4">La cassa ogni mattina, su WhatsApp</h3>
-        <p class="text-[#143d5c]/70 leading-relaxed mb-5">
-          Dashboard che leggono i tuoi dati, alert automatici sulle anomalie, report intelligenti consegnati dove li leggi davvero.
-        </p>
-        <ul class="text-sm text-[#143d5c]/75 space-y-2 mb-5">
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> Report giornaliero cassa, ordini, ritardi, rider</li>
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> Alert anomalie (calo vendite, scorte, rating)</li>
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> Previsioni vendita e margini per periodo</li>
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> Integrazione gestionali, POS, delivery, banche</li>
-        </ul>
-        <p class="text-xs text-[#143d5c]/50">Esempio live: dashboard multi-store real-time con alert WhatsApp</p>
-      </div>
-
-      <div class="card rounded-2xl p-10 relative overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#d4a747] to-[#143d5c]"></div>
-        <span class="text-xs uppercase tracking-widest text-[#d4a747] font-bold mb-3 block">03 · Consulenza strategica</span>
-        <h3 class="text-2xl font-bold mb-4">La roadmap AI del tuo business</h3>
-        <p class="text-[#143d5c]/70 leading-relaxed mb-5">
-          Dove partire. Cosa ignorare. Quanto budget. Quali incentivi. Il gioco lungo — non la moda del mese.
-        </p>
-        <ul class="text-sm text-[#143d5c]/75 space-y-2 mb-5">
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> Audit AI Act e policy di governance</li>
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> Roadmap AI 6–12 mesi con KPI</li>
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> Accesso incentivi Transizione 5.0 e voucher regionali</li>
-          <li class="flex items-start gap-2"><span class="text-[#D4998D]">✓</span> AI literacy team (obbligo di legge dal 2/2/2025)</li>
-        </ul>
-        <p class="text-xs text-[#143d5c]/50">Normativa: AI Act UE · Legge 132/2025 · Transizione 5.0 · GDPR</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CRM WHITE LABEL ============ -->
-<section id="crm" class="py-24 px-6 bg-[#143d5c] text-white relative overflow-hidden">
-  <div class="blob w-[600px] h-[600px] top-0 right-0 bg-[#D4998D] opacity-20"></div>
-  <div class="blob w-[500px] h-[500px] bottom-0 left-0 bg-[#2a6fa3] opacity-30"></div>
-
-  <div class="max-w-6xl mx-auto relative z-10">
-    <div class="grid md:grid-cols-2 gap-10 items-start mb-14">
-      <div>
-        <p class="text-sm uppercase tracking-widest text-[#D4998D] font-semibold mb-4"><span class="accent-line accent-line-coral"></span>Il prodotto ricorrente</p>
-        <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-4">
-          AILIV <span class="text-[#D4998D]">CRM</span>
-        </h2>
-        <p class="text-xl text-white/80 leading-relaxed">
-          Il sistema operativo della tua azienda. Contatti, automazioni, email, SMS, WhatsApp, funnel, calendari, pagamenti, AI assistant — <strong>tutto dentro, tutto integrato</strong>.
-        </p>
-      </div>
-      <div class="text-white/75 text-lg leading-relaxed">
-        <p class="mb-4">Costruito sopra una delle piattaforme CRM più potenti al mondo. Ri-vestito come Ailiv. Tarato e configurato per il tuo settore specifico.</p>
-        <p>Paghi una fee mensile. Ti diamo tutto pronto. <strong class="text-white">Setup e onboarding li facciamo noi in 7 giorni.</strong></p>
-      </div>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-5">
-      <div class="card rounded-2xl p-8 text-[#143d5c]">
-        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold block mb-2">Basic</span>
-        <div class="text-4xl font-bold mb-1">€ 97<span class="text-base font-normal text-[#143d5c]/50">/mese</span></div>
-        <p class="text-sm text-[#143d5c]/60 mb-6">PMI monosede · Freelance avanzati · Studi piccoli</p>
-        <ul class="text-sm space-y-2 mb-6">
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> CRM + pipeline opportunità</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Email e SMS automation base</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Sito/funnel builder incluso</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Calendario e prenotazioni</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> App mobile Ailiv brandizzata</li>
-        </ul>
-        <a href="#contatti" class="btn-primary block text-center px-6 py-3 rounded-full font-semibold text-sm">Voglio il Basic</a>
-      </div>
-
-      <div class="rounded-2xl p-8 text-[#143d5c] relative" style="background:#fff;transform:scale(1.04);box-shadow:0 40px 80px rgba(0,0,0,0.3);border:2px solid #D4998D;">
+      <!-- PRO -->
+      <div class="rounded-2xl p-8 relative price-card featured">
         <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#D4998D] text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest">Più scelto</span>
-        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold block mb-2 mt-2">Pro</span>
-        <div class="text-4xl font-bold mb-1">€ 197<span class="text-base font-normal text-[#143d5c]/50">/mese</span></div>
-        <p class="text-sm text-[#143d5c]/60 mb-6">PMI multi-sede · Studi professionali · E-commerce</p>
-        <ul class="text-sm space-y-2 mb-6">
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Tutto del <strong>Basic</strong></li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> WhatsApp Business integrato</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Workflow AI avanzati + conversational</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Multi-store / multi-brand</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Pagamenti Stripe + membership</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Report mensile + call revisione</li>
+        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold block mb-2 mt-2">Core offer</span>
+        <h3 class="text-3xl font-bold mb-1">AILIV PRO</h3>
+        <p class="text-sm price-feature mb-6">Per chi inizia a fare sul serio</p>
+        <div class="mb-6">
+          <div class="text-4xl font-bold">€ 197<span class="text-base font-normal opacity-60">/mese</span></div>
+          <p class="text-xs opacity-60 mt-1">annuale · <span class="text-[#D4998D]">€ 237/mese sul mensile</span></p>
+        </div>
+        <ul class="space-y-2 text-sm mb-8">
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> <strong>Tutto di LITE</strong></li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> WhatsApp Business <strong>API ufficiale</strong></li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Voice AI inbound (chiamate)</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Conversation AI avanzata</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Review AI (risposta auto recensioni)</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> App mobile <strong>nativa brandizzata</strong> iOS+Android</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Membership + corsi online</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Multi-sede / multi-brand (2 location)</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Ads reporting Meta + Google</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> Supporto prioritario WhatsApp</li>
+          <li class="flex gap-2 price-feature"><span class="text-[#D4998D]">✓</span> 1h onboarding 1-to-1 incluso</li>
         </ul>
-        <a href="#contatti" class="btn-coral block text-center px-6 py-3 rounded-full font-semibold text-sm">Voglio il Pro</a>
+        <a href="#contatti" class="block text-center px-6 py-3 rounded-full font-bold text-sm bg-white text-[#143d5c] hover:bg-[#f5f3ee] transition">Voglio il PRO</a>
       </div>
 
-      <div class="card rounded-2xl p-8 text-[#143d5c]">
-        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold block mb-2">Enterprise</span>
-        <div class="text-4xl font-bold mb-1">da € 497<span class="text-base font-normal text-[#143d5c]/50">/mese</span></div>
-        <p class="text-sm text-[#143d5c]/60 mb-6">PMI 50+ dip · Multi-brand · Integrazioni custom</p>
-        <ul class="text-sm space-y-2 mb-6">
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Tutto del <strong>Pro</strong></li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Integrazioni API custom (gestionali, POS, ERP)</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Utenti illimitati + SSO</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Agenti AI dedicati al tuo settore</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> SLA + supporto prioritario</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Account manager Ailiv dedicato</li>
+      <!-- ELITE -->
+      <div class="card rounded-2xl p-8 relative">
+        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold block mb-2">Agency / Enterprise</span>
+        <h3 class="text-3xl font-bold mb-1">AILIV ELITE</h3>
+        <p class="text-sm text-[#143d5c]/60 mb-6">Multi-brand, multi-store, white-label</p>
+        <div class="mb-6">
+          <div class="text-4xl font-bold">€ 397<span class="text-base font-normal text-[#143d5c]/50">/mese</span></div>
+          <p class="text-xs text-[#143d5c]/50 mt-1">annuale · <span class="text-[#D4998D]">€ 477/mese sul mensile</span></p>
+        </div>
+        <ul class="space-y-2 text-sm text-[#143d5c]/75 mb-8">
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> <strong>Tutto di PRO</strong></li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Fino a <strong>5 sub-account</strong> (multi-brand/rivendita)</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> White-label <strong>dominio custom</strong></li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Call strategica mensile con senior</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> <strong>Setup 1-to-1 completo incluso</strong></li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Reportistica custom dashboard</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> SLA risposta 4h</li>
+          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> 2 sessioni formazione team (90' cad.)</li>
         </ul>
         <a href="#contatti" class="btn-primary block text-center px-6 py-3 rounded-full font-semibold text-sm">Parliamone</a>
       </div>
     </div>
 
-    <p class="text-center text-sm text-white/50 mt-8">Tutti i piani: setup + onboarding inclusi · app mobile brandizzata · dati in Europa · GDPR ready</p>
+    <!-- DFY BACK-END -->
+    <div class="relative rounded-3xl overflow-hidden" style="background:linear-gradient(135deg,#0e2c43 0%,#143d5c 60%,#2a6fa3 100%);color:#fff;">
+      <div class="absolute top-0 right-0 w-96 h-96 rounded-full" style="background:radial-gradient(circle,rgba(212,153,141,0.35),transparent 70%);filter:blur(40px);"></div>
+      <div class="relative p-8 md:p-12 grid md:grid-cols-2 gap-8 items-center">
+        <div>
+          <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D4998D]/25 text-[#D4998D] text-xs uppercase tracking-widest font-bold mb-4">
+            🖤 Back-end · Prezzo su misura
+          </span>
+          <h3 class="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+            Hai il noleggio.<br>Ti serve anche <span class="text-[#D4998D]">l'autista</span>?
+          </h3>
+          <p class="text-white/85 text-lg leading-relaxed mb-4">
+            <strong>AILIV FACCIAMO NOI</strong> — tu non tocchi la piattaforma. La usiamo noi per conto tuo.
+          </p>
+          <p class="text-white/75 leading-relaxed">
+            Campagne Meta/Google gestite. Email e WhatsApp scritti e schedulati. Chatbot AI custom sul tuo brand. Sito e funnel costruiti e mantenuti. Automazioni complesse. Integrazioni API verso il tuo gestionale. <strong>Account manager dedicato.</strong>
+          </p>
+        </div>
+        <div class="bg-white/10 rounded-2xl p-6 backdrop-blur">
+          <p class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-3">Pacchetto include</p>
+          <ul class="space-y-2 text-sm text-white/90 mb-6">
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Piano Ailiv (PRO o ELITE)</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Campagne Meta + Google gestite</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Email + WhatsApp scritti da noi</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Chatbot AI custom sviluppato</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Sito + funnel costruiti e mantenuti</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Integrazioni API custom</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Report mensile + call strategica</li>
+            <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Account manager dedicato</li>
+          </ul>
+          <a href="#contatti" class="btn-coral block text-center px-6 py-3 rounded-full font-bold text-sm">Raccontaci cosa fai →</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-center text-sm text-[#143d5c]/50 mt-8">
+      Tutti i piani: setup incluso · dati in Europa · GDPR ready · annulla quando vuoi
+    </p>
   </div>
 </section>
 
-<!-- ============ PROCESSO 30 GIORNI ============ -->
-<section id="processo" class="py-24 px-6">
-  <div class="max-w-6xl mx-auto">
-    <div class="mb-14 text-center max-w-3xl mx-auto">
-      <p class="text-sm uppercase tracking-widest text-[#D4998D] font-semibold mb-4"><span class="accent-line accent-line-coral"></span>I primi 30 giorni</p>
-      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
-        Dal primo "ciao"<br>al sistema che gira:<br>
-        <span class="text-[#D4998D]">30 giorni.</span>
-      </h2>
-      <p class="text-lg text-[#143d5c]/65 mt-5">Non vendiamo servizi. Implementiamo un sistema in 4 fasi chiare.</p>
-    </div>
-
-    <div class="grid md:grid-cols-4 gap-5">
-      <div class="card rounded-2xl p-7 relative">
-        <div class="text-5xl font-bold text-[#D4998D]/15 absolute top-3 right-4">01</div>
-        <div class="text-3xl mb-3">📊</div>
-        <div class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2">Giorni 1-7</div>
-        <h3 class="text-lg font-bold mb-2">Analizziamo</h3>
-        <p class="text-sm text-[#143d5c]/65 leading-relaxed">Audit approfondito: dati, stack, processi, team. Capiamo dove sta il tempo sprecato.</p>
-        <p class="text-xs text-[#D4998D] font-semibold mt-3">→ Sai da dove partire</p>
-      </div>
-      <div class="card rounded-2xl p-7 relative">
-        <div class="text-5xl font-bold text-[#D4998D]/15 absolute top-3 right-4">02</div>
-        <div class="text-3xl mb-3">⚙️</div>
-        <div class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2">Giorni 8-14</div>
-        <h3 class="text-lg font-bold mb-2">Costruiamo</h3>
-        <p class="text-sm text-[#143d5c]/65 leading-relaxed">Sviluppiamo agenti, automazioni, dashboard. Integriamo con i tuoi sistemi esistenti.</p>
-        <p class="text-xs text-[#D4998D] font-semibold mt-3">→ Il sistema prende forma</p>
-      </div>
-      <div class="card rounded-2xl p-7 relative">
-        <div class="text-5xl font-bold text-[#D4998D]/15 absolute top-3 right-4">03</div>
-        <div class="text-3xl mb-3">🚀</div>
-        <div class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2">Giorni 15-21</div>
-        <h3 class="text-lg font-bold mb-2">Attiviamo</h3>
-        <p class="text-sm text-[#143d5c]/65 leading-relaxed">Go-live. Il sistema entra in produzione. Formiamo il team. Monitoraggio H24.</p>
-        <p class="text-xs text-[#D4998D] font-semibold mt-3">→ L'AI inizia a lavorare</p>
-      </div>
-      <div class="card rounded-2xl p-7 relative">
-        <div class="text-5xl font-bold text-[#D4998D]/15 absolute top-3 right-4">04</div>
-        <div class="text-3xl mb-3">📈</div>
-        <div class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2">Giorni 22-30</div>
-        <h3 class="text-lg font-bold mb-2">Manteniamo</h3>
-        <p class="text-sm text-[#143d5c]/65 leading-relaxed">Prime ottimizzazioni su dati reali. Report KPI. Roadmap per i mesi successivi.</p>
-        <p class="text-xs text-[#D4998D] font-semibold mt-3">→ Primi numeri misurabili</p>
-      </div>
-    </div>
-
-    <div class="mt-12 p-6 rounded-2xl bg-[#D4998D]/10 border border-[#D4998D]/30 flex flex-col md:flex-row items-center justify-between gap-4">
-      <p class="text-[#143d5c] text-base">
-        <strong>Vuoi iniziare?</strong> Il primo passo è un check-up gratuito di 90 minuti. Massimo 3 posti al mese.
-      </p>
-      <a href="#contatti" class="btn-coral px-6 py-3 rounded-full font-semibold text-sm whitespace-nowrap">Prenota il check-up →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CASE STUDY ============ -->
+<!-- ============ CASE STUDIES ============ -->
 <section id="lavori" class="py-24 px-6 bg-[#f5f3ee]">
   <div class="max-w-6xl mx-auto">
     <div class="mb-14 max-w-3xl">
@@ -558,7 +674,7 @@
           <span class="text-[#143d5c]/40 group-hover:text-[#D4998D] group-hover:translate-x-1 transition transform">↗</span>
         </div>
         <h3 class="text-xl font-bold mb-2">A Mano A Mano</h3>
-        <p class="text-[#143d5c]/60 text-sm mb-5">Pizzeria Boccea, Roma. Sito + chatbot AI "Manino" su Cloudflare Workers + email marketing narrativo + Meta Ads.</p>
+        <p class="text-[#143d5c]/65 text-sm mb-5">Pizzeria Boccea, Roma. Sito + chatbot AI "Manino" su Cloudflare Workers + email marketing narrativo + Meta Ads.</p>
         <div class="flex flex-wrap gap-2 text-xs">
           <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 font-semibold">Chatbot 24/7</span>
           <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 font-semibold">Edge AI</span>
@@ -571,7 +687,7 @@
           <span class="text-[#143d5c]/40">↗</span>
         </div>
         <h3 class="text-xl font-bold mb-2">Ciotto Burgers</h3>
-        <p class="text-[#143d5c]/60 text-sm mb-5">Smash burger a Roma. Funnel "Super Secret List" pre-apertura 2° store, email HTML GHL, ads Meta, landing Smashvent.</p>
+        <p class="text-[#143d5c]/65 text-sm mb-5">Smash burger a Roma. Funnel "Super Secret List" pre-apertura 2° store, email HTML GHL, ads Meta, landing Smashvent.</p>
         <div class="flex flex-wrap gap-2 text-xs">
           <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 font-semibold">Funnel lead</span>
           <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 font-semibold">GHL · Meta Ads</span>
@@ -584,7 +700,7 @@
           <span class="text-[#143d5c]/40">↗</span>
         </div>
         <h3 class="text-xl font-bold mb-2">CL Felice Estetica</h3>
-        <p class="text-[#143d5c]/60 text-sm mb-5">Centro estetico. Sito istituzionale + prenotazioni online + automazione follow-up clienti post-trattamento.</p>
+        <p class="text-[#143d5c]/65 text-sm mb-5">Centro estetico. Sito istituzionale + prenotazioni online + automazione follow-up clienti post-trattamento.</p>
         <div class="flex flex-wrap gap-2 text-xs">
           <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 font-semibold">Booking</span>
           <span class="px-3 py-1 rounded-full bg-[#143d5c]/5 font-semibold">Automation</span>
@@ -595,7 +711,7 @@
     <div class="mt-10 p-8 rounded-3xl bg-[#143d5c] text-white flex flex-col md:flex-row items-center justify-between gap-6">
       <div>
         <p class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2">🔴 Demo live</p>
-        <p class="text-xl md:text-2xl font-bold mb-1">Vuoi vedere un agente AI che abbiamo messo in produzione?</p>
+        <p class="text-xl md:text-2xl font-bold mb-1">Vuoi provare un agente AI che abbiamo messo in produzione?</p>
         <p class="text-white/70 text-sm">Apri il sito di un nostro cliente e chatta con Manino. È lì, 24/7, risponde sul serio.</p>
       </div>
       <a href="https://amanoamanoboccea.it" target="_blank" rel="noopener" class="btn-gold px-6 py-3 rounded-full font-bold text-sm whitespace-nowrap">
@@ -605,165 +721,77 @@
   </div>
 </section>
 
-<!-- ============ PRICING ============ -->
-<section id="pricing" class="py-24 px-6">
-  <div class="max-w-6xl mx-auto">
-    <div class="mb-14 text-center max-w-3xl mx-auto">
-      <p class="text-sm uppercase tracking-widest text-[#143d5c]/50 font-semibold mb-4"><span class="accent-line"></span>Pricing progetti</p>
-      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-4">
-        Ti diciamo quanto costa,<br>
-        <span class="text-[#143d5c]/50">prima di chiamarci.</span>
-      </h2>
-      <p class="text-lg text-[#143d5c]/60">Niente "preventivi su richiesta". Ti rispettiamo il tempo.</p>
-    </div>
-
-    <div class="grid md:grid-cols-4 gap-5">
-      <div class="card rounded-2xl p-8">
-        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold block mb-2">Lead magnet</span>
-        <h3 class="text-2xl font-bold mb-2">Audit</h3>
-        <div class="text-4xl font-bold mb-6">€ 490 <span class="text-base font-normal text-[#143d5c]/50">una tantum</span></div>
-        <ul class="space-y-2 text-sm text-[#143d5c]/70 mb-8">
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Call 45 min + analisi dati</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Report scritto con roadmap</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Compliance AI Act inclusa</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> 100% deducibile dal pacchetto scelto</li>
-        </ul>
-        <a href="#contatti" class="btn-ghost block text-center px-6 py-3 rounded-full font-semibold text-sm">Prenota</a>
-      </div>
-
-      <div class="card rounded-2xl p-8">
-        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold block mb-2">Setup rapido</span>
-        <h3 class="text-2xl font-bold mb-2">Start</h3>
-        <div class="text-4xl font-bold mb-6">€ 2.900 <span class="text-base font-normal text-[#143d5c]/50">una tantum</span></div>
-        <ul class="space-y-2 text-sm text-[#143d5c]/70 mb-8">
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> 1 processo AI in produzione</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Setup completo in 14 giorni</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> 30 giorni supporto</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Formazione team base</li>
-        </ul>
-        <a href="#contatti" class="btn-primary block text-center px-6 py-3 rounded-full font-semibold text-sm">Inizia con Start</a>
-      </div>
-
-      <div class="rounded-2xl p-8 relative" style="background:#143d5c;color:#fff;transform:scale(1.04);box-shadow:0 30px 80px rgba(20,61,92,0.3);">
-        <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#D4998D] text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest">Core offer</span>
-        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold block mb-2 mt-2">Progetto completo</span>
-        <h3 class="text-2xl font-bold mb-2">Grow</h3>
-        <div class="text-4xl font-bold mb-1">€ 12.900</div>
-        <p class="text-sm text-white/70 mb-6">+ € 890/mese mantenimento</p>
-        <ul class="space-y-2 text-sm text-white/85 mb-8">
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Progetto AI completo custom</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Go-live in 30-45 giorni</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Formazione team estesa</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Retainer 12 mesi incluso</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Accesso incentivi Transizione 5.0</li>
-        </ul>
-        <a href="#contatti" class="block text-center px-6 py-3 rounded-full font-bold text-sm bg-white text-[#143d5c] hover:bg-[#f5f3ee] transition">Scegli Grow</a>
-      </div>
-
-      <div class="card rounded-2xl p-8">
-        <span class="text-xs uppercase tracking-widest text-[#D4998D] font-bold block mb-2">Enterprise PMI</span>
-        <h3 class="text-2xl font-bold mb-2">Scale</h3>
-        <div class="text-4xl font-bold mb-6">da € 30k <span class="text-base font-normal text-[#143d5c]/50">custom</span></div>
-        <ul class="space-y-2 text-sm text-[#143d5c]/70 mb-8">
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Stack AI multi-processo</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Roadmap 90 giorni</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> SLA + Account manager</li>
-          <li class="flex gap-2"><span class="text-[#D4998D]">✓</span> Supporto incentivi strutturato</li>
-        </ul>
-        <a href="#contatti" class="btn-ghost block text-center px-6 py-3 rounded-full font-semibold text-sm">Parliamone</a>
-      </div>
-    </div>
-
-    <p class="text-center text-sm text-[#143d5c]/50 mt-8">I pacchetti Grow e Scale includono <strong>3 mesi di CRM Pro gratis</strong> (valore € 591).</p>
-  </div>
-</section>
-
-<!-- ============ AI ACT ALERT COMPATTO ============ -->
-<section class="py-12 px-6 bg-[#D4998D]/10 border-y border-[#D4998D]/25">
-  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-6 justify-between">
-    <div class="flex items-start gap-4">
-      <div class="text-3xl">⚖️</div>
-      <div>
-        <p class="text-xs uppercase tracking-widest text-[#B5776A] font-bold mb-1">⚠ Allerta normativa</p>
-        <p class="text-[#143d5c] font-semibold text-lg leading-snug">Dal 2 febbraio 2025 se il tuo team usa ChatGPT al lavoro, sei obbligato all'AI literacy.</p>
-        <p class="text-[#143d5c]/65 text-sm mt-1">La maggioranza delle PMI non ha ancora fatto nulla. Noi ti mettiamo in regola in 14 giorni.</p>
-      </div>
-    </div>
-    <a href="#lab" class="btn-coral px-5 py-3 rounded-full font-semibold text-sm whitespace-nowrap">🧪 Fai il quiz AI Act</a>
-  </div>
-</section>
-
 <!-- ============ FAQ ============ -->
-<section class="py-24 px-6">
+<section class="py-24 px-6 bg-white">
   <div class="max-w-4xl mx-auto">
     <div class="mb-12 text-center">
       <p class="text-sm uppercase tracking-widest text-[#143d5c]/50 font-semibold mb-4"><span class="accent-line"></span>Domande frequenti</p>
-      <h2 class="text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]">Quello che ti chiedi<br>prima di chiamarci.</h2>
+      <h2 class="text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]">Prima di firmare,<br>quello che ti chiedi.</h2>
     </div>
 
     <div class="space-y-3">
-      <details class="card rounded-xl p-5 group cursor-pointer">
+      <details class="card rounded-xl p-5 cursor-pointer">
         <summary class="flex justify-between items-center gap-4 list-none">
-          <span class="font-semibold text-lg">Quanto ci vuole davvero per vedere un primo risultato?</span>
+          <span class="font-semibold text-lg">C'è un contratto annuale?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Tra i 7 e i 14 giorni dal check-up vedi qualcosa girare sul tuo business. Il "progetto completo" Grow arriva a go-live in 30-45 giorni. Scale parla di 90 giorni perché è un sistema integrato multi-processo.</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">No. Puoi pagare annuale (prezzo scontato) o mensile (preferibile se vuoi massima flessibilità). Preavviso di disdetta: 30 giorni. Nessun vincolo, nessuna penale.</p>
       </details>
 
-      <details class="card rounded-xl p-5 group cursor-pointer">
+      <details class="card rounded-xl p-5 cursor-pointer">
         <summary class="flex justify-between items-center gap-4 list-none">
-          <span class="font-semibold text-lg">Posso vedere una vostra cosa funzionante prima di pagare?</span>
+          <span class="font-semibold text-lg">Setup incluso significa che lo fate voi?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Sì. Apri <a href="https://amanoamanoboccea.it" target="_blank" rel="noopener" class="text-[#D4998D] underline">amanoamanoboccea.it</a> e chatta con Manino. È un agente AI che abbiamo messo in produzione per un ristorante reale nel 2024. Gira 24/7. Risponde sul serio.</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Su <strong>LITE</strong>: setup self-serve con video-guide in italiano (è facile). Se vuoi che lo facciamo noi, c'è un'opzione "setup a mano" da €290 una tantum. Su <strong>PRO</strong>: 1h di onboarding 1-to-1 inclusa. Su <strong>ELITE</strong>: setup completo incluso, lo fa un nostro tecnico. Sul pacchetto <strong>Facciamo Noi</strong>: ovviamente tutto noi, è il senso del servizio.</p>
       </details>
 
-      <details class="card rounded-xl p-5 group cursor-pointer">
+      <details class="card rounded-xl p-5 cursor-pointer">
         <summary class="flex justify-between items-center gap-4 list-none">
-          <span class="font-semibold text-lg">I miei dati sono al sicuro? E il GDPR?</span>
+          <span class="font-semibold text-lg">Posso migrare i miei contatti attuali?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">I dati restano in Europa (infrastrutture Cloudflare EU, GHL EU). Non alleniamo modelli AI sui tuoi dati. Firmiamo DPA. Per casi sensibili (studi medici, legali) usiamo modelli on-premise o deployment in tenant dedicato.</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Sì. Supportiamo import da CSV, Excel, Mailchimp, ActiveCampaign, HubSpot, Pipedrive, Klaviyo, Brevo e altri. Su PRO ed ELITE la migrazione è inclusa. Su LITE è inclusa per contatti puri (CSV); se parti da un altro gestionale complesso ti quotiamo la migrazione.</p>
       </details>
 
-      <details class="card rounded-xl p-5 group cursor-pointer">
+      <details class="card rounded-xl p-5 cursor-pointer">
         <summary class="flex justify-between items-center gap-4 list-none">
-          <span class="font-semibold text-lg">E se cambio idea dopo? Sono "prigioniero" del vostro stack?</span>
+          <span class="font-semibold text-lg">Cosa succede ai miei dati se vado via?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">No. Tutti i dati sono tuoi, esportabili (CSV, API). Il CRM Ailiv è fatturato mensilmente — lo puoi disattivare con preavviso 30gg. I progetti sviluppati in Grow/Scale restano di tua proprietà (codice sorgente incluso su richiesta).</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Sono tuoi. Puoi esportare contatti, conversazioni, automazioni (struttura), form risposte in CSV/JSON in qualunque momento. Nessun lock-in, nessun riscatto dei dati.</p>
       </details>
 
-      <details class="card rounded-xl p-5 group cursor-pointer">
+      <details class="card rounded-xl p-5 cursor-pointer">
         <summary class="flex justify-between items-center gap-4 list-none">
-          <span class="font-semibold text-lg">Servono competenze tecniche nel mio team?</span>
+          <span class="font-semibold text-lg">SMS e WhatsApp sono davvero illimitati?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">No. "Zero sbatti" è la promessa letterale. Formiamo 1-2 persone del tuo team sulle parti operative (interpretare un report, aggiungere un contatto, leggere un alert). Tutto il resto — costruzione, mantenimento, evoluzioni — lo facciamo noi.</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Onestà: gli invii sul nostro lato sono illimitati (non c'è fair use). Ma SMS e WhatsApp hanno un costo **teleco** che paga chi li usa al mondo (circa 3–5 cent per SMS in Italia, costo variabile WhatsApp per categoria messaggio). È il costo dei provider, non un nostro margine. Ti mostriamo in dashboard quanto stai spendendo in tempo reale.</p>
       </details>
 
-      <details class="card rounded-xl p-5 group cursor-pointer">
+      <details class="card rounded-xl p-5 cursor-pointer">
         <summary class="flex justify-between items-center gap-4 list-none">
-          <span class="font-semibold text-lg">Posso accedere a Transizione 5.0 o ai voucher regionali?</span>
+          <span class="font-semibold text-lg">Posso vedere una vostra cosa che già funziona?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">In molti casi sì. Con il pacchetto Grow (o maggiore) includiamo un'analisi di eleggibilità: Transizione 5.0, voucher digitalizzazione regionali, credito d'imposta R&S. Ti affianchiamo a un partner consulente per la pratica se serve. <strong>Non ti promettiamo l'impossibile</strong>: ti diciamo cosa è fattibile e cosa no.</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Sì. Apri <a href="https://amanoamanoboccea.it" target="_blank" rel="noopener" class="text-[#D4998D] underline">amanoamanoboccea.it</a> e chatta con Manino. Gira 24/7 dal 2024 per un ristorante vero. Le automazioni del ristorante girano sulla piattaforma Ailiv.</p>
       </details>
 
-      <details class="card rounded-xl p-5 group cursor-pointer">
+      <details class="card rounded-xl p-5 cursor-pointer">
         <summary class="flex justify-between items-center gap-4 list-none">
-          <span class="font-semibold text-lg">Lavorate solo su Roma?</span>
+          <span class="font-semibold text-lg">Perché dovrei scegliere voi invece di Squadd / Delera / HubSpot?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">No. Lavoriamo con PMI in tutta Italia. Roma è la nostra base. Call di audit e follow-up via Google Meet. Se servono giornate on-site (raro) le pianifichiamo.</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Se ti serve **solo la piattaforma**, siamo in linea di prezzo con i competitor italiani — la scelta la fai sul supporto e sul fit. La vera differenza Ailiv è il **back-end "Facciamo Noi"**: gli altri ti danno gli strumenti e ti lasciano lì. Noi possiamo anche **usare gli strumenti al posto tuo**: campagne, chatbot custom, automazioni complesse, integrazioni API sul tuo gestionale. Nessuno degli altri fa questo a questo livello tecnico.</p>
       </details>
 
-      <details class="card rounded-xl p-5 group cursor-pointer">
+      <details class="card rounded-xl p-5 cursor-pointer">
         <summary class="flex justify-between items-center gap-4 list-none">
-          <span class="font-semibold text-lg">Come iniziamo? Senza impegno.</span>
+          <span class="font-semibold text-lg">Per quale tipo di azienda va bene Ailiv?</span>
           <svg class="w-5 h-5 flex-shrink-0 text-[#D4998D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </summary>
-        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Compila il form di check-up gratuito qui sotto. Massimo 3 posti al mese perché lo facciamo noi in prima persona. Ti ricontattiamo in 24h, fissiamo una call di 90 minuti, usciamo con una proposta concreta (o con "no grazie" per entrambi, se non siamo il fit giusto).</p>
+        <p class="mt-4 text-[#143d5c]/70 leading-relaxed">Per qualsiasi PMI italiana con clienti, contatti, appuntamenti o ordini. Ristoranti, centri estetici, studi professionali, e-commerce, retail locale, palestre, consulenti, artigiani, scuole private, coach. Se hai un database di clienti da gestire e delle comunicazioni da mandare — Ailiv fa al caso tuo.</p>
       </details>
     </div>
   </div>
@@ -777,29 +805,29 @@
   <div class="max-w-6xl mx-auto relative z-10">
     <div class="grid md:grid-cols-2 gap-12 items-start">
       <div>
-        <p class="text-sm uppercase tracking-widest text-[#D4998D] font-semibold mb-4"><span class="accent-line accent-line-coral"></span>Check-up gratuito</p>
+        <p class="text-sm uppercase tracking-widest text-[#D4998D] font-semibold mb-4"><span class="accent-line accent-line-coral"></span>Iniziamo</p>
         <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-6">
-          Vediamo insieme<br>
-          <span class="text-[#D4998D]">cosa costruiamo.</span>
+          Raccontaci<br>
+          <span class="text-[#D4998D]">cosa fai.</span>
         </h2>
-        <p class="text-xl text-white/80 leading-relaxed mb-6">
-          90 minuti. Zero impegno. Ti diciamo con chiarezza:
+        <p class="text-xl text-white/85 leading-relaxed mb-6">
+          Due righe sul tuo business, e ti ricontattiamo entro 24h con:
         </p>
         <ul class="space-y-3 text-white/85 mb-8">
-          <li class="flex gap-3"><span class="text-[#D4998D] text-xl">✓</span> Dove l'AI può darti risultati concreti nel tuo business</li>
-          <li class="flex gap-3"><span class="text-[#D4998D] text-xl">✓</span> Quanto tempo ci vuole, quanto costa, cosa serve davvero</li>
-          <li class="flex gap-3"><span class="text-[#D4998D] text-xl">✓</span> Se sei eleggibile per incentivi (Transizione 5.0, voucher)</li>
-          <li class="flex gap-3"><span class="text-[#D4998D] text-xl">✓</span> Se siamo il fit giusto — <em>o se non lo siamo</em></li>
+          <li class="flex gap-3"><span class="text-[#D4998D] text-xl">✓</span> Quale piano Ailiv fa per te (LITE / PRO / ELITE)</li>
+          <li class="flex gap-3"><span class="text-[#D4998D] text-xl">✓</span> Setup guidato o "lo facciamo noi" — ti diciamo cosa conviene</li>
+          <li class="flex gap-3"><span class="text-[#D4998D] text-xl">✓</span> Un preventivo chiaro del pacchetto back-end se ti serve</li>
+          <li class="flex gap-3"><span class="text-[#D4998D] text-xl">✓</span> Onestà: se non siamo il fit giusto, te lo diciamo</li>
         </ul>
         <div class="flex flex-wrap gap-3 text-xs">
-          <span class="px-3 py-1.5 rounded-full bg-white/10 border border-white/20">🔒 Massimo 3 posti al mese</span>
           <span class="px-3 py-1.5 rounded-full bg-white/10 border border-white/20">⚡ Risposta in 24h</span>
-          <span class="px-3 py-1.5 rounded-full bg-white/10 border border-white/20">🇮🇹 Solo PMI italiane</span>
+          <span class="px-3 py-1.5 rounded-full bg-white/10 border border-white/20">🇮🇹 Team italiano</span>
+          <span class="px-3 py-1.5 rounded-full bg-white/10 border border-white/20">🔒 Nessun impegno</span>
         </div>
       </div>
 
       <div class="bg-white rounded-3xl p-6 md:p-8 shadow-2xl">
-        <p class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2">Prenota il tuo check-up</p>
+        <p class="text-xs uppercase tracking-widest text-[#D4998D] font-bold mb-2">Parliamone</p>
         <h3 class="text-2xl font-bold text-[#143d5c] mb-5">Compila in 60 secondi</h3>
         <div style="height:640px;">
           <iframe
@@ -833,23 +861,23 @@
         <img src="assets/bollino-ailiv.png" alt="Ailiv" class="h-10 w-auto bg-white p-1 rounded-lg">
         <span class="font-display text-xl text-white tracking-tight">AILIV</span>
       </div>
-      <p class="leading-relaxed">Consulenza e ottimizzazione AI.<br>Sistemi chiavi in mano per PMI italiane.</p>
+      <p class="leading-relaxed">Consulenza e ottimizzazione AI.<br>Il gestionale tutto-in-uno per PMI italiane.</p>
     </div>
     <div>
       <p class="font-bold text-white mb-3 uppercase text-xs tracking-widest">Navigazione</p>
       <ul class="space-y-2">
-        <li><a href="#servizi" class="hover:text-white transition">Servizi</a></li>
+        <li><a href="#cosa" class="hover:text-white transition">Cosa include</a></li>
+        <li><a href="#benefici" class="hover:text-white transition">Benefici</a></li>
         <li><a href="#lab" class="hover:text-white transition">🧪 Il Lab</a></li>
-        <li><a href="#crm" class="hover:text-white transition">CRM White Label</a></li>
+        <li><a href="#piani" class="hover:text-white transition">Piani e pricing</a></li>
         <li><a href="#lavori" class="hover:text-white transition">Casi studio</a></li>
-        <li><a href="#pricing" class="hover:text-white transition">Pricing</a></li>
       </ul>
     </div>
     <div>
       <p class="font-bold text-white mb-3 uppercase text-xs tracking-widest">Contatti</p>
       <p class="mb-2">📍 Roma, Italia</p>
       <p class="mb-2">📧 <a href="mailto:ciao@ailiv.it" class="hover:text-white transition">ciao@ailiv.it</a></p>
-      <p>Per collaborazioni e proposte, scrivi in email diretta.</p>
+      <p class="text-xs mt-4 text-white/50">Per collaborazioni e proposte scrivi in email diretta.</p>
     </div>
   </div>
   <div class="max-w-6xl mx-auto mt-10 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between gap-4 text-xs">
