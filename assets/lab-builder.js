@@ -675,8 +675,28 @@ function resetBuilder() {
 }
 
 // ============================================================================
-// CANVAS (bivi visibili: strada scelta piena, strada scartata in trasparenza)
+// CANVAS (bivi con strade visibili + frecce SVG curve tra i nodi)
 // ============================================================================
+
+// Costruisce una freccia SVG curva da fromX a toX (percentuali 0-100 su asse x)
+// Se isNew, anima la stroke (effetto "disegno"); altrimenti statica.
+function arrowSvg(fromX, toX, isNew, delay) {
+  const pathStyle = isNew
+    ? `animation-delay:${Math.max(0, delay)}ms`
+    : 'animation:none;stroke-dashoffset:0;';
+  const tipStyle = isNew
+    ? `animation-delay:${Math.max(0, delay) + 500}ms`
+    : 'animation:none;opacity:1;';
+  // Bezier verticale: parte in (fromX, 2), arriva in (toX, 34), con control points che creano una S-curve morbida
+  const d = `M ${fromX} 2 C ${fromX} 18, ${toX} 20, ${toX} 32`;
+  return `
+    <svg class="wf-arrow-svg" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wf-arrow-path" d="${d}" style="${pathStyle}"/>
+      <polygon class="wf-arrow-tip" points="${toX-5},30 ${toX+5},30 ${toX},38" style="${tipStyle}"/>
+    </svg>
+  `;
+}
+
 function buildCanvas() {
   const sector = SECTORS[LabState.sector];
   if (!sector) return '';
@@ -685,7 +705,7 @@ function buildCanvas() {
 
   let html = '<div class="wf-canvas">';
 
-  // Trigger sempre visibile — animato solo alla prima render
+  // Trigger sempre visibile
   const triggerNew = LabState.prevResolvedCount === 0;
   const triggerStyle = triggerNew ? 'animation-delay:0ms' : 'animation:none;opacity:1;transform:translateY(0);';
   html += `
@@ -698,15 +718,22 @@ function buildCanvas() {
     </div>
   `;
 
+  // Traccia "da dove esce" il nodo precedente: 50 (centro), 25 (left-path), 75 (right-path)
+  let lastExitX = 50; // trigger esce centrato
+
   // Bivi risolti
   LabState.chosenIndices.forEach((chosenIdx, i) => {
     const step = sector.steps[i];
     const isNew = i >= LabState.prevResolvedCount;
-    const delay = isNew ? (i - LabState.prevResolvedCount) * 200 : 0;
-    const animStyle = isNew ? `animation-delay:${delay}ms` : 'animation:none;opacity:1;transform:translateY(0);';
-    const arrowStyle = isNew ? `animation-delay:${delay - 80}ms` : 'animation:none;opacity:1;';
+    const delay = isNew ? (i - LabState.prevResolvedCount) * 250 : 0;
+    const arrowDelay = delay;
+    const cardDelay = delay + 300; // card appare dopo che la freccia si è disegnata
 
-    html += `<div class="wf-arrow" style="${arrowStyle}"></div>`;
+    const fromX = lastExitX;
+    const toX = 50; // entra centrata nel bivio
+    html += arrowSvg(fromX, toX, isNew, arrowDelay);
+
+    const cardStyle = isNew ? `animation-delay:${cardDelay}ms` : 'animation:none;opacity:1;transform:translateY(0);';
 
     const optA = step.options[0];
     const optB = step.options[1];
@@ -714,7 +741,7 @@ function buildCanvas() {
     const bChosen = chosenIdx === 1;
 
     html += `
-      <div class="wf-choice" style="${animStyle}">
+      <div class="wf-choice" style="${cardStyle}">
         <div class="wf-choice-header">
           <span class="wf-choice-num">Bivio ${i + 1}</span>
           <span class="wf-choice-title">${BIVIO_LABELS[i] || 'Step'}</span>
@@ -734,16 +761,20 @@ function buildCanvas() {
         </div>
       </div>
     `;
+
+    // Il bivio "esce" dal lato del path scelto
+    lastExitX = chosenIdx === 0 ? 25 : 75;
   });
 
-  // Goal se funnel completo
+  // Goal
   if (goalAdded) {
     const goalIsNew = LabState.prevResolvedCount < resolvedCount + 1;
-    const goalDelay = goalIsNew ? (resolvedCount - LabState.prevResolvedCount + 1) * 200 : 0;
-    const goalStyle = goalIsNew ? `animation-delay:${goalDelay}ms` : 'animation:none;opacity:1;transform:translateY(0);';
-    const goalArrow = goalIsNew ? `animation-delay:${goalDelay - 80}ms` : 'animation:none;opacity:1;';
+    const goalDelay = goalIsNew ? (resolvedCount - LabState.prevResolvedCount) * 250 : 0;
+    const goalCardDelay = goalDelay + 300;
 
-    html += `<div class="wf-arrow" style="${goalArrow}"></div>`;
+    html += arrowSvg(lastExitX, 50, goalIsNew, goalDelay);
+
+    const goalStyle = goalIsNew ? `animation-delay:${goalCardDelay}ms` : 'animation:none;opacity:1;transform:translateY(0);';
     html += `
       <div class="wf-block">
         <div class="wf-node wf-node--goal" style="${goalStyle}">

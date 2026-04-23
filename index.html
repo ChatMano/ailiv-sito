@@ -314,6 +314,35 @@
     border-top: 6px solid rgba(212,153,141,0.8);
   }
 
+  /* SVG arrow (curva che collega i nodi seguendo il percorso scelto) */
+  .wf-arrow-svg {
+    display: block;
+    width: 100%;
+    max-width: 340px;
+    height: 52px;
+    margin: -4px 0;
+    overflow: visible;
+  }
+  .wf-arrow-path {
+    fill: none;
+    stroke: var(--coral);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: wfArrowDraw .75s cubic-bezier(.2,.7,.3,1) forwards;
+    vector-effect: non-scaling-stroke;
+    filter: drop-shadow(0 1px 2px rgba(212,153,141,0.25));
+  }
+  .wf-arrow-tip {
+    fill: var(--coral);
+    opacity: 0;
+    animation: wfArrowTipAppear .3s ease forwards;
+  }
+  @keyframes wfArrowDraw { to { stroke-dashoffset: 0; } }
+  @keyframes wfArrowTipAppear { to { opacity: 1; } }
+
   @keyframes wfIn { to { opacity: 1; transform: translateY(0); } }
   @keyframes wfArrowIn { to { opacity: 1; } }
   @keyframes wfPop { to { opacity: 1; transform: scale(1); } }
@@ -451,6 +480,7 @@
     .wf-choice-icon { font-size: 1.25rem; }
     .wf-choice-label { font-size: .68rem; }
     .wf-choice-divider { font-size: .55rem; padding: 0; }
+    .wf-arrow-svg { height: 44px; max-width: 280px; }
     /* evita che le pricing card scalate sforino lo schermo */
     .pricing-featured { transform: none !important; }
     .sector-card { min-height: 86px; padding: .75rem .5rem; }
@@ -1127,7 +1157,7 @@
 </footer>
 
 <!-- ============ LAB BUILDER JS ============ -->
-<script src="assets/lab-builder.js?v=5"></script>
+<script src="assets/lab-builder.js?v=6"></script>
 
 <!-- ============ GHL form loader ============ -->
 <script src="https://link.msgsndr.com/js/form_embed.js"></script>
