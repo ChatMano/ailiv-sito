@@ -499,6 +499,35 @@ const SECTORS = {
 };
 
 // ============================================================================
+// DREAM LABELS — articoli/sostantivi corretti per ogni settore (IT grammar-safe)
+// ============================================================================
+const DREAM_LABELS = {
+  ristorante:   { of: "del tuo ristorante",       fore: "per il tuo ristorante" },
+  palestra:     { of: "della tua palestra",       fore: "per la tua palestra" },
+  estetica:     { of: "del tuo centro estetico",  fore: "per il tuo centro" },
+  parrucchiere: { of: "del tuo salone",           fore: "per il tuo salone" },
+  dentista:     { of: "del tuo studio dentistico",fore: "per il tuo studio" },
+  medico:       { of: "del tuo studio medico",    fore: "per il tuo studio" },
+  studio_pro:   { of: "del tuo studio",           fore: "per il tuo studio" },
+  immobiliare:  { of: "della tua agenzia",        fore: "per la tua agenzia" },
+  auto:         { of: "della tua officina",       fore: "per la tua officina" },
+  retail:       { of: "del tuo negozio",          fore: "per il tuo negozio" },
+  ecommerce:    { of: "del tuo e-commerce",       fore: "per il tuo shop online" },
+  hotel:        { of: "del tuo hotel",            fore: "per la tua struttura" },
+  bar:          { of: "del tuo bar",              fore: "per il tuo bar" },
+  wedding:      { of: "della tua agenzia",        fore: "per la tua agenzia eventi" },
+  fotografo:    { of: "del tuo studio",           fore: "per il tuo studio fotografico" },
+  psicologo:    { of: "del tuo studio",           fore: "per il tuo studio" },
+  scuola:       { of: "della tua scuola",         fore: "per la tua scuola" },
+  coach:        { of: "della tua attività",       fore: "per la tua attività" },
+  nail_tatto:   { of: "del tuo studio",           fore: "per il tuo studio" },
+  pet:          { of: "della tua toelettatura",   fore: "per la tua toelettatura" }
+};
+function getDream(key) {
+  return DREAM_LABELS[key] || { of: "della tua attività", fore: "per la tua attività" };
+}
+
+// ============================================================================
 // STATE
 // ============================================================================
 const LabState = {
@@ -580,7 +609,7 @@ function renderBuilderView() {
       <div class="bg-gradient-to-br from-[#d4a747] to-[#e0c179] text-[#143d5c] rounded-2xl p-5 md:p-6">
         <p class="text-xs uppercase tracking-widest font-bold mb-2">🎉 Funnel costruito</p>
         <h4 class="text-xl md:text-2xl font-bold leading-snug mb-3">Bravo. Hai fatto il tuo funnel.</h4>
-        <p class="text-sm leading-relaxed mb-4">Adesso la domanda vera: <strong>ti piacerebbe parlarne con noi?</strong> Valutiamo insieme se ha senso metterlo in produzione per la tua ${sector.name.toLowerCase()}.</p>
+        <p class="text-sm leading-relaxed mb-4">Adesso la domanda vera: <strong>ti piacerebbe parlarne con noi?</strong> Valutiamo insieme se ha senso metterlo in produzione ${getDream(LabState.sector).fore}.</p>
         <button onclick="LabState.view='result';renderView();" class="bg-[#143d5c] text-white px-6 py-3 rounded-full font-bold text-sm hover:bg-[#0e2c43] transition w-full md:w-auto">
           Parliamone →
         </button>
@@ -822,7 +851,7 @@ function renderResult() {
     </div>
 
     <h3 class="text-2xl md:text-4xl font-bold text-[#143d5c] leading-tight mb-3">
-      ${sector.icon} Hai costruito il funnel della tua <span class="headline-coral">${sector.name.toLowerCase()}</span>.
+      ${sector.icon} Hai costruito il funnel <span class="headline-coral">${getDream(LabState.sector).of}</span>.
     </h3>
     <p class="text-[#143d5c]/75 text-base md:text-lg leading-relaxed mb-6">${verdict}</p>
 
