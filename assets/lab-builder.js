@@ -19,482 +19,482 @@ const BIVIO_LABELS = ["Primo contatto", "Conversione", "Pre-appuntamento", "Dopo
 const SECTORS = {
   ristorante: {
     name: "Ristorante / Pizzeria", icon: "🍕",
-    trigger: TR("📱", "DM Instagram: \"avete posto stasera?\""),
+    trigger: TR("📱", "Cliente prenota via WhatsApp, Instagram o Google"),
     steps: [
-      { q: "Arriva la richiesta in pieno servizio. Tu?", options: [
-        { emoji: "😵", label: "Rispondo tra un tavolo e l'altro, se non mi sfugge", node: M("📵", "Messaggio perso", "DM ignorata") },
-        { emoji: "⚡", label: "AI risponde in 30s: menù, allergeni, parcheggio", node: AU("💬", "Risposta immediata", "AI 24/7") }
+      { q: "Quando il cliente prenota, cosa salvi del contatto?", options: [
+        { emoji: "📓", label: "Nome e orario sull'agenda, nient'altro", node: M("👤", "Nome su agenda", "Zero storico") },
+        { emoji: "💾", label: "Scheda cliente: numero, coperti, preferenze, allergeni, compleanno", node: AU("🗂️", "Rubrica clienti attiva", "Dati che restano") }
       ]},
-      { q: "Tavolo da 8 sabato sera. Come lo blocchi?", options: [
-        { emoji: "📞", label: "A voce, segno sull'agenda e incrocio le dita", node: M("🎲", "Rischio no-show", "Agenda carta") },
-        { emoji: "🔒", label: "Link prenotazione con acconto/carta a garanzia", node: AU("💳", "Coperti garantiti", "No-show -80%") }
+      { q: "Lunedì sera la sala è mezza vuota. Cosa fai?", options: [
+        { emoji: "🦗", label: "Accetto: i lun-gio sono così, vivo di venerdì-domenica", node: M("📉", "Settimana al 40%", "Solo weekend") },
+        { emoji: "📲", label: "WhatsApp ai già-clienti: \"stasera -20% carbonara\" — rubrica segmentata", node: AU("🎯", "Riempi giorni morti", "Usa la rubrica") }
       ]},
-      { q: "Lunedì sera, sala mezza vuota. Che fai?", options: [
-        { emoji: "🦗", label: "Niente, spero entri qualcuno dalla strada", node: M("🪑", "Sala vuota", "Zero traffico") },
-        { emoji: "🎯", label: "WhatsApp agli affezionati: \"stasera -20% sul menù\"", node: AU("📲", "Riempi giorni morti", "Campagna WA") }
+      { q: "Cliente che non torna da 45 giorni?", options: [
+        { emoji: "🤷", label: "Se ha voglia torna, io non lo so nemmeno", node: M("👻", "Cliente dormiente", "Non lo tracci") },
+        { emoji: "💌", label: "Timer a 45gg: parte \"ci manchi, tavolo giovedì?\" col suo piatto preferito", node: AU("🔁", "Richiamo automatico", "Timer + scheda") }
       ]},
-      { q: "Il cliente ha pagato e se n'è andato. Poi?", options: [
-        { emoji: "🤞", label: "Spero si ricordi di noi e lasci una recensione", node: M("👻", "Cliente sparito", "Zero follow-up") },
-        { emoji: "⭐", label: "Richiesta Google automatica + coupon per farlo tornare", node: AU("🔁", "Recensione + ritorno", "Review funnel") }
+      { q: "Compleanno del cliente abituale?", options: [
+        { emoji: "🤐", label: "Non lo so, non l'ho mai chiesto", node: M("🎂", "Occasione persa", "Zero dati") },
+        { emoji: "🎁", label: "Il sistema sa la data: auguri + tavolo omaggio per 2 in automatico", node: AU("🎂", "Trigger compleanno", "Evento auto") }
       ]}
     ],
-    goalLabel: "Dal DM alla recensione: coperti pieni, no-show zero"
+    goalLabel: "Lavorare tutta la settimana, non solo dal venerdì alla domenica"
   },
 
   palestra: {
     name: "Palestra / Fitness", icon: "💪",
-    trigger: TR("💬", "Richiesta info abbonamento su WhatsApp"),
+    trigger: TR("💬", "Cliente interessato chiede info sull'abbonamento"),
     steps: [
-      { q: "Come gestisci la richiesta info in sala?", options: [
-        { emoji: "📱", label: "Rispondo tra una scheda e l'altra, quando stacco dai soci", node: M("⏰", "Risposte a ore sparse", "Lead freddo") },
-        { emoji: "🤖", label: "Bot manda listino 3/6/12 mesi e prenota prova gratuita", node: AU("🎟️", "Listino + trial auto", "Prova prenotata") }
+      { q: "Prova gratuita prenotata. Cosa salva il sistema?", options: [
+        { emoji: "📝", label: "Annoto nome e giorno su un foglio", node: M("👤", "Zero dati", "Solo nome e ora") },
+        { emoji: "🎯", label: "Scheda trial: obiettivo (dimagrire/tonificare), età, infortuni, contatto", node: AU("📋", "Profilo completo", "Dati per chiudere") }
       ]},
-      { q: "Prova gratuita fatta: come la chiudi in abbonamento?", options: [
-        { emoji: "🤞", label: "Gli dico \"fammi sapere\" e aspetto che torni lui", node: M("👻", "Trial che sparisce", "60% non firma") },
-        { emoji: "📅", label: "Follow-up + body check + offerta 6 mesi entro 48h", node: AU("✍️", "Chiusura guidata", "Trial to member") }
+      { q: "Trial fatto, non ha firmato entro 48h. Cosa accade?", options: [
+        { emoji: "🤞", label: "Aspetto che mi chiami lui, intanto altri entrano", node: M("👻", "Trial fantasma", "60% non firma") },
+        { emoji: "📲", label: "WA mirato: \"Marco, com'è andata? Se firmi entro oggi -15% sul 6 mesi\"", node: AU("🔥", "Chiusura guidata", "Trigger 48h") }
       ]},
-      { q: "Posto nel corso collettivo disdetto 2h prima?", options: [
-        { emoji: "😬", label: "Sala mezza vuota, istruttore pagato uguale", node: M("🪑", "Posto bruciato", "Margine perso") },
-        { emoji: "🔄", label: "Lista d'attesa avvisata in automatico, posto riempito", node: AU("⚡", "Riallocazione auto", "Sala piena") }
+      { q: "Iscritto che non timbra da 21 giorni?", options: [
+        { emoji: "🤷", label: "Paga lo stesso, non me ne accorgo", node: M("💸", "Churn silenzioso", "Disdice a 6 mesi") },
+        { emoji: "🚨", label: "Alert dormiente + sessione PT omaggio automatica + rientro guidato", node: AU("💪", "Retention salva", "Alert timer") }
       ]},
-      { q: "Iscritto pagante che non timbra da 3 settimane?", options: [
-        { emoji: "🤷", label: "Lascio stare, paga lo stesso finché non disdice", node: M("💸", "Churn silenzioso", "Disdetta a 6 mesi") },
-        { emoji: "💪", label: "Alert dormiente + sessione PT omaggio + rientro guidato", node: AU("🔥", "Riattivazione auto", "Retention salva") }
+      { q: "Abbonamento annuale in scadenza tra 30 giorni?", options: [
+        { emoji: "📞", label: "Lo cerco al telefono, se riesco, prima che scada", node: M("⏰", "Rinnovi a singhiozzo", "Corri sul filo") },
+        { emoji: "🔁", label: "Timer -30/-15/-7: rinnovo anticipato + sconto fedeltà + upsell PT", node: AU("✅", "Rinnovo auto", "Sequenza programmata") }
       ]}
     ],
-    goalLabel: "Da richiesta info ad abbonato fidelizzato"
+    goalLabel: "Ogni iscritto rinnova da solo: abbonamenti annuali la norma, zero churn"
   },
 
   estetica: {
     name: "Centro estetico", icon: "💆",
-    trigger: TR("💬", "Chiede prezzo trattamento su WhatsApp o Insta"),
+    trigger: TR("💆", "Cliente finisce un trattamento (ceretta, laser, viso…)"),
     steps: [
-      { q: "Chiede info su un protocollo?", options: [
-        { emoji: "😮‍💨", label: "Rispondo a voce libera, tra una cabina e l'altra", node: M("📝", "Risposta a mano", "Tempo perso") },
-        { emoji: "📲", label: "Listino + foto prima/dopo + invito a consulenza viso", node: AU("✨", "Scheda + portfolio", "Consulenza auto") }
+      { q: "La cliente esce dalla cabina. Cosa salva il sistema?", options: [
+        { emoji: "📓", label: "Segno sul quadernone cassa, se mi ricordo", node: M("👤", "Niente storico", "Dati persi") },
+        { emoji: "💾", label: "Scheda: trattamento fatto, data, ciclo teorico richiamo (ceretta 28gg, viso 45gg)", node: AU("🗂️", "Scheda + timer", "Dati che parlano") }
       ]},
-      { q: "Come blocca l'appuntamento?", options: [
-        { emoji: "📓", label: "Telefonata e segno sull'agenda cartacea", node: M("☎️", "Agenda cartacea", "Rischio doppio") },
-        { emoji: "💳", label: "Prenota online con caparra, niente cabina bloccata gratis", node: AU("🔒", "Booking + caparra", "No buchi") }
+      { q: "5 giorni prima del prossimo ciclo teorico?", options: [
+        { emoji: "🤞", label: "Spero che si ricordi lei, altrimenti niente", node: M("🍂", "Mantenimento perso", "Pacchetto a metà") },
+        { emoji: "📲", label: "Timer parte: WA custom \"è ora della prossima ceretta gambe, ho giovedì ore 15\"", node: AU("⏰", "Richiamo auto", "Timer + slot") }
       ]},
-      { q: "E se non si presenta in cabina?", options: [
-        { emoji: "😤", label: "Sparisce senza avvisare, cabina ferma un'ora", node: M("🚪", "No-show in cabina", "Cabina vuota") },
-        { emoji: "⏰", label: "Reminder 48h e 2h, recupero posto su lista attesa", node: AU("📤", "Reminder + waitlist", "Slot salvo") }
+      { q: "Non ha riprenotato entro 3 giorni dal richiamo?", options: [
+        { emoji: "🤷", label: "Pazienza, se non risponde lei niente", node: M("👻", "Cliente persa", "Passa ad altra") },
+        { emoji: "💌", label: "Secondo WA: \"ti penso, slot liberi + piccolo sconto questa settimana\"", node: AU("🎁", "Recupero soft", "Seconda mano") }
       ]},
-      { q: "Dopo la seduta la fai rientrare?", options: [
-        { emoji: "🤞", label: "Spero torni per il mantenimento, non richiamo", node: M("🍂", "Cliente sparita", "Pacchetto a metà") },
-        { emoji: "🌿", label: "Richiamo mantenimento, recensione, auguri compleanno", node: AU("💖", "Fidelizza + review", "Ciclo chiuso") }
+      { q: "Compleanno o cliente VIP pacchetto 10?", options: [
+        { emoji: "🤐", label: "Non lo so, non raccolgo queste cose", node: M("🎂", "Zero trigger emotivi", "Nessuna cura") },
+        { emoji: "💖", label: "Regalo trattamento flash automatico + auguri personalizzati", node: AU("🎁", "Evento auto", "Fidelity trigger") }
       ]}
     ],
-    goalLabel: "Dalla richiesta Insta al ciclo di mantenimento completato"
+    goalLabel: "Ogni cliente torna al prossimo ciclo senza che io debba chiamare nessuna"
   },
 
   parrucchiere: {
     name: "Parrucchiere / Barber", icon: "💇",
-    trigger: TR("💬", "DM: \"quanto costa le mèches? oggi ce la fate?\""),
+    trigger: TR("💇", "Cliente finisce taglio/colore e paga alla cassa"),
     steps: [
-      { q: "Chi risponde al preventivo in DM?", options: [
-        { emoji: "📱", label: "Titolare legge tra una tinta e l'altra, risponde a sera", node: M("📵", "DM a fine turno", "Lead freddo") },
-        { emoji: "⚡", label: "Bot manda listino mèches + slot + caparra online", node: AU("💬", "Preventivo 24/7", "Risposta in 1 min") }
+      { q: "La cliente esce dal salone. Cosa salva il sistema?", options: [
+        { emoji: "📓", label: "Solo la ricevuta, niente scheda cliente", node: M("👤", "Zero tracking", "Cliente anonima") },
+        { emoji: "💾", label: "Scheda tecnica: colore 7.0 con 10vol, taglio medio, data, ricrescita teorica 28gg", node: AU("🗂️", "Scheda + formula", "Dati tecnici salvi") }
       ]},
-      { q: "Cliente che molla per la catena low-cost?", options: [
-        { emoji: "😤", label: "Te ne accorgi quando non torna per la ricrescita", node: M("🍂", "Fuga silenziosa", "Ricrescita altrove") },
-        { emoji: "🎯", label: "Se salta 45gg parte WhatsApp col tuo nome", node: AU("📲", "Anti-Jean-Louis", "Richiamo 45gg") }
+      { q: "28 giorni dopo: è ora della ricrescita", options: [
+        { emoji: "🤞", label: "Spero torni lei, altrimenti se la fa in zona", node: M("🍂", "Cliente persa", "Ricrescita altrove") },
+        { emoji: "📲", label: "WA auto: \"ciao! la tua ricrescita chiama, mercoledì ho slot 10-14\"", node: AU("⏰", "Richiamo 28gg", "Timer su scheda") }
       ]},
-      { q: "1h prima: \"scusa non posso venire\"", options: [
-        { emoji: "😩", label: "Poltrona ferma 2h, stagista gira a vuoto", node: M("🪑", "Buco + stagista", "Fatturato perso") },
-        { emoji: "🔒", label: "Caparra trattiene + lista d'attesa riempie lo slot", node: AU("💳", "Slot salvato", "Caparra + waitlist") }
+      { q: "Un buco di 2 ore martedì pomeriggio?", options: [
+        { emoji: "😩", label: "Poltrona ferma, stagista gira a vuoto", node: M("🪑", "Buco + stipendio", "Fatturato zero") },
+        { emoji: "⚡", label: "Flash WA alle 20 clienti in scadenza ricrescita: \"offerta slot oggi -15%\"", node: AU("🎯", "Riempi buchi al volo", "Broadcast scheda") }
       ]},
-      { q: "Dopo piega e cofanetto, il richiamo?", options: [
-        { emoji: "👋", label: "\"Ci vediamo!\" e speri che la ricrescita la riporti qui", node: M("🚪", "Addio alla porta", "Zero follow-up") },
-        { emoji: "⭐", label: "Recensione Google + richiamo ritocco su scheda tecnica", node: AU("💇", "Review + ritocco", "Fidelity ricrescita") }
+      { q: "Cliente 60gg silenzio, non ha riprenotato?", options: [
+        { emoji: "😤", label: "Sarà passata da un'altra, va così", node: M("👻", "Fuga silenziosa", "Jean-Louis David") },
+        { emoji: "💌", label: "Sequenza recupero: \"mi manchi\" + foto ultimo look + offerta prossima volta", node: AU("🔁", "Win-back auto", "Fidelity reclaim") }
       ]}
     ],
-    goalLabel: "Dalla DM \"quanto costa\" alla cliente fissa ogni 35gg"
+    goalLabel: "Ogni cliente torna ogni 28-35 giorni: agenda piena a rotazione automatica"
   },
 
   dentista: {
     name: "Studio dentistico", icon: "🦷",
-    trigger: TR("🦷", "Richiesta preventivo impianto o ortodonzia"),
+    trigger: TR("🦷", "Paziente chiede preventivo impianto o ortodonzia"),
     steps: [
-      { q: "Chi risponde al primo contatto?", options: [
-        { emoji: "📞", label: "Segretaria tra una poltrona e l'altra, spesso richiama tardi", node: M("⏰", "Richiamo in ritardo", "Lead perso") },
-        { emoji: "🤖", label: "Risposta immediata + anamnesi base e filtro urgenze", node: AU("📋", "Triage anamnesi", "Qualifica auto") }
+      { q: "Preventivo 4.500€ inviato. Cosa salva il sistema?", options: [
+        { emoji: "📄", label: "PDF mandato via email, fine", node: M("📂", "Preventivo volante", "Zero tracking") },
+        { emoji: "🗂️", label: "Preventivo in pipeline: stato \"inviato\", timer follow-up 3/7/14/30gg, valore 4.500€", node: AU("📊", "Pipeline attiva", "Ogni preventivo tracciato") }
       ]},
-      { q: "Il preventivo chirurgico che fine fa?", options: [
-        { emoji: "💤", label: "Paziente \"ci penso\", preventivo nel cassetto per mesi", node: M("📂", "Preventivo fermo", "Nel cassetto") },
-        { emoji: "🎥", label: "Nurture con video casi, FAQ odontofobia, finanziamento", node: AU("🔄", "Nurture educativo", "Scalda paziente") }
+      { q: "Paziente \"ci penso\" dopo 7 giorni. E dopo?", options: [
+        { emoji: "💤", label: "Lo lascio riflettere, non oso insistere", node: M("📂", "Cassetto per mesi", "Preventivo morto") },
+        { emoji: "🎥", label: "Nurture auto: video paziente reale + FAQ odontofobia + opzione finanziamento", node: AU("🔄", "Nurture educativo", "Scalda preventivo") }
       ]},
-      { q: "Poltrona libera ma paziente non arriva?", options: [
-        { emoji: "😤", label: "Igienista ferma, utenze accese, buco da 200€", node: M("🪑", "Poltrona vuota", "200€ persi") },
-        { emoji: "⏰", label: "Promemoria 48h + 2h con conferma e recupero slot", node: AU("✅", "Conferma + recupero", "Salva slot") }
+      { q: "Paziente firma e inizia le cure. 11 mesi dopo?", options: [
+        { emoji: "🤞", label: "Spero si ricordi del controllo, altrimenti lo rivedo col dolore", node: M("👻", "Controllo saltato", "Paziente sparito") },
+        { emoji: "🔔", label: "Timer 11 mesi: \"è ora del controllo + igiene, slot a settembre\"", node: AU("🦷", "Richiamo annuale", "Trigger automatico") }
       ]},
-      { q: "Controllo periodico e profilassi annuale?", options: [
-        { emoji: "🤞", label: "Spero se lo ricordi, altrimenti torna col dolore", node: M("👻", "Paziente perso", "Drop-out") },
-        { emoji: "🦷", label: "Richiamo auto 6/12 mesi + richiesta recensione", node: AU("🔔", "Richiamo + review", "Fidelizza") }
+      { q: "Paziente soddisfatto + sorriso nuovo?", options: [
+        { emoji: "🤐", label: "Lo saluto, se mi manda qualcuno è grasso che cola", node: M("👋", "Zero passaparola", "Recensioni scarse") },
+        { emoji: "⭐", label: "Richiesta review Google + foto before/after + referral familiari", node: AU("🔗", "Review + referral", "Engine organico") }
       ]}
     ],
-    goalLabel: "Dal preventivo accettato al controllo periodico ricorrente"
+    goalLabel: "Ogni preventivo si chiude, ogni paziente torna al controllo senza che io lo chiami"
   },
 
   medico: {
     name: "Studio medico / Fisio", icon: "🏥",
-    trigger: TR("🩹", "Paziente chiama per lombalgia, chiede prima visita"),
+    trigger: TR("🩹", "Paziente prenota prima visita (fisio, specialista)"),
     steps: [
-      { q: "Ti squilla il telefono durante una seduta. Cosa succede?", options: [
-        { emoji: "😤", label: "Interrompo la tecar, rispondo io o salta la chiamata", node: M("📵", "Centralino intasato", "Paziente perso") },
-        { emoji: "🤖", label: "Bot risponde, fa triage rosso/giallo/verde, prende dati", node: AU("📋", "Triage H24", "Qualifica auto") }
+      { q: "Prima visita fatta. Cosa salva il sistema?", options: [
+        { emoji: "📋", label: "Cartella cartacea in armadio, fattura da stampare a mano", node: M("📂", "Cartella carta", "Dati isolati") },
+        { emoji: "💾", label: "Anamnesi digitale + piano 10 sedute + timer ogni controllo", node: AU("🗂️", "Cartella + protocollo", "Piano tracciato") }
       ]},
-      { q: "Come fissi la prima visita e il no-show?", options: [
-        { emoji: "📋", label: "Segretaria su agenda cartacea, no-show 30-40%", node: M("📖", "Agenda carta", "Buchi slot") },
-        { emoji: "📅", label: "Booking online + reminder SMS + caparra", node: AU("🔒", "Doctolib sync", "Conferma + caparra") }
+      { q: "Paziente ha fatto 3 sedute su 10 e non si è più prenotato?", options: [
+        { emoji: "🤷", label: "Se non richiama amen, ciclo interrotto", node: M("🍂", "Abbandono 70%", "Ciclo perso") },
+        { emoji: "📲", label: "Alert: \"come va la lombalgia? mancano 7 sedute, ho martedì alle 10\"", node: AU("🔁", "Aderenza auto", "Recupero percorso") }
       ]},
-      { q: "Anamnesi e consensi prima che il paziente entri?", options: [
-        { emoji: "📝", label: "Fogli in sala d'attesa, compila lì al momento", node: M("🖊️", "Anamnesi carta", "Tempo perso") },
-        { emoji: "📲", label: "Modulo digitale pre-compilato + consenso firmato", node: AU("✅", "Scheda pronta", "Pre-consegna") }
+      { q: "Ciclo completato: cosa succede dopo 6 mesi?", options: [
+        { emoji: "🤞", label: "Se sta bene non torna, se sta male sì", node: M("👻", "Paziente perso", "Controllo zero") },
+        { emoji: "🔔", label: "Timer 6 mesi: \"check di controllo preventivo, slot riservati\"", node: AU("📅", "Check periodico", "Trigger 6 mesi") }
       ]},
-      { q: "Paziente fa 3 sedute su 10 prescritte e sparisce. Tu?", options: [
-        { emoji: "🤷", label: "Se non richiama pazienza, ciclo interrotto", node: M("🍂", "Abbandono ciclo", "Drop 70%") },
-        { emoji: "🔔", label: "Sequenza recall + controllo 6 mesi automatico", node: AU("🎯", "Aderenza ciclo", "Recall auto") }
+      { q: "Paziente soddisfatto? Review Doctolib/Google?", options: [
+        { emoji: "🤐", label: "Non la chiedo, mi imbarazza", node: M("😶", "Zero reputation", "Nuovi lead scarsi") },
+        { emoji: "⭐", label: "Richiesta review auto 48h post-ciclo + link Doctolib/Google", node: AU("🌟", "Reputation attiva", "Organic leads") }
       ]}
     ],
-    goalLabel: "Aderenza al ciclo: da 3 sedute a protocollo completo"
+    goalLabel: "Ogni paziente completa il ciclo e torna per il controllo senza perdersi"
   },
 
   studio_pro: {
     name: "Avvocato / Commercialista", icon: "⚖️",
-    trigger: TR("📋", "Preventivo parcella: il cliente tentenna"),
+    trigger: TR("📋", "Cliente firma preventivo, la pratica entra nello studio"),
     steps: [
-      { q: "Preventivo parcella inviato, silenzio del cliente?", options: [
-        { emoji: "💭", label: "Resta parcheggiato, non oso insistere", node: M("📂", "Preventivo nel limbo", "Parcella ferma") },
-        { emoji: "📊", label: "Follow-up 3-7-14gg con FAQ e casi", node: AU("🔄", "Nurturing preventivo", "Cliente deciso") }
+      { q: "Cliente firmato. Sistema cosa fa?", options: [
+        { emoji: "📂", label: "Apro una cartella sul Drive e annoto scadenze a memoria", node: M("🗂️", "Pratica disordinata", "Scadenze a rischio") },
+        { emoji: "🗃️", label: "Pratica in pipeline + timer scadenze fiscali + checklist documenti", node: AU("📊", "Pratica tracciata", "Deadline automatiche") }
       ]},
-      { q: "Documenti per la pratica (730, bilancio, atto)?", options: [
-        { emoji: "📂", label: "Li chiedo a voce, arrivano sotto scadenza", node: M("⏰", "Rincorsa documenti", "Scadenza a rischio") },
-        { emoji: "✅", label: "Checklist SPID + solleciti auto 48h", node: AU("📋", "Dossier in tempo", "Pratica senza ansia") }
+      { q: "Scadenza 730 tra 30gg, il cliente non ha ancora mandato i documenti?", options: [
+        { emoji: "📧", label: "Lo chiamo a voce quando mi ricordo", node: M("⏰", "Rincorsa doc", "Multa a rischio") },
+        { emoji: "🔔", label: "3 solleciti auto (-30/-15/-7gg) con checklist SPID + upload diretto", node: AU("✅", "Dossier in tempo", "Zero ansia") }
       ]},
-      { q: "Parcella emessa, cliente non salda?", options: [
-        { emoji: "😤", label: "Telefonate imbarazzate, a volte lascio perdere", node: M("💸", "Insoluto che pesa", "Fatturato perso") },
-        { emoji: "💰", label: "Solleciti graduali con link pagamento", node: AU("🔔", "Recupero crediti", "Incassi puliti") }
+      { q: "Parcella emessa, 45 giorni passano: cliente non salda?", options: [
+        { emoji: "😤", label: "Telefonate imbarazzate, a volte lascio andare", node: M("💸", "Insoluto che pesa", "Fatturato perso") },
+        { emoji: "💰", label: "3 solleciti graduali + link pagamento + proposta piano rateale", node: AU("🔁", "Recupero crediti soft", "Incassi puliti") }
       ]},
-      { q: "Pratica chiusa, e adesso?", options: [
-        { emoji: "🤝", label: "Saluto, se serve mi richiamano", node: M("👋", "Cliente una tantum", "Solo urgenze") },
-        { emoji: "⭐", label: "Recensione + scadenziario annuale", node: AU("🔔", "Cliente a vita", "Referral + rinnovo") }
+      { q: "Pratica chiusa. L'anno prossimo il cliente si ricorda di te?", options: [
+        { emoji: "🤷", label: "Se gli serve mi richiama, altrimenti va altrove", node: M("👋", "Solo in urgenza", "Relazione intermittente") },
+        { emoji: "📅", label: "Scadenziario annuale: 730, IMU, bilancio + aggiornamenti normativi personalizzati", node: AU("🔄", "Cliente a vita", "Relazione sistematica") }
       ]}
     ],
-    goalLabel: "Da preventivo firmato a cliente per sempre"
+    goalLabel: "Parcelle pagate in 30gg, zero scadenze saltate, clienti che non vanno più altrove"
   },
 
   immobiliare: {
     name: "Agenzia immobiliare", icon: "🏠",
-    trigger: TR("📩", "Richiesta su annuncio Idealista/Immobiliare.it"),
+    trigger: TR("📩", "Lead scrive su annuncio Idealista/Immobiliare.it"),
     steps: [
-      { q: "Lead dal portale: come qualifichi budget e mutuo?", options: [
-        { emoji: "📞", label: "Richiamo io, se rispondono capisco", node: M("🤷", "Qualifica a naso", "80% curiosi") },
-        { emoji: "🤖", label: "Form auto: budget, mutuo pre-approvato, tempi", node: AU("🎯", "Seri vs turisti", "Qualifica auto") }
+      { q: "Lead dal portale. Cosa salva il sistema?", options: [
+        { emoji: "📞", label: "Chiamo io, se risponde prendo appunti", node: M("📝", "Qualifica a naso", "80% curiosi") },
+        { emoji: "🎯", label: "Form auto qualifica: budget, mutuo pre-approvato, zone, tempi, priorità", node: AU("📊", "Seri vs turisti", "Lead in pipeline") }
       ]},
-      { q: "Visita organizzata: come gestisci i 15 slot?", options: [
-        { emoji: "📆", label: "Agenda cartacea, chiamo uno a uno", node: M("📖", "Ritardi e no-show", "Caos pianerottolo") },
-        { emoji: "🗺️", label: "Booking online + mappa + conferma H-2", node: AU("✅", "Slot pieni", "APE già inviato") }
+      { q: "Lead qualificato ha visto 3 immobili e tentenna?", options: [
+        { emoji: "🤞", label: "Attendo che mi richiami, magari ha cambiato idea", node: M("👻", "Lead freddo", "Compra altrove") },
+        { emoji: "🏠", label: "Nurture: 3 nuovi immobili compatibili + simulazione mutuo + urgenza mercato", node: AU("🔄", "Rinurturing", "Lead caldo mantenuto") }
       ]},
-      { q: "Proposta firmata ma cliente sparisce prima del compromesso?", options: [
-        { emoji: "😰", label: "Chiamo, non risponde, va dal concorrente", node: M("👻", "Mandato perso", "Caparra svanita") },
-        { emoji: "🔔", label: "Sequenza: perizia, mutuo, notaio, step chiari", node: AU("🗓️", "Cliente al rogito", "Step guidati") }
+      { q: "Proposta firmata: fino al rogito quanti step?", options: [
+        { emoji: "📞", label: "Lo accompagno a voce, a step, speriamo ricordi tutto", node: M("😰", "Rogito a rischio", "Cliente disperso") },
+        { emoji: "🗓️", label: "Timeline automatica: perizia → mutuo → preliminare → notaio, con promemoria e documenti", node: AU("✅", "Cliente al rogito", "Zero perdite") }
       ]},
-      { q: "Dopo il rogito: recensione Google e referral?", options: [
-        { emoji: "🤐", label: "Consegno chiavi, saluto, sparisce", node: M("🚪", "Zero review", "Zero passaparola") },
-        { emoji: "⭐", label: "Auguri + richiesta review + referral ristrutt.", node: AU("🔗", "Review + referral", "Lead caldi") }
+      { q: "Dopo il rogito: recensione + referral?", options: [
+        { emoji: "🤐", label: "Chiavi consegnate, saluto, sparisce", node: M("🚪", "Review zero", "Passaparola zero") },
+        { emoji: "🔗", label: "Trigger rogito+7gg: auguri + review + offerta ristrutturazione/arredamento partner + referral", node: AU("⭐", "Referral engine", "Lead caldi da clienti") }
       ]}
     ],
-    goalLabel: "Dal primo click al rogito (senza perderlo al concorrente)"
+    goalLabel: "Ogni lead del portale arriva al rogito, zero perdite al concorrente"
   },
 
   auto: {
     name: "Autosalone / Officina", icon: "🚗",
-    trigger: TR("🔧", "Richiesta preventivo tagliando o distribuzione"),
+    trigger: TR("🔧", "Cliente porta l'auto per tagliando / riparazione"),
     steps: [
-      { q: "Cliente chiede preventivo distribuzione o frizione?", options: [
-        { emoji: "📝", label: "Controllo listino casa madre e lo richiamo in giornata", node: M("⏰", "Preventivo a mano", "Risposta in sera") },
-        { emoji: "⚡", label: "Preventivo cifrato subito + slot ponte libero", node: AU("🧾", "Preventivo lampo", "Ponte prenotato") }
+      { q: "Auto in ponte, lavoro finito. Cosa salva il sistema?", options: [
+        { emoji: "📄", label: "Fattura stampata, archivio cartaceo in ufficio", node: M("🗃️", "Zero scheda auto", "Storico perso") },
+        { emoji: "💾", label: "Scheda auto targa+telaio: km attuali, interventi, gomme, prossimo tagliando a 15.000km", node: AU("🚙", "Scheda auto viva", "Storico digitale") }
       ]},
-      { q: "Ok al lavoro. Come blocchi ponte e auto sostitutiva?", options: [
-        { emoji: "📞", label: "Segno sul quadernone e spero non salti", node: M("📖", "Agenda cartacea", "Rischio salto") },
-        { emoji: "🗓️", label: "Booking online, auto muletto, promemoria -24h", node: AU("🚗", "Ponte + muletto", "Logistica auto") }
+      { q: "Ottobre, inizia la stagione gomme invernali?", options: [
+        { emoji: "📬", label: "Volantino generico in officina, chi entra lo vede", node: M("🪧", "Marketing a pioggia", "Conversione bassa") },
+        { emoji: "🎯", label: "WA mirato: \"La tua Panda targa XY chiede le gomme M+S, promo 299€ montate\"", node: AU("📲", "Targeting personale", "Upsell stagionale") }
       ]},
-      { q: "Consegna auto. Il cliente riparte e poi?", options: [
-        { emoji: "👋", label: "Grazie e alla prossima, se si ricorda", node: M("🚪", "Saluto e via", "Zero storico") },
-        { emoji: "⭐", label: "Recensione Google + scheda tagliando futuro", node: AU("📋", "Review + storico", "Cliente fidato") }
+      { q: "10 mesi dal tagliando, km stimati vicini alla soglia?", options: [
+        { emoji: "🤞", label: "Spero torni prima di andare da un concorrente", node: M("👻", "Perso in catena", "Bosch / Norauto") },
+        { emoji: "🔔", label: "Timer km+data: \"tagliando in scadenza, slot lunedì 10:00, auto muletto disponibile\"", node: AU("⚡", "Richiamo auto", "Trigger km") }
       ]},
-      { q: "Dopo 10 mesi dal tagliando o revisione in scadenza?", options: [
-        { emoji: "🤞", label: "Spero torni prima che vada dal concorrente", node: M("👻", "Perso in catena", "Bosch Service") },
-        { emoji: "🔔", label: "Richiamo automatico km + data, slot prenotabile", node: AU("🚙", "Retention officina", "Richiamo auto") }
+      { q: "Revisione in scadenza per la sua auto?", options: [
+        { emoji: "🤷", label: "Dovrebbe saperlo lui, è sul libretto", node: M("📚", "Occasione persa", "Va dal primo") },
+        { emoji: "🗓️", label: "Timer revisione -60/-30gg: \"prenota qui, evita multa\"", node: AU("✅", "Revisione guidata", "Calendar auto") }
       ]}
     ],
-    goalLabel: "Retention cliente auto + riempimento ponti"
+    goalLabel: "Ogni auto che è passata qui torna per tagliando, gomme, revisione: retention al 90%"
   },
 
   retail: {
     name: "Negozio / Retail", icon: "🛍️",
-    trigger: TR("👗", "DM Instagram: \"c'è ancora? fai la 42?\""),
+    trigger: TR("🛍️", "Cliente acquista in negozio o chiede info su IG"),
     steps: [
-      { q: "Arriva la richiesta in DM: cosa fai?", options: [
-        { emoji: "😮‍💨", label: "Rispondo tra un cliente e l'altro", node: M("📵", "Risposta a singhiozzo", "Cassa intasata") },
-        { emoji: "📸", label: "Foto capo + taglie disponibili + invito prova", node: AU("🏬", "Scheda capo + invito", "DM in vetrina") }
+      { q: "Cliente acquista: cosa salva il sistema?", options: [
+        { emoji: "🧾", label: "Scontrino, fine. Nemmeno il nome", node: M("👤", "Cliente anonimo", "Acquisto isolato") },
+        { emoji: "💾", label: "Scheda: taglia, marche preferite, colore, budget, occasioni (matrimoni, regali)", node: AU("🗂️", "Profilo gusto", "Dati per targeting") }
       ]},
-      { q: "Dice \"passo a vederlo\" ma non arriva mai?", options: [
-        { emoji: "🤞", label: "Spero che si ricordi, io ho altro da fare", node: M("🍂", "Vendita persa", "Capo a stock") },
-        { emoji: "🏷️", label: "Te lo tengo 48h + promemoria con foto", node: AU("🎁", "Hold + reminder", "Camerino prenotato") }
+      { q: "DM IG: \"c'è ancora quel vestito in 42?\"", options: [
+        { emoji: "😮‍💨", label: "Rispondo a voce, tra un cliente e l'altro", node: M("📵", "Risposta lenta", "Spesso persa") },
+        { emoji: "📸", label: "Foto capo + taglie + \"te lo metto da parte 48h, vieni a provarlo giovedì\"", node: AU("🏬", "DM in vetrina", "Hold + reminder") }
       ]},
-      { q: "Dopo che esce dal camerino con il sacchetto?", options: [
-        { emoji: "👋", label: "\"Grazie, a presto!\" e basta", node: M("🚪", "Scontrino e addio", "Zero ritorno") },
-        { emoji: "⭐", label: "Recensione + consiglio abbinamento nuova collezione", node: AU("💎", "Review + upsell", "Cliente abituale") }
+      { q: "Nuova collezione in arrivo?", options: [
+        { emoji: "📣", label: "Post IG generico per tutti", node: M("📢", "Conversione bassa", "Risposta tiepida") },
+        { emoji: "💌", label: "Anteprima privata ai clienti VIP filtrata per taglia/stile + sneak peek 48h prima", node: AU("🎟️", "Preview VIP", "Segmentazione scheda") }
       ]},
-      { q: "Cliente abituale sparito da 60 giorni?", options: [
-        { emoji: "📉", label: "Sarà passato a Zalando, pazienza", node: M("🛒", "Perso online", "Tessera mai usata") },
-        { emoji: "🎟️", label: "Preview nuova collezione prima dei saldi", node: AU("💌", "Anteprima VIP", "Riattivazione") }
+      { q: "Cliente abituale sparita da 60gg?", options: [
+        { emoji: "🤷", label: "Sarà passata a Zalando, pazienza", node: M("📉", "Cliente persa", "LTV fermo") },
+        { emoji: "🔁", label: "Win-back: \"capo perfetto per te appena arrivato + sconto VIP 15%\"", node: AU("🎁", "Riattivazione mirata", "Basata su gusti") }
       ]}
     ],
-    goalLabel: "Dal DM al camerino al cliente fedele"
+    goalLabel: "Ogni cliente che compra una volta torna a ogni cambio di stagione"
   },
 
   ecommerce: {
     name: "E-commerce / Online", icon: "🛒",
-    trigger: TR("🛒", "Checkout abbandonato: carrello pieno, zero ordine"),
+    trigger: TR("🛒", "Visitatore aggiunge prodotto al carrello"),
     steps: [
-      { q: "Carrello fermo da 1 ora. Tu cosa fai?", options: [
-        { emoji: "😤", label: "Niente, tanto il 70% non compra", node: M("📉", "Carrello perso", "CPA bruciato") },
-        { emoji: "📧", label: "Email recupero con foto prodotto + CTA", node: AU("🔔", "Abandoned cart #1", "Recovery 1h") }
+      { q: "Esce dal sito senza pagare. Cosa accade?", options: [
+        { emoji: "😤", label: "Niente, il 70% abbandona, è statistica", node: M("📉", "Carrello perso", "CPA bruciato") },
+        { emoji: "📧", label: "Dopo 1h: email recovery #1 con foto prodotti + checkout diretto", node: AU("🔔", "Recovery auto 1h", "Trigger abbandono") }
       ]},
-      { q: "Passate 24h, ancora non ha pagato. Mossa?", options: [
-        { emoji: "🤷", label: "Amen, CPA bruciato", node: M("💸", "Budget ads perso", "Click sprecato") },
-        { emoji: "💸", label: "Email #2 con coupon -10% a scadenza", node: AU("⏳", "Recovery + urgency", "-10% 24h") }
+      { q: "24h passano, ancora non compra?", options: [
+        { emoji: "🤷", label: "Abbandono definitivo, passo al prossimo", node: M("💸", "Click ads perso", "Budget bruciato") },
+        { emoji: "⏳", label: "Email #2: coupon -10% scadenza 24h + urgency + social proof", node: AU("🎯", "Recovery + urgency", "Sequenza 24h") }
       ]},
-      { q: "Ordine consegnato. Poi il silenzio?", options: [
-        { emoji: "📦", label: "Spedito, fine del rapporto", node: M("🚪", "Zero review", "Zero riacquisto") },
-        { emoji: "⭐", label: "Richiesta review +3gg e tracking proattivo", node: AU("📬", "Post-delivery", "UGC + review") }
+      { q: "Ordine consegnato: fine o inizio?", options: [
+        { emoji: "📦", label: "Spedito, rapporto finito", node: M("🚪", "Cliente one-shot", "LTV minimo") },
+        { emoji: "⭐", label: "+3gg: tracking proattivo + review auto + UGC incentivato", node: AU("📬", "Post-delivery attivo", "Review + content") }
       ]},
-      { q: "Cliente sparito da 45gg. Lo molli?", options: [
-        { emoji: "👋", label: "Pazienza, one-shot buyer", node: M("📉", "LTV zero", "AOV basso") },
-        { emoji: "🎁", label: "Cross-sell su top seller + coupon ritorno", node: AU("🔁", "Win-back", "Second order") }
+      { q: "Cliente ha comprato una volta, 45gg di silenzio?", options: [
+        { emoji: "👋", label: "Pazienza, compra altrove", node: M("📉", "Zero second order", "AOV piatto") },
+        { emoji: "🎁", label: "Win-back AI: cross-sell top seller basato su acquisto + coupon ritorno", node: AU("🔁", "Second order auto", "LTV triplicato") }
       ]}
     ],
-    goalLabel: "Da carrello abbandonato a cliente ricorrente (LTV su)"
+    goalLabel: "Ogni cliente compra 3 volte invece di una: LTV triplicato, CPA dimezzato"
   },
 
   hotel: {
     name: "Hotel / B&B", icon: "🏨",
-    trigger: TR("📩", "Richiesta disponibilità via sito/WhatsApp"),
+    trigger: TR("🏨", "Ospite prenota via Booking / Expedia / sito"),
     steps: [
-      { q: "Come rispondi alla richiesta di prenotazione?", options: [
-        { emoji: "🐌", label: "Controllo PMS, rispondo a mano quando posso", node: M("⏰", "Risposta lenta", "Guest su Booking") },
-        { emoji: "⚡", label: "Preventivo diretto + sconto vs OTA in 2 min", node: AU("💰", "Bypass OTA", "Prenotazione diretta") }
+      { q: "Guest prenotato da Booking: cosa fa il sistema?", options: [
+        { emoji: "📧", label: "Email conferma generica del PMS, fine", node: M("📝", "Guest anonimo", "100% di Booking") },
+        { emoji: "📲", label: "Recupera email reale dall'ospite + salva in rubrica + tag sorgente OTA", node: AU("🗂️", "Rubrica guest attiva", "Contatto mio, non di OTA") }
       ]},
-      { q: "Cosa riceve il guest dopo aver prenotato?", options: [
-        { emoji: "📧", label: "Email di conferma standard del gestionale", node: M("📝", "Conferma anonima", "Guest freddo") },
-        { emoji: "🗺️", label: "Welcome kit: come arrivare, orari, tips locali", node: AU("✉️", "Pre-stay esperienziale", "Hype pre-arrivo") }
+      { q: "72h prima del check-in?", options: [
+        { emoji: "🔕", label: "Niente, arriva quando arriva", node: M("🛎️", "Arrivo freddo", "Coda reception 22:00") },
+        { emoji: "✉️", label: "Welcome kit: itinerario city, orari colazione, upsell transfer/parking/late-checkout", node: AU("🗺️", "Pre-stay esperienziale", "ADR +15%") }
       ]},
-      { q: "Check-in: come gestisci l'arrivo?", options: [
-        { emoji: "🛎️", label: "Reception, documenti e chiavi all'arrivo", node: M("⏳", "Coda alle 22", "Staff stressato") },
-        { emoji: "🔑", label: "Check-in online 24h prima + upsell camera/colazione", node: AU("⚡", "Self check-in", "ADR su, code zero") }
+      { q: "Dopo il check-out: come catturi review e return?", options: [
+        { emoji: "👋", label: "Saluto e camera si pulisce per il prossimo", node: M("🚪", "Guest sparito", "Solo review Booking") },
+        { emoji: "⭐", label: "+4h: review Google diretto + codice sconto 10% per tornare diretto (no OTA)", node: AU("💎", "Review + win-back", "Bypass commissione") }
       ]},
-      { q: "Dopo il check-out il guest è...", options: [
-        { emoji: "👋", label: "Saluto e camera pronta per il prossimo", node: M("🚪", "Guest dimenticato", "Zero Google review") },
-        { emoji: "⭐", label: "Review Google + offerta return guest personalizzata", node: AU("💎", "Review + return", "Contatto diretto") }
+      { q: "1 anno dopo il soggiorno: come torni a parlarci?", options: [
+        { emoji: "🤐", label: "Niente, se si ricorda torna", node: M("🍂", "Return guest = 0", "Ricomincia da Booking") },
+        { emoji: "🎂", label: "Timer anniversario: \"un anno fa eri qui, tariffa riservata + colazione omaggio\"", node: AU("💕", "Return guest diretto", "Trigger stagionale") }
       ]}
     ],
-    goalLabel: "Da guest OTA a return guest diretto"
+    goalLabel: "50% delle prenotazioni diretto sul sito (addio commissione Booking)"
   },
 
   bar: {
     name: "Bar / Pasticceria", icon: "☕",
-    trigger: TR("🎂", "Richiesta torta o vassoio catering"),
+    trigger: TR("🎂", "Cliente chiede torta comunione/matrimonio o catering"),
     steps: [
-      { q: "Squilla sabato mattina: torta comunione", options: [
-        { emoji: "🤷", label: "Richiamo quando chiudo il bar", node: M("📵", "Preventivo perso", "Tel in rush") },
-        { emoji: "📋", label: "Listino + foto torte + slot auto", node: AU("📸", "Richiesta qualificata", "Preventivo auto") }
+      { q: "Ordine da 300€ in arrivo: cosa blinda il sistema?", options: [
+        { emoji: "🤝", label: "Parola data a voce, preparo lo stesso", node: M("🎲", "Rischio annullamento", "Lavoro perso") },
+        { emoji: "💳", label: "Caparra 30% online + conferma auto + scheda evento (data, persone, stile)", node: AU("🔒", "Ordine blindato", "Impegno vero") }
       ]},
-      { q: "Promette ma senza caparra", options: [
-        { emoji: "🤝", label: "Parola data, la preparo lo stesso", node: M("🎂", "Torta in vetrina", "Se annulla perso") },
-        { emoji: "💶", label: "Acconto 30% + conferma ritiro", node: AU("🔒", "Ordine blindato", "Caparra anti-fuga") }
+      { q: "Cliente colazione abituale non si vede da 2 settimane?", options: [
+        { emoji: "🤷", label: "Forse ha cambiato lavoro, pace", node: M("☕", "Cappuccino mensile perso", "Mai più rivisto") },
+        { emoji: "📲", label: "Rubrica fedeli + WA: \"il tuo cappuccino di sempre + brioche omaggio oggi\"", node: AU("💌", "Riattivazione abituale", "Timer 14gg") }
       ]},
-      { q: "Giorno prima del ritiro silenzio", options: [
-        { emoji: "😰", label: "Spero si ricordi della torta", node: M("⏳", "Torta invenduta", "Rischio scarto") },
-        { emoji: "⏰", label: "Promemoria 48h + 2h con orario", node: AU("📲", "Ritiro garantito", "Conferma auto") }
+      { q: "Ordine consegnato per comunione/matrimonio?", options: [
+        { emoji: "👋", label: "Arrivederci e grazie, fine", node: M("📦", "Evento chiuso", "Zero visibilità") },
+        { emoji: "📸", label: "+24h: foto torta + richiesta review + codice amico 10% per referral", node: AU("⭐", "Review + referral", "Amici della sposa") }
       ]},
-      { q: "Cliente ritira e sparisce", options: [
-        { emoji: "👋", label: "Arrivederci e grazie", node: M("🚪", "Mai più rivisto", "Zero ritorno") },
-        { emoji: "⭐", label: "Foto torta + recensione + sconto next", node: AU("📸", "Cliente fidelizzato", "Review + sconto") }
+      { q: "Eventi stagionali (Natale, Pasqua, Festa della mamma)?", options: [
+        { emoji: "🪧", label: "Vetrina con esposizione + chi entra vede", node: M("🚪", "Campagna passiva", "Incasso piatto") },
+        { emoji: "🎁", label: "WA ai clienti catering: \"prenotazioni panettoni/colombe aperte, listino + early bird\"", node: AU("🎯", "Pre-order stagionale", "Forecast produzione") }
       ]}
     ],
-    goalLabel: "Da preventivo volatile a cliente ricorrente"
+    goalLabel: "Ordini catering blindati + abituali che tornano ogni mattina senza saltare"
   },
 
   wedding: {
     name: "Wedding planner / Eventi", icon: "🎊",
     trigger: TR("💍", "Coppia chiede preventivo matrimonio"),
     steps: [
-      { q: "Sposi scrivono: rispondi a caldo o a freddo?", options: [
-        { emoji: "📨", label: "PDF pacchetti quando ho tempo", node: M("⏰", "Preventivo tardivo", "Coppia si raffredda") },
-        { emoji: "⚡", label: "Brochure + mood-board + qualifica budget", node: AU("📋", "Qualifica auto", "Coppia pre-valutata") }
+      { q: "Coppia appena fidanzata scrive. Cosa fa il sistema?", options: [
+        { emoji: "📨", label: "Invio PDF pacchetti quando trovo tempo", node: M("⏰", "Preventivo tardivo", "Si raffreddano") },
+        { emoji: "🎨", label: "Qualifica: data, budget, stile, numero invitati → portfolio mirato + caparra consulenza", node: AU("📋", "Qualifica automatica", "Solo sposi seri") }
       ]},
-      { q: "Call conoscitiva con la coppia?", options: [
-        { emoji: "📞", label: "Li richiamo per fissare data", node: M("👤", "Booking a voce", "Ping-pong telefono") },
-        { emoji: "📅", label: "Link calendario + questionario stile", node: AU("🎨", "Call + ispirazioni", "Mood-board pre-call") }
+      { q: "Consulenza fatta, 7gg di silenzio dalla coppia?", options: [
+        { emoji: "🤞", label: "Aspetto che si facciano vivi, non voglio essere pressante", node: M("👻", "Ghosting", "Preventivo perso") },
+        { emoji: "💌", label: "Nurture 3 email in 14gg: real wedding + testimonial + urgenza data", node: AU("🔄", "Recupero indecisi", "Sequenza auto") }
       ]},
-      { q: "Coppia sparisce dopo il preventivo?", options: [
-        { emoji: "🤷", label: "Aspetto, magari si rifanno vivi", node: M("👻", "Ghosting senza risposta", "Preventivo perso") },
-        { emoji: "💌", label: "Nurture: testimonial, real wedding, caparra", node: AU("🔄", "Recupero indecisi", "Nurture 3-email") }
+      { q: "Contratto firmato: 12 mesi fino al matrimonio. Come li gestisci?", options: [
+        { emoji: "📞", label: "Chiamate periodiche quando mi ricordo", node: M("🗓️", "Organizzazione caotica", "Sposi ansiosi") },
+        { emoji: "✅", label: "Timeline milestones: -12/-6/-3/-1 mese con checklist fornitori + update sposi", node: AU("📋", "Timeline automatica", "Sposi sereni") }
       ]},
-      { q: "Sposi felici il giorno dopo le nozze?", options: [
-        { emoji: "👰", label: "Grazie e tanti auguri", node: M("🚪", "Nessun referral", "Fine rapporto") },
-        { emoji: "🥂", label: "Recensione + bonus referral + anniversario", node: AU("💕", "Referral engine", "Review + amici") }
+      { q: "Dopo il matrimonio: referral amici e nuovi eventi?", options: [
+        { emoji: "👰", label: "Grazie, auguri, a volte mandano una coppia amica", node: M("🚪", "Referral sporadico", "Un wedding a volta") },
+        { emoji: "💕", label: "Anniversario 1 anno + bonus referral coppie amiche + proposta battesimo/compleanni", node: AU("🔗", "Referral engine", "Cliente a vita eventi") }
       ]}
     ],
-    goalLabel: "Da preventivo a referral amici e recensioni"
+    goalLabel: "Sposi felici = referral amici = agenda piena 18 mesi avanti"
   },
 
   fotografo: {
     name: "Fotografo", icon: "📷",
-    trigger: TR("💍", "Richiesta preventivo matrimonio via DM"),
+    trigger: TR("💍", "Sposi chiedono preventivo matrimonio via DM"),
     steps: [
-      { q: "Arriva il DM: quanto per il mio matrimonio?", options: [
-        { emoji: "🤷", label: "Rispondo tra uno shooting e l'altro", node: M("📵", "Preventivo a memoria", "DM freddo") },
-        { emoji: "📋", label: "Listino + portfolio + data check auto", node: AU("📆", "Qualifica + data", "Pacchetti pronti") }
+      { q: "Sposi firmano contratto. Cosa salva il sistema?", options: [
+        { emoji: "📝", label: "Caparra su bonifico, data annotata sul calendario Google", node: M("📓", "Poco strutturato", "Cliente one-shot") },
+        { emoji: "🗂️", label: "Scheda coppia: data nozze, anniversario, location, stile, +1 anno promemoria famiglia", node: AU("💍", "Cliente a vita", "Dati ricorrenti") }
       ]},
-      { q: "Come blocchi la data dello shooting?", options: [
-        { emoji: "🤝", label: "Stretta di mano, tanto si fidano", node: M("🎲", "Nessuna caparra", "Se annulla perso") },
-        { emoji: "💳", label: "Acconto 30% + contratto + mood board", node: AU("🎨", "Caparra + brief", "Data blindata") }
+      { q: "2 mesi di editing dopo le nozze, sposi in attesa?", options: [
+        { emoji: "🔕", label: "Silenzio, consegno quando finisco", node: M("⏳", "Sposi ansiosi", "Engagement zero") },
+        { emoji: "📸", label: "Sneak peek 15gg: 5 foto teaser + cover + social tag strategici", node: AU("✨", "Engagement vivo", "Hype pre-gallery") }
       ]},
-      { q: "Galleria pronta dopo 2 mesi di editing:", options: [
-        { emoji: "📧", label: "Link Pixieset e buona visione", node: M("📭", "Consegna e via", "Zero engagement") },
-        { emoji: "🖼️", label: "Gallery privata + invito recensione + album", node: AU("⭐", "Delivery + review", "Upsell album") }
+      { q: "Gallery consegnata: upsell album e stampe?", options: [
+        { emoji: "📭", label: "Link Pixieset e buona visione, fine", node: M("🚪", "Zero upsell", "LTV bloccato") },
+        { emoji: "📖", label: "Gallery privata + review + proposta album fine art 800€ entro 30gg", node: AU("💎", "Upsell album", "Review + vendita") }
       ]},
-      { q: "Un anno dopo il sì o il newborn:", options: [
-        { emoji: "🌫️", label: "Se si ricordano tornano loro", node: M("👻", "Cliente one-shot", "Sparito") },
-        { emoji: "🎂", label: "Promemoria anniversario + family update", node: AU("📷", "Ricorrenza annuale", "Ritratto famiglia") }
+      { q: "1 anno dopo: anniversario, gravidanza, newborn?", options: [
+        { emoji: "🌫️", label: "Se si ricordano mi chiamano loro", node: M("👻", "Cliente perso", "One-shot") },
+        { emoji: "🎂", label: "Timer annuale: auguri anniversario + proposta family shooting + newborn package", node: AU("🔁", "Cliente ricorrente", "Famiglia che cresce") }
       ]}
     ],
-    goalLabel: "Da DM a cliente che torna ogni anno"
+    goalLabel: "Sposi oggi, famiglia domani, nonni tra 10 anni: cliente per la vita"
   },
 
   psicologo: {
     name: "Psicologo / Counselor", icon: "🧠",
-    trigger: TR("📩", "Arriva richiesta colloquio conoscitivo"),
+    trigger: TR("📩", "Persona scrive per primo colloquio"),
     steps: [
-      { q: "Come accogli chi scrive per la prima volta?", options: [
-        { emoji: "🤲", label: "Rispondo quando riesco, tra una seduta e l'altra", node: M("📝", "Risposta a mano", "Paziente aspetta") },
-        { emoji: "💬", label: "Messaggio accogliente + info patto terapeutico", node: AU("🌱", "Accoglienza etica", "Patto chiaro") }
+      { q: "Primo contatto: cosa fa il sistema (rispettoso)?", options: [
+        { emoji: "🤲", label: "Rispondo quando riesco, con calma, tra una seduta e l'altra", node: M("📝", "Risposta a mano", "Paziente in ansia") },
+        { emoji: "💬", label: "Accoglienza immediata + info approccio + scheda privata cifrata", node: AU("🌱", "Accoglienza etica", "Privacy-first") }
       ]},
-      { q: "Chi tentenna prima del primo colloquio?", options: [
-        { emoji: "🌫️", label: "Se non si fa più sentire, lascio stare", node: M("👣", "Silenzio rispettoso", "Paziente perso") },
-        { emoji: "🕊️", label: "Un promemoria delicato, senza pressione", node: AU("💌", "Promemoria gentile", "Senza forzare") }
+      { q: "Primo colloquio fissato: cosa salva il sistema?", options: [
+        { emoji: "📓", label: "Nota mentale + calendario personale", node: M("🗃️", "Dati sparsi", "Zero continuità") },
+        { emoji: "🔒", label: "Cartella clinica digitale (GDPR) + patto terapeutico firmato + piano sedute", node: AU("📋", "Cartella sicura", "Tutto in un posto") }
       ]},
-      { q: "Paziente salta una seduta e non risponde?", options: [
-        { emoji: "📵", label: "Riprovo a chiamare nei giorni dopo", node: M("📞", "Richiamo a memoria", "Recupero manuale") },
-        { emoji: "❤️‍🩹", label: "Messaggio non giudicante + spazio per tornare", node: AU("🤝", "Riaggancio empatico", "Spazio aperto") }
+      { q: "Paziente salta una seduta e tace?", options: [
+        { emoji: "📵", label: "Lo richiamo dopo qualche giorno, se mi ricordo", node: M("📞", "Recupero manuale", "A volte lo dimentico") },
+        { emoji: "❤️‍🩹", label: "Messaggio delicato non giudicante + spazio aperto + slot riservato", node: AU("🤝", "Riaggancio empatico", "Nessuna pressione") }
       ]},
-      { q: "Percorso concluso, e dopo mesi?", options: [
-        { emoji: "🚪", label: "Chiudo il percorso e lascio andare", node: M("👋", "Niente contatto", "Chiusura secca") },
-        { emoji: "🌱", label: "Check-in a 6 mesi, se vorrà riaprire", node: AU("💚", "Cura long-term", "Porta aperta") }
+      { q: "Percorso concluso: e dopo 6 mesi?", options: [
+        { emoji: "🚪", label: "Chiudo, lascio la persona al suo cammino", node: M("👋", "Porta chiusa", "Zero cura long-term") },
+        { emoji: "🌱", label: "Check-in gentile a 6-12 mesi: \"come stai? qui se serve\"", node: AU("💚", "Porta aperta", "Cura nel tempo") }
       ]}
     ],
-    goalLabel: "Accompagnare con rispetto dal primo contatto al dopo-percorso"
+    goalLabel: "Ogni paziente accompagnato con rispetto, dal primo \"scusi...\" al ritorno quando serve"
   },
 
   scuola: {
     name: "Scuola / Formazione", icon: "🎓",
-    trigger: TR("📚", "Richiesta info corso / lezione prova"),
+    trigger: TR("📚", "Studente si iscrive al corso base"),
     steps: [
-      { q: "Arriva richiesta info corso: come rispondi?", options: [
-        { emoji: "🤷", label: "Mando brochure PDF quando trovo 10 minuti", node: M("📎", "Risposta a mano", "Lead freddo") },
-        { emoji: "⚡", label: "Programma + calendario + prezzi + lezione prova", node: AU("🎁", "Info pack + trial", "Prova prenotata") }
+      { q: "Iscrizione firmata: cosa salva il sistema?", options: [
+        { emoji: "📝", label: "Cartaceo in segreteria + bonifico da incassare", node: M("📄", "Tempi lunghi", "Studente aspetta") },
+        { emoji: "🗂️", label: "Scheda studente: obiettivo, livello, preferenze, pagamento + welcome kit auto", node: AU("📬", "Onboarding digitale", "Studente pronto") }
       ]},
-      { q: "Studente vuole iscriversi: come chiudi?", options: [
-        { emoji: "📝", label: "Modulo cartaceo in segreteria + bonifico a rate", node: M("📄", "Iscrizione manuale", "Tempo perso") },
-        { emoji: "💳", label: "Form online, pagamento retta + welcome kit auto", node: AU("📬", "Iscrizione digitale", "Onboarding auto") }
+      { q: "Prime 2 lezioni: studente è poco attivo?", options: [
+        { emoji: "😶", label: "Già incassata la retta, se sparisce non mi accorgo", node: M("🪑", "Drop-out invisibile", "Review negativa") },
+        { emoji: "🚨", label: "Alert tutor + check-in studente + materiali extra + buddy system", node: AU("🛟", "Anti drop-out", "Recupero mirato") }
       ]},
-      { q: "Studente salta le prime lezioni: cosa fai?", options: [
-        { emoji: "😶", label: "Ho già incassato la retta, se sparisce sparisce", node: M("🪑", "No-show ignorato", "Drop-out") },
-        { emoji: "🎯", label: "Check-in tutor + recupero + promemoria piattaforma", node: AU("🛟", "Anti drop-out", "Recupero studente") }
+      { q: "Metà corso: studente è in difficoltà o indietro?", options: [
+        { emoji: "🤷", label: "Se chiede aiuto rispondo, altrimenti vado avanti", node: M("🌫️", "Frustrazione silente", "Non finisce") },
+        { emoji: "📈", label: "Progress tracker + feedback tutor + tutoring individuale se pattern in peggioramento", node: AU("🎯", "Attenzione precoce", "Recupero in tempo") }
       ]},
-      { q: "Fine corso base: come porti allo step successivo?", options: [
-        { emoji: "👋", label: "Consegno certificato, saluto, sparisce per sempre", node: M("🎓", "Upsell persa", "Fine relazione") },
-        { emoji: "🏆", label: "Review Google + sconto livello intermedio + open day", node: AU("📈", "Continuità + review", "Upsell avanzato") }
+      { q: "Fine corso base: come porto al livello avanzato?", options: [
+        { emoji: "👋", label: "Certificato, saluto, ex-studente a vita", node: M("🎓", "Upsell 0%", "Relazione finita") },
+        { emoji: "🏆", label: "Review Google + sconto early bird livello intermedio + open day avanzato", node: AU("📈", "Continuità naturale", "Upsell 40-60%") }
       ]}
     ],
-    goalLabel: "Da info → iscritto → certificato → livello avanzato"
+    goalLabel: "Retention 80%: ogni studente finisce il corso e si iscrive al livello successivo"
   },
 
   coach: {
     name: "Personal trainer / Coach", icon: "🏃",
-    trigger: TR("💬", "DM IG: \"quanto costa il PT 1:1?\""),
+    trigger: TR("🏁", "Cliente firma primo mese di coaching"),
     steps: [
-      { q: "Nuova richiesta programma: come rispondi?", options: [
-        { emoji: "⏰", label: "Rispondo la sera quando stacco", node: M("📵", "DM freddo", "Fredda in 6h") },
-        { emoji: "🎯", label: "Body check gratis + listino pacchetti", node: AU("📋", "Qualifica + call", "Call fissata auto") }
+      { q: "Cliente partito: cosa salva il sistema dal giorno 1?", options: [
+        { emoji: "📋", label: "Appunti su block-notes, peso di base su foglio", node: M("📝", "Dati sparsi", "Zero tracking") },
+        { emoji: "🗂️", label: "Scheda: obiettivo, peso, misure, foto, infortuni, date sessioni, timer check-in", node: AU("📊", "Tracciamento vivo", "Base scientifica") }
       ]},
-      { q: "Prima sessione: come la fissi?", options: [
-        { emoji: "📞", label: "Ci sentiamo a voce, ti dico quando", node: M("🗓️", "Agenda a memoria", "Doppi booking") },
-        { emoji: "📅", label: "Link calendario + brief obiettivi + anamnesi", node: AU("✅", "Onboarding in 5 min", "Brief pronto") }
+      { q: "2 settimane dentro, cliente poco presente / demotivato?", options: [
+        { emoji: "😮‍💨", label: "Aspetto la prossima sessione, vedo come va", node: M("📉", "Drop silenzioso", "Niente rinnovo") },
+        { emoji: "📲", label: "Alert: \"ciao! vediamoci 10 min mercoledì, piccolo cambio piano\" + audio motivazionale", node: AU("🔥", "Recupero motivazione", "Pattern detection") }
       ]},
-      { q: "Cliente sparisce dopo il primo mese: che fai?", options: [
-        { emoji: "😮‍💨", label: "Aspetto che mi scriva lei per rinnovare", node: M("📉", "Drop mese 2", "Fatturato ballerino") },
-        { emoji: "📸", label: "Check-in settimanale + foto + misure ricordate", node: AU("🔥", "Consistenza retention", "+60% retention") }
+      { q: "Fine primo mese: come chiudi il rinnovo?", options: [
+        { emoji: "🤞", label: "Se le va continua, altrimenti amen", node: M("💔", "Churn mese 2", "Cliente instabile") },
+        { emoji: "📈", label: "Report progressi (foto/misure/grafico) + proposta 3 mesi transformation -15%", node: AU("💪", "Chiusura guidata", "LTV triplicato") }
       ]},
-      { q: "Pacchetto 12 sessioni non usate?", options: [
-        { emoji: "🤷", label: "Se salta, salta: le perde lei", node: M("💔", "Cliente frustrata", "Niente rinnovo") },
-        { emoji: "🔁", label: "Recupero auto + upsell transformation 3 mesi", node: AU("💪", "LTV triplicato", "Testimonial oro") }
+      { q: "Cliente con trasformazione visibile: come lo trasformi in testimonial?", options: [
+        { emoji: "🤐", label: "Non la chiedo, non mi piace pressare", node: M("🫥", "Testimonial zero", "Referral zero") },
+        { emoji: "✨", label: "Auto-pack foto before/after + consenso + referral bonus amici + post social", node: AU("🎯", "Testimonial oro", "Engine referral") }
       ]}
     ],
-    goalLabel: "Retention coaching: da 1 mese a transformation"
+    goalLabel: "Ogni cliente arriva alla transformation 3 mesi + diventa testimonial + porta amici"
   },
 
   nail_tatto: {
     name: "Nail / Tatuatore", icon: "💅",
-    trigger: TR("📲", "DM IG: \"quando sei libera per un refill?\""),
+    trigger: TR("💅", "Cliente finisce seduta unghie / tatuaggio"),
     steps: [
-      { q: "Rispondi alla DM o controlli l'agenda dopo?", options: [
-        { emoji: "📵", label: "\"Stasera guardo agenda e ti dico\"", node: M("🌙", "Risposta a fine giornata", "Lead freddo") },
-        { emoji: "⚡", label: "Slot liberi + listino refill/tattoo + portfolio", node: AU("📅", "Slot + portfolio", "Risposta in 1 min") }
+      { q: "Cliente paga e va via. Cosa salva il sistema?", options: [
+        { emoji: "📓", label: "Segno sul quaderno a cassa", node: M("👤", "Zero scheda", "Portfolio muto") },
+        { emoji: "💾", label: "Scheda: tipo servizio (refill gel / tattoo grande), data, timer mantenimento 25/40gg, foto", node: AU("📸", "Scheda + foto + timer", "Portfolio auto") }
       ]},
-      { q: "Caparra per bloccare la seduta?", options: [
-        { emoji: "🤞", label: "\"Fidati, ti aspetto\" senza acconto", node: M("🎲", "No-show a rischio", "Buco 2h") },
-        { emoji: "💳", label: "Caparra online + promemoria 48h/24h/2h", node: AU("🔒", "Posto blindato", "Zero disdette") }
+      { q: "25gg dopo nail / 40gg dopo tattoo ritocco?", options: [
+        { emoji: "🤞", label: "Se torna torna, altrimenti pace", node: M("🌬️", "Infedeltà silente", "Va da altra") },
+        { emoji: "📲", label: "Timer: \"è ora del rifill/ritocco, ho giovedì ore 15 - solo per te\"", node: AU("⏰", "Richiamo custom", "Fedeltà ciclica") }
       ]},
-      { q: "Dopo seduta unghie/tattoo?", options: [
-        { emoji: "🙋", label: "Saluto, foto se ci pensa lei", node: M("📭", "Post servizio muto", "Zero portfolio") },
-        { emoji: "📸", label: "Foto portfolio + recensione + cura post-ink/refill", node: AU("⭐", "Review + aftercare", "Portfolio live") }
+      { q: "Un buco di 2 ore improvviso in agenda?", options: [
+        { emoji: "😩", label: "Lavoro perso, agenda vuota = fatturato vuoto", node: M("🪑", "Ora buca", "Zero incasso") },
+        { emoji: "⚡", label: "Flash WA alle 20 clienti in \"scadenza mantenimento\": \"slot oggi, -15%\"", node: AU("🎯", "Riempi buchi", "Broadcast mirato") }
       ]},
-      { q: "Dopo 25-40 giorni (rifill/ritocco)?", options: [
-        { emoji: "🌬️", label: "Se torna torna, sennò va dalla concorrente", node: M("👻", "Cliente persa", "Infedeltà") },
-        { emoji: "🔁", label: "Richiamo auto: rifill/ritocco gratuito + slot", node: AU("💅", "Fidelizzazione ciclica", "Richiamo 30gg") }
+      { q: "Compleanno cliente fedele?", options: [
+        { emoji: "🤐", label: "Non lo so, non raccolgo le date", node: M("🎂", "Zero trigger", "Occasione persa") },
+        { emoji: "🎁", label: "Timer data nascita: auguri + manicure/ritocco omaggio entro il mese", node: AU("💝", "Evento auto", "Fidelity emotiva") }
       ]}
     ],
-    goalLabel: "Agenda piena, zero no-show, cliente fedele"
+    goalLabel: "Agenda piena 3 settimane avanti + clienti che non vanno più da un'altra artist"
   },
 
   pet: {
     name: "Toelettatura / Pet", icon: "🐾",
-    trigger: TR("✂️", "\"Quanto costa bagno+taglio yorkshire?\""),
+    trigger: TR("🐾", "Cliente porta il cane per bagno + taglio"),
     steps: [
-      { q: "DM razza/taglia: come rispondi?", options: [
-        { emoji: "📱", label: "Rispondo io tra un cliente e l'altro", node: M("📵", "Risposta a mano", "Tempo perso") },
-        { emoji: "💬", label: "Listino auto per razza/taglia/pelo", node: AU("📋", "Preventivo istantaneo", "Qualifica auto") }
+      { q: "Fine servizio, padrone ritira il cane. Cosa salva il sistema?", options: [
+        { emoji: "📓", label: "Ricevuta e basta, niente scheda animale", node: M("👤", "Zero scheda", "Cliente anonimo") },
+        { emoji: "🗂️", label: "Scheda: nome cane, razza, taglia, data, tipo pelo, timer bagno 5 sett, foto finale", node: AU("📋", "Scheda animale", "Richiamo automatico") }
       ]},
-      { q: "Primo bagno cucciolo: come gestisci l'ansia?", options: [
-        { emoji: "🤞", label: "Rassicuro al telefono, poi si vede", node: M("😟", "Padrone in ansia", "Dubbi trauma") },
-        { emoji: "🐶", label: "Video-tutorial pre-visita + foto live", node: AU("📸", "Cucciolo sereno", "Padrone tranquillo") }
+      { q: "5 settimane dopo il bagno?", options: [
+        { emoji: "🤞", label: "Spero che il padrone si ricordi, spesso non succede", node: M("👻", "Padrone sparito", "Dopo 2-3 bagni va altrove") },
+        { emoji: "📲", label: "Timer: \"Luna chiede il suo bagno, giovedì ho slot ore 10 - solo per voi\"", node: AU("⏰", "Richiamo auto", "Fidelizzazione") }
       ]},
-      { q: "Il giorno prima dell'appuntamento?", options: [
-        { emoji: "😮‍💨", label: "Spero si ricordino (spesso no)", node: M("🪑", "No-show frequenti", "Agenda bucata") },
-        { emoji: "⏰", label: "Promemoria 24h + 2h + istruzioni pelo", node: AU("✅", "Agenda piena", "Promemoria auto") }
+      { q: "Primo bagno di un cucciolo (padrone in ansia)?", options: [
+        { emoji: "🤷", label: "Rassicuro a voce, speriamo vada bene", node: M("😟", "Padrone in ansia", "Fiducia fragile") },
+        { emoji: "🎥", label: "Pre-visita: video what-to-expect + foto live durante bagno + video del taglio", node: AU("📸", "Padrone tranquillo", "Onboarding emotivo") }
       ]},
-      { q: "Cliente sparisce dopo 2-3 bagni: che fai?", options: [
-        { emoji: "🥲", label: "Pazienza, sarà andata altrove", node: M("👻", "Infedeltà silenziosa", "Cliente persa") },
-        { emoji: "📸", label: "Foto finale + review + richiamo 5 sett", node: AU("🐾", "Rientrano da soli", "Richiamo auto") }
+      { q: "Compleanno cane o Natale?", options: [
+        { emoji: "🤐", label: "Non lo raccolgo, non saprei", node: M("🎂", "Occasione zero", "Generico") },
+        { emoji: "🎁", label: "Timer compleanno cane: auguri + biscottino omaggio + pettinata gratis", node: AU("🐶", "Evento emotivo", "Fidelity pet owner") }
       ]}
     ],
-    goalLabel: "Stop infedeltà toelettatura"
+    goalLabel: "Ogni cane che entra qui ritorna ogni 5 settimane come un orologio"
   }
 };
 
