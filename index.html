@@ -306,6 +306,38 @@
   @keyframes wfIn { to { opacity: 1; transform: translateY(0); } }
   @keyframes wfArrowIn { to { opacity: 1; } }
   @keyframes wfPop { to { opacity: 1; transform: scale(1); } }
+
+  /* Sector grid (Q1) */
+  .sector-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .5rem;
+  }
+  @media (min-width: 500px) { .sector-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 768px) { .sector-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 1024px) { .sector-grid { grid-template-columns: repeat(5, 1fr); } }
+
+  .sector-card {
+    background: #fff;
+    border: 1.5px solid rgba(20,61,92,0.1);
+    border-radius: 14px;
+    padding: 1rem .65rem;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100px;
+  }
+  .sector-card:hover {
+    border-color: var(--coral);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(212,153,141,0.2);
+  }
+  .sector-card.selected {
+    border-color: var(--coral);
+    background: rgba(212,153,141,0.08);
+    box-shadow: 0 10px 30px rgba(212,153,141,0.25);
+  }
 </style>
 </head>
 <body>
@@ -593,10 +625,10 @@
     <div class="text-center mb-12 max-w-3xl mx-auto">
       <span class="lab-badge mb-6">🧪 Il Laboratorio Ailiv</span>
       <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mt-4 mb-6">
-        Quanto tempo ti sta<br><span class="headline-coral">rubando</span> il tuo business?
+        Scegli il tuo settore.<br><span class="headline-coral">Ti costruiamo il workflow.</span>
       </h2>
       <p class="text-lg md:text-xl text-[#143d5c]/70 leading-relaxed">
-        Rispondi a 3 domande. <strong>Guarda costruirsi davanti ai tuoi occhi</strong> il workflow che ti toglierebbe ore di lavoro manuale — e quante giornate all'anno ti restituirebbe.
+        Ristorante, palestra, studio medico, estetica, retail… <strong>20 settori, domande specifiche ai tuoi pain reali</strong>.<br>Il workflow si disegna davanti ai tuoi occhi mentre rispondi. 2 minuti.
       </p>
     </div>
 
@@ -978,7 +1010,7 @@
 </footer>
 
 <!-- ============ LAB BUILDER JS ============ -->
-<script src="assets/lab-builder.js?v=2"></script>
+<script src="assets/lab-builder.js?v=3"></script>
 
 <!-- ============ GHL form loader ============ -->
 <script src="https://link.msgsndr.com/js/form_embed.js"></script>
