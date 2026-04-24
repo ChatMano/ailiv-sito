@@ -200,12 +200,16 @@
 
   <div class="mt-16 pt-8 border-t border-[#143d5c]/10 flex flex-col md:flex-row justify-between gap-4 text-sm text-[#143d5c]/60">
     <p>© 2026 Ailiv — Tutti i diritti riservati</p>
-    <div class="flex gap-6">
+    <div class="flex gap-6 flex-wrap">
       <a href="/privacy.html" class="hover:text-[#143d5c] transition">Informativa privacy</a>
+      <a href="#" onclick="event.preventDefault(); if(window.AilivCookies) window.AilivCookies.open();" class="hover:text-[#143d5c] transition">Gestisci cookie</a>
       <a href="/" class="hover:text-[#143d5c] transition">Torna al sito</a>
     </div>
   </div>
 </main>
+
+<!-- Cookie consent banner (GDPR) -->
+<script src="assets/cookie-consent.js?v=1"></script>
 
 </body>
 </html>

@@ -142,7 +142,7 @@
       <li><strong>Dati trattati per conto del Cliente (CRM)</strong>: per tutta la durata del contratto e fino a 90 giorni dopo la cessazione, salvo diversa istruzione del Cliente.</li>
     </ul>
 
-    <h2>8. Cookie Policy</h2>
+    <h2 id="cookie-policy">8. Cookie Policy</h2>
     <p>
       Il sito <a href="https://ailiv.it">ailiv.it</a> utilizza cookie per garantire il corretto funzionamento della piattaforma e per analizzare il traffico.
     </p>
@@ -155,7 +155,7 @@
     </ul>
     <h3>8.2 Gestione del consenso</h3>
     <p>
-      Al primo accesso viene mostrato un banner che consente all'Utente di accettare, rifiutare o personalizzare i cookie. Le preferenze possono essere modificate in qualsiasi momento dalle impostazioni del browser o, se disponibile, dal banner di gestione cookie del sito.
+      Al primo accesso viene mostrato un banner che consente all'Utente di accettare, rifiutare o personalizzare i cookie. Le preferenze possono essere modificate in qualsiasi momento cliccando il link "<a href="#" onclick="event.preventDefault(); if(window.AilivCookies) window.AilivCookies.open();"><strong>Gestisci cookie</strong></a>" nel footer del sito. Il consenso viene conservato per 6 mesi, dopodiché verrà richiesto nuovamente.
     </p>
 
     <h2>9. Diritti dell'interessato</h2>
@@ -185,12 +185,16 @@
 
   <div class="mt-16 pt-8 border-t border-[#143d5c]/10 flex flex-col md:flex-row justify-between gap-4 text-sm text-[#143d5c]/60">
     <p>© 2026 Ailiv — Tutti i diritti riservati</p>
-    <div class="flex gap-6">
+    <div class="flex gap-6 flex-wrap">
       <a href="/termini.html" class="hover:text-[#143d5c] transition">Termini e condizioni</a>
+      <a href="#" onclick="event.preventDefault(); if(window.AilivCookies) window.AilivCookies.open();" class="hover:text-[#143d5c] transition">Gestisci cookie</a>
       <a href="/" class="hover:text-[#143d5c] transition">Torna al sito</a>
     </div>
   </div>
 </main>
+
+<!-- Cookie consent banner (GDPR) -->
+<script src="assets/cookie-consent.js?v=1"></script>
 
 </body>
 </html>
