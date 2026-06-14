@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ailiv — Studio di ingegneria AI · Sistemi AI su misura per le imprese</title>
-<meta name="description" content="Ailiv è lo studio che progetta e mette in produzione sistemi AI su misura: AI locale, connettori MCP, OCR documenti, agenti conversazionali, tracciabilità e controllo di gestione. In produzione, non in slide.">
-<meta name="keywords" content="sistemi AI su misura, AI custom aziende, AI locale on-premise, OCR fatture, connettori MCP, tracciabilità AI, controllo di gestione AI, agenti AI WhatsApp, studio ingegneria AI Italia, Ailiv">
-<meta property="og:title" content="Ailiv — Studio di ingegneria AI · Sistemi AI su misura">
+<title>Ailiv — Consulenza e ottimizzazione AI · Sistemi AI su misura per le imprese</title>
+<meta name="description" content="Ailiv progetta e mette in produzione sistemi AI su misura: AI locale, connettori MCP, OCR documenti, agenti conversazionali, tracciabilità e controllo di gestione. In produzione, non in slide.">
+<meta name="keywords" content="sistemi AI su misura, AI custom aziende, AI locale on-premise, OCR fatture, connettori MCP, tracciabilità AI, controllo di gestione AI, agenti AI WhatsApp, consulenza e ottimizzazione AI Italia, Ailiv">
+<meta property="og:title" content="Ailiv — Consulenza e ottimizzazione AI · Sistemi AI su misura">
 <meta property="og:description" content="Progettiamo e mettiamo in produzione AI su misura per realtà strutturate: AI locale, MCP, OCR, agenti, tracciabilità. In produzione, non in slide.">
 <meta property="og:image" content="https://ailiv.it/assets/logo-ailiv.png">
 <meta property="og:url" content="https://ailiv.it">
@@ -204,6 +204,45 @@
     .draw-underline path { stroke-dashoffset: 0; }
     .reveal-children > * { opacity: 1; transform: none; }
   }
+
+  /* ===================== BATCH 2 · EFFETTI AUTONOMI (mobile-first) ===================== */
+  /* Headline che cambia parola */
+  .hero-h1 { font-size: clamp(1.75rem, 7.8vw, 6.4rem); }
+  .rotline { min-height: 1.05em; white-space: nowrap; }
+  .rotator { position: relative; display: inline-block; }
+  .rot-word { display: inline-block; will-change: transform, opacity, filter; }
+  .rot-word.out { animation: rotOut .42s cubic-bezier(.7,0,.84,0) forwards; }
+  .rot-word.in { animation: rotIn .6s cubic-bezier(.16,1,.3,1) forwards; }
+  @keyframes rotOut { to { opacity: 0; transform: translateY(-42%); filter: blur(9px); } }
+  @keyframes rotIn { from { opacity: 0; transform: translateY(48%); filter: blur(9px); } to { opacity: 1; transform: none; filter: blur(0); } }
+
+  /* Sottolineatura: ridisegnata ad ogni cambio parola (override del draw automatico) */
+  .draw-underline path { animation: none; }
+  .draw-underline.draw path { animation: drawLine .8s cubic-bezier(.16,1,.3,1) forwards; }
+
+  /* Sfera viva: alone pulsante + glint rotante + satelliti in orbita */
+  .orb-wrap { position: relative; }
+  .orb-glow { position: absolute; inset: -16%; border-radius: 50%; background: radial-gradient(circle, rgba(212,167,71,.55), rgba(212,167,71,0) 64%); filter: blur(12px); animation: glowPulse 4s ease-in-out infinite; }
+  @keyframes glowPulse { 0%,100% { opacity: .42; transform: scale(.9); } 50% { opacity: .95; transform: scale(1.1); } }
+  .orb::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0) 55deg, rgba(255,255,255,.5) 95deg, rgba(255,255,255,0) 150deg, transparent 360deg); mix-blend-mode: screen; animation: spin 7s linear infinite; pointer-events: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .orb-orbit { position: absolute; inset: 0; border-radius: 50%; animation: spin 10s linear infinite; pointer-events: none; }
+  .orb-orbit.b { animation-duration: 15s; animation-direction: reverse; }
+  .orb-orbit i { position: absolute; top: 50%; left: 50%; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 12px rgba(212,167,71,.9); transform: translateX(120px); }
+  .orb-orbit.b i { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: #fff; box-shadow: 0 0 10px rgba(255,255,255,.85); transform: translateX(-134px) translateY(16px); }
+
+  /* Statistiche */
+  .stat-num { font-family: 'Archivo Black', sans-serif; letter-spacing: -.03em; line-height: 1; color: var(--ink); }
+
+  @media (max-width: 768px) {
+    .orb-orbit i { transform: translateX(86px); }
+    .orb-orbit.b i { transform: translateX(-96px) translateY(12px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .orb-glow, .orb::before, .orb-orbit { animation: none !important; }
+    .rot-word.out, .rot-word.in { animation: none !important; opacity: 1 !important; }
+    .draw-underline.draw path { animation: none !important; stroke-dashoffset: 0 !important; }
+  }
 </style>
 </head>
 <body>
@@ -213,7 +252,7 @@
 <nav class="fixed top-0 left-0 right-0 z-50 nav-blur">
   <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
     <a href="#top" class="flex items-center">
-      <img src="assets/logo-ailiv.png" alt="Ailiv — Studio di ingegneria AI" class="h-9 md:h-10 w-auto">
+      <img src="assets/logo-ailiv.png" alt="Ailiv — Consulenza e ottimizzazione AI" class="h-9 md:h-10 w-auto">
     </a>
     <div class="hidden md:flex gap-8 text-sm font-medium text-[#0e2c43]/80">
       <a href="#cosa" class="hover:text-[#0e2c43] transition">Cosa facciamo</a>
@@ -248,15 +287,20 @@
 
   <div class="relative z-10 max-w-4xl mx-auto w-full text-center">
     <div class="mb-10 reveal visible">
-      <span class="eyebrow"><span class="pdot"></span>STUDIO DI INGEGNERIA AI · ITALIA</span>
+      <span class="eyebrow"><span class="pdot"></span>CONSULENZA E OTTIMIZZAZIONE AI · ITALIA</span>
     </div>
 
-    <div class="orb-wrap mb-10" aria-hidden="true"><div class="orb"></div></div>
+    <div class="orb-wrap mb-10" aria-hidden="true">
+      <div class="orb-glow"></div>
+      <div class="orb"></div>
+      <div class="orb-orbit"><i></i></div>
+      <div class="orb-orbit b"><i></i></div>
+    </div>
 
-    <h1 class="display hero-h1 text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-8">
+    <h1 class="display hero-h1 mb-8">
       <span class="ln">Mettiamo l'AI</span>
-      <span class="ln">al centro del</span>
-      <span class="ln"><span class="accent-rel">tuo business.<svg class="doodle-underline draw-underline" viewBox="0 0 300 14" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M4 9 C70 3, 230 3, 296 8"/></svg></span></span>
+      <span class="ln">al centro</span>
+      <span class="ln rotline"><span class="rotator accent-rel"><span class="rot-word" id="rotWord">del tuo business.</span><svg class="doodle-underline draw-underline" viewBox="0 0 300 14" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M4 9 C70 3, 230 3, 296 8"/></svg></span></span>
     </h1>
 
     <p class="text-lg md:text-2xl text-[#0e2c43]/75 max-w-2xl mx-auto mb-4 leading-relaxed reveal visible">
@@ -295,6 +339,16 @@
     <span class="mq-word">OCR</span><span class="mq-dot"></span>
     <span class="mq-word">Tracciabilità</span><span class="mq-dot"></span>
     <span class="mq-word">Zero sbatti</span><span class="mq-dot"></span>
+  </div>
+</section>
+
+<!-- ============ STATISTICHE (count-up) ============ -->
+<section id="stats" class="py-16 px-6 bg-white border-b border-[#143d5c]/8">
+  <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10 text-center reveal-children">
+    <div><div class="stat-num text-5xl md:text-6xl"><span data-count="6">0</span></div><p class="mono text-[11px] text-[#0e2c43]/55 mt-3 tracking-wide uppercase">Capability combinabili</p></div>
+    <div><div class="stat-num text-5xl md:text-6xl"><span data-count="4">0</span></div><p class="mono text-[11px] text-[#0e2c43]/55 mt-3 tracking-wide uppercase">Sistemi in produzione</p></div>
+    <div><div class="stat-num text-5xl md:text-6xl"><span data-count="100">0</span>%</div><p class="mono text-[11px] text-[#0e2c43]/55 mt-3 tracking-wide uppercase">In produzione, non in slide</p></div>
+    <div><div class="stat-num text-5xl md:text-6xl">24/7</div><p class="mono text-[11px] text-[#0e2c43]/55 mt-3 tracking-wide uppercase">Sistemi sempre attivi</p></div>
   </div>
 </section>
 
@@ -552,7 +606,7 @@
     <div class="grid md:grid-cols-[1.4fr_1fr_1fr] gap-10 mb-12">
       <div>
         <img src="assets/logo-ailiv-bianco.png" alt="Ailiv" class="h-10 w-auto mb-5">
-        <p class="text-white/60 text-sm leading-relaxed max-w-sm">Studio di ingegneria AI. Progettiamo e mettiamo in produzione sistemi AI su misura per realtà strutturate. In produzione, non in slide.</p>
+        <p class="text-white/60 text-sm leading-relaxed max-w-sm">Consulenza e ottimizzazione AI. Progettiamo e mettiamo in produzione sistemi AI su misura per realtà strutturate. In produzione, non in slide.</p>
       </div>
       <div>
         <p class="mono text-xs uppercase tracking-widest text-white/40 mb-4">Naviga</p>
@@ -600,6 +654,44 @@
   const menu = document.getElementById('mobileMenu');
   burger?.addEventListener('click', () => menu.classList.toggle('open'));
   menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+  // Headline che cambia parola + sottolineatura ridisegnata
+  const rotWord = document.getElementById('rotWord');
+  const rotUL = document.querySelector('.rotator .draw-underline');
+  const redraw = () => { if (rotUL) { rotUL.classList.remove('draw'); void rotUL.offsetWidth; rotUL.classList.add('draw'); } };
+  setTimeout(redraw, 1300);
+  if (rotWord && !reduce) {
+    const phrases = ['del tuo business.', 'della tua filiera.', 'della contabilità.', 'dei tuoi documenti.', 'delle conversazioni.'];
+    let i = 0;
+    setInterval(() => {
+      rotWord.classList.add('out');
+      setTimeout(() => {
+        i = (i + 1) % phrases.length;
+        rotWord.textContent = phrases[i];
+        rotWord.classList.remove('out'); rotWord.classList.add('in');
+        redraw();
+        setTimeout(() => rotWord.classList.remove('in'), 650);
+      }, 420);
+    }, 2700);
+  }
+
+  // Conteggio statistiche allo scroll
+  const statSec = document.getElementById('stats');
+  if (statSec) {
+    const nums = statSec.querySelectorAll('[data-count]');
+    if (reduce) { nums.forEach(n => n.textContent = n.dataset.count); }
+    else {
+      const so = new IntersectionObserver((es) => {
+        es.forEach(e => { if (e.isIntersecting) {
+          nums.forEach(n => { const tgt = +n.dataset.count, t0 = performance.now();
+            const step = (t) => { const p = Math.min(1, (t - t0) / 1400); n.textContent = Math.round(tgt * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+            requestAnimationFrame(step); });
+          so.disconnect();
+        }});
+      }, { threshold: .4 });
+      so.observe(statSec);
+    }
+  }
 
   // Barra di progresso scroll
   const sp = document.getElementById('sp');
