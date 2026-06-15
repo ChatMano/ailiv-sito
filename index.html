@@ -713,14 +713,16 @@
 
     const calc = () => { const prev = stage.style.transform; stage.style.transform = 'none'; m = (nav ? nav.offsetHeight : 56) + 4; S0 = Math.max(0, stage.getBoundingClientRect().top + window.scrollY - m); stage.style.transform = prev; };
 
-    let parts = [], praf = null;
+    let parts = [], praf = null, pf = 0;
     function stepParts() {
+      pf++;
       let alive = false;
       parts.forEach(p => {
         if (p.life <= 0) return;
         p.vy += 0.45; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.life -= 0.013;
-        p.el.style.transform = 'translate(' + p.x.toFixed(1) + 'px,' + p.y.toFixed(1) + 'px) scale(' + Math.max(0, p.life).toFixed(2) + ')';
-        p.el.style.opacity = Math.max(0, p.life).toFixed(2);
+        const tw = 0.4 + 0.6 * Math.abs(Math.sin(pf * p.tw + p.ph));   // scintillio
+        p.el.style.transform = 'translate(' + p.x.toFixed(1) + 'px,' + p.y.toFixed(1) + 'px) scale(' + (Math.max(0, p.life) * (0.65 + 0.55 * tw)).toFixed(2) + ')';
+        p.el.style.opacity = (Math.max(0, p.life) * tw).toFixed(2);
         if (p.life > 0) alive = true; else p.el.remove();
       });
       praf = alive ? requestAnimationFrame(stepParts) : null;
@@ -734,16 +736,21 @@
       burst.appendChild(shock);
       requestAnimationFrame(() => { shock.style.transform = 'scale(8)'; shock.style.opacity = '0'; });
       setTimeout(() => shock.remove(), 620);
+      const flash = document.createElement('div');
+      flash.style.cssText = 'position:fixed;left:' + cx + 'px;top:' + cy + 'px;width:130px;height:130px;margin:-65px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(212,167,71,.5) 40%,transparent 70%);opacity:1;transform:scale(.4);transition:transform .35s ease-out,opacity .4s ease-out;';
+      burst.appendChild(flash);
+      requestAnimationFrame(() => { flash.style.transform = 'scale(2.6)'; flash.style.opacity = '0'; });
+      setTimeout(() => flash.remove(), 430);
       parts = [];
       const N = 24;
       for (let i = 0; i < N; i++) {
         const el = document.createElement('i');
-        const size = 5 + Math.random() * 9, white = Math.random() < 0.25;
-        el.style.cssText = 'position:fixed;left:0;top:0;width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + (white ? '#fff' : 'var(--gold)') + ';box-shadow:0 0 10px rgba(212,167,71,.7);will-change:transform,opacity;';
+        const size = 5 + Math.random() * 9, white = Math.random() < 0.3;
+        el.style.cssText = 'position:fixed;left:0;top:0;width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + (white ? '#fff' : 'var(--gold)') + ';box-shadow:0 0 14px rgba(212,167,71,.95),0 0 6px rgba(255,255,255,.8);will-change:transform,opacity;';
         el.style.transform = 'translate(' + cx + 'px,' + cy + 'px)';
         burst.appendChild(el);
         const ang = (Math.PI * 2 * i / N) + (Math.random() - 0.5) * 0.6, sp = 6 + Math.random() * 9;
-        parts.push({ el, x: cx, y: cy, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp + 3, life: 1 });
+        parts.push({ el, x: cx, y: cy, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp + 3, life: 1, ph: Math.random() * 6.28, tw: 0.5 + Math.random() * 0.7 });
       }
       if (!praf) praf = requestAnimationFrame(stepParts);
     }
@@ -767,10 +774,33 @@
       else raf = null;
     };
     const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
+
+    // Forza elastica: comprimi e rilascia -> la molla spinge la pagina verso il basso
+    let lastY = window.scrollY, armed = true, launching = false, compressing = false, relTimer = null;
+    function maybeRelease() {
+      if (launching || state !== 'intact' || !armed || !compressing) return;
+      const p = (window.scrollY - S0) / range;
+      if (p > 0.3 && p < 0.97) {
+        armed = false; compressing = false; launching = true;
+        let v = (0.4 + p) * 13;
+        const se = document.scrollingElement || document.documentElement, html = document.documentElement;
+        const prevSB = html.style.scrollBehavior; html.style.scrollBehavior = 'auto';
+        const fling = () => { se.scrollTop += v; v *= 0.86; if (v > 0.6 && state === 'intact') requestAnimationFrame(fling); else { launching = false; html.style.scrollBehavior = prevSB; } };
+        requestAnimationFrame(fling);
+      }
+    }
+
     calc();
     if (window.scrollY > S0 + range) { state = 'boom'; stage.classList.add('boom'); }
     onScroll(); kick();
-    addEventListener('scroll', () => { onScroll(); kick(); }, { passive: true });
+    addEventListener('scroll', () => {
+      const y = window.scrollY; const dir = y - lastY; lastY = y;
+      const pp = (y - S0) / range;
+      if (pp < 0.12) { armed = true; compressing = false; }
+      if (dir > 0.5 && pp > 0.15) compressing = true; else if (dir < -0.5) compressing = false;
+      onScroll(); kick();
+      if (!launching) { clearTimeout(relTimer); relTimer = setTimeout(maybeRelease, 140); }
+    }, { passive: true });
     addEventListener('resize', () => { calc(); onScroll(); kick(); }, { passive: true });
   }
 
