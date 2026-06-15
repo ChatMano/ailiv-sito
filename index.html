@@ -758,16 +758,17 @@
     let prevP = 0;
     const onScroll = () => {
       const y = window.scrollY; let p;
-      if (y <= S0) { targetPin = 0; targetSq = 0; p = 0; }
-      else { p = (y - S0) / range; targetPin = Math.min(y - S0, range); targetSq = Math.min(p, 1); }
+      if (y <= S0) { p = 0; if (!launching) { targetPin = 0; targetSq = 0; } }
+      else { p = (y - S0) / range; if (!launching) { targetPin = Math.min(y - S0, range); targetSq = Math.min(p, 1); } }
       if (state === 'intact' && !launching && prevP < 1 && p >= 1) { state = 'boom'; explode(); }   // smash diretto fino in fondo
       else if (state === 'boom' && p <= 0.5) { state = 'intact'; stage.classList.remove('boom'); }
       prevP = p;
     };
     const loop = () => {
       pin += (targetPin - pin) * 0.2;
-      sqv += (targetSq - sq) * 0.18; sqv *= 0.74; sq += sqv;        // molla elastica = effetto gelatina
-      const sy = Math.max(0.4, 1 - sq * 0.5);
+      const damp = launching ? 0.88 : 0.74;                          // più rimbalzo al rilascio (rigonfia)
+      sqv += (targetSq - sq) * 0.2; sqv *= damp; sq += sqv;
+      const sy = Math.min(1.35, Math.max(0.4, 1 - sq * 0.5));        // sq<0 -> sy>1 = la palla si rigonfia
       const sx = 1 + (1 - sy) * 0.62;
       stage.style.setProperty('--pin', pin.toFixed(2) + 'px');
       stage.style.setProperty('--sy', sy.toFixed(3));
@@ -784,10 +785,16 @@
       const p = (window.scrollY - S0) / range;
       if (p > 0.12 && p < 0.97) {
         armed = false; compressing = false; launching = true;
+        targetSq = 0;                                    // la molla si rigonfia: torna rotonda con rimbalzo
         let v = p * 38;                                  // inerzia ∝ compressione (come il flick del dito)
         const se = document.scrollingElement || document.documentElement, html = document.documentElement;
         const prevSB = html.style.scrollBehavior; html.style.scrollBehavior = 'auto';
-        const fling = () => { se.scrollTop += v; v *= 0.94; if (v > 0.5) requestAnimationFrame(fling); else { launching = false; html.style.scrollBehavior = prevSB; } };
+        const fling = () => {
+          se.scrollTop += v; v *= 0.94;
+          targetPin = Math.max(0, se.scrollTop - S0); kick();        // tengo la palla in cima, visibile, mentre rigonfia
+          if (v > 0.5) requestAnimationFrame(fling);
+          else { launching = false; html.style.scrollBehavior = prevSB; stage.style.transition = 'opacity .3s'; stage.style.opacity = '0'; }
+        };
         requestAnimationFrame(fling);
       }
     }
@@ -798,7 +805,7 @@
     addEventListener('scroll', () => {
       const y = window.scrollY; const dir = y - lastY; lastY = y;
       const pp = (y - S0) / range;
-      if (pp < 0.12) { armed = true; compressing = false; }
+      if (pp < 0.12) { armed = true; compressing = false; if (stage.style.opacity === '0') { stage.style.transition = 'opacity .25s'; stage.style.opacity = '1'; } }
       if (dir > 0.5 && pp > 0.15) compressing = true; else if (dir < -0.5) compressing = false;
       onScroll(); kick();
       if (!launching) { clearTimeout(relTimer); relTimer = setTimeout(maybeRelease, 140); }
