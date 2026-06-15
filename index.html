@@ -246,6 +246,46 @@
     .draw-underline.draw path { animation: none !important; stroke-dashoffset: 0 !important; }
     .orb-stage { transform: none !important; }
   }
+
+  /* ===================== COME FUNZIONA — animazioni esplicative ===================== */
+  .cf-grid { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
+  @media (min-width: 860px) { .cf-grid { grid-template-columns: repeat(3, 1fr); } }
+  .cf-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 1.4rem; transition: all .3s; }
+  .cf-card:hover { transform: translateY(-3px); box-shadow: 0 18px 44px rgba(20,61,92,0.08); border-color: rgba(20,61,92,0.18); }
+  .cf-viz { width: 100%; height: 168px; background: linear-gradient(180deg,#fcfbf8,#f5f3ee); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 1.1rem; overflow: hidden; display: block; }
+  .cf-h { font-weight: 700; font-size: 1.05rem; margin-bottom: .3rem; }
+  .cf-p { font-size: .86rem; color: rgba(20,61,92,0.68); line-height: 1.5; }
+  .cf-viz .flow, .cf-viz .anim-token, .cf-viz .anim-scan, .cf-viz .ocr-r, .cf-viz .trace-stop, .cf-viz .mcp-node, .cf-viz .mcp-core { transform-box: fill-box; }
+
+  /* OCR */
+  @keyframes ocrScan { 0% { transform: translateY(0); opacity: 0 } 8% { opacity: 1 } 80% { opacity: 1 } 100% { transform: translateY(96px); opacity: 0 } }
+  .anim-scan { animation: ocrScan 3s ease-in-out infinite; }
+  @keyframes ocrRow { 0%,16% { opacity: 0; transform: translateX(8px) } 38%,90% { opacity: 1; transform: translateX(0) } 100% { opacity: 0 } }
+  .ocr-r { opacity: 0; animation: ocrRow 3s ease-in-out infinite; }
+  .ocr-r2 { animation-delay: .22s } .ocr-r3 { animation-delay: .44s }
+
+  /* Connettori / MCP */
+  @keyframes mcpFlow { 0% { transform: translate(0,0); opacity: 0 } 14% { opacity: 1 } 86% { opacity: 1 } 100% { transform: translate(var(--dx,0), var(--dy,0)); opacity: 0 } }
+  .flow { animation: mcpFlow 2.4s linear infinite; }
+  @keyframes mcpPulse { 0%,100% { opacity: .9 } 50% { opacity: 1 } }
+  .mcp-node { animation: mcpPulse 2.4s ease-in-out infinite; }
+  @keyframes mcpCore { 0%,100% { transform: scale(1) } 50% { transform: scale(1.06) } }
+  .mcp-core { transform-origin: center; animation: mcpCore 2.4s ease-in-out infinite; }
+
+  /* Tracciabilità */
+  @keyframes traceToken { 0% { transform: translateX(0) } 100% { transform: translateX(238px) } }
+  .anim-token { animation: traceToken 3.6s linear infinite; }
+  @keyframes traceProg { 0% { stroke-dashoffset: 238 } 100% { stroke-dashoffset: 0 } }
+  .trace-prog { animation: traceProg 3.6s linear infinite; }
+  @keyframes traceLit { 0%,2% { fill: #fff } 5%,12% { fill: var(--gold) } 18%,100% { fill: #fff } }
+  .trace-stop { fill: #fff; animation: traceLit 3.6s linear infinite; }
+  .ts2 { animation-delay: 1s } .ts3 { animation-delay: 2s } .ts4 { animation-delay: 3s }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anim-scan, .ocr-r, .flow, .mcp-node, .mcp-core, .anim-token, .trace-prog, .trace-stop { animation: none !important; }
+    .ocr-r { opacity: 1 !important; }
+    .trace-prog { stroke-dashoffset: 0 !important; }
+  }
 </style>
 </head>
 <body>
@@ -421,6 +461,84 @@
 
     <div class="mt-10 flex flex-wrap gap-3 reveal">
       <span class="chip">Claude / LLM</span><span class="chip">MCP</span><span class="chip">RAG</span><span class="chip">AI locale</span><span class="chip">OCR</span><span class="chip">Cloudflare Workers</span><span class="chip">API real-time</span><span class="chip">Database</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COME FUNZIONA (animazioni esplicative) ============ -->
+<section id="comefunziona" class="py-24 px-6 bg-white">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-14 max-w-3xl reveal">
+      <span class="eyebrow mb-6">COME FUNZIONA</span>
+      <h2 class="display text-4xl md:text-6xl mt-6">
+        I concetti,<br><span class="accent">in movimento.</span>
+      </h2>
+      <p class="text-lg text-[#0e2c43]/65 mt-6 leading-relaxed">Tre dei mattoni che combiniamo, spiegati in un colpo d'occhio. Non slide: è quello che gira davvero.</p>
+    </div>
+
+    <div class="cf-grid reveal-children">
+      <!-- OCR -->
+      <div class="cf-card">
+        <svg class="cf-viz" viewBox="0 0 300 168" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><linearGradient id="ocrG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4a747" stop-opacity="0"/><stop offset="1" stop-color="#d4a747" stop-opacity=".45"/></linearGradient></defs>
+          <rect x="26" y="26" width="104" height="120" rx="8" fill="#fff" stroke="#143d5c" stroke-opacity=".22"/>
+          <rect x="40" y="44" width="56" height="7" rx="3.5" fill="#143d5c" opacity=".3"/>
+          <rect x="40" y="60" width="76" height="5" rx="2.5" fill="#143d5c" opacity=".15"/>
+          <rect x="40" y="72" width="64" height="5" rx="2.5" fill="#143d5c" opacity=".15"/>
+          <rect x="40" y="92" width="76" height="5" rx="2.5" fill="#143d5c" opacity=".15"/>
+          <rect x="40" y="104" width="54" height="5" rx="2.5" fill="#143d5c" opacity=".15"/>
+          <rect x="40" y="124" width="44" height="7" rx="3.5" fill="#d4a747" opacity=".55"/>
+          <g class="anim-scan"><rect x="26" y="26" width="104" height="3" fill="#d4a747"/><rect x="26" y="29" width="104" height="13" fill="url(#ocrG)"/></g>
+          <path d="M138 86 h16 m-5 -4 l5 4 l-5 4" stroke="#b8902f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <g class="ocr-r ocr-r1"><rect x="170" y="48" width="104" height="22" rx="6" fill="#fff" stroke="#d4a747" stroke-opacity=".45"/><circle cx="183" cy="59" r="3.5" fill="#d4a747"/><rect x="193" y="55" width="34" height="4" rx="2" fill="#143d5c" opacity=".5"/><rect x="234" y="54" width="30" height="9" rx="2" fill="#143d5c" opacity=".15"/></g>
+          <g class="ocr-r ocr-r2"><rect x="170" y="76" width="104" height="22" rx="6" fill="#fff" stroke="#d4a747" stroke-opacity=".45"/><circle cx="183" cy="87" r="3.5" fill="#d4a747"/><rect x="193" y="83" width="34" height="4" rx="2" fill="#143d5c" opacity=".5"/><rect x="234" y="82" width="30" height="9" rx="2" fill="#143d5c" opacity=".15"/></g>
+          <g class="ocr-r ocr-r3"><rect x="170" y="104" width="104" height="22" rx="6" fill="#fff" stroke="#d4a747" stroke-opacity=".45"/><circle cx="183" cy="115" r="3.5" fill="#d4a747"/><rect x="193" y="111" width="34" height="4" rx="2" fill="#143d5c" opacity=".5"/><rect x="234" y="110" width="30" height="9" rx="2" fill="#143d5c" opacity=".15"/></g>
+        </svg>
+        <h3 class="cf-h">OCR — la carta diventa dati</h3>
+        <p class="cf-p">Fotografi una fattura o un DDT: il sistema la legge riga per riga e la trasforma in dati strutturati, pronti per contabilità e analisi.</p>
+      </div>
+
+      <!-- Connettori / MCP -->
+      <div class="cf-card">
+        <svg class="cf-viz" viewBox="0 0 300 168" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g stroke="#143d5c" stroke-opacity=".16" stroke-width="2">
+            <line x1="150" y1="84" x2="64" y2="44"/><line x1="150" y1="84" x2="64" y2="124"/><line x1="150" y1="84" x2="236" y2="44"/><line x1="150" y1="84" x2="236" y2="124"/>
+          </g>
+          <g font-family="IBM Plex Mono, monospace" font-size="8" fill="#143d5c" fill-opacity=".55" text-anchor="middle">
+            <text x="64" y="20">GESTIONALE</text><text x="64" y="150">DATABASE</text><text x="236" y="20">FATTURE</text><text x="236" y="150">SERVER</text>
+          </g>
+          <circle class="mcp-node" cx="64" cy="44" r="15" fill="#fff" stroke="#143d5c" stroke-opacity=".3"/>
+          <circle class="mcp-node" cx="64" cy="124" r="15" fill="#fff" stroke="#143d5c" stroke-opacity=".3" style="animation-delay:.6s"/>
+          <circle class="mcp-node" cx="236" cy="44" r="15" fill="#fff" stroke="#143d5c" stroke-opacity=".3" style="animation-delay:1.2s"/>
+          <circle class="mcp-node" cx="236" cy="124" r="15" fill="#fff" stroke="#143d5c" stroke-opacity=".3" style="animation-delay:1.8s"/>
+          <circle class="mcp-core" cx="150" cy="84" r="26" fill="#d4a747"/>
+          <text x="150" y="89" text-anchor="middle" font-size="15" font-weight="800" fill="#0e2c43" font-family="Inter, sans-serif">AI</text>
+          <circle class="flow" cx="64" cy="44" r="3.5" fill="#d4a747" style="--dx:86px;--dy:40px"/>
+          <circle class="flow" cx="150" cy="84" r="3.5" fill="#143d5c" style="--dx:-86px;--dy:40px;animation-delay:.6s"/>
+          <circle class="flow" cx="236" cy="44" r="3.5" fill="#d4a747" style="--dx:-86px;--dy:40px;animation-delay:1.2s"/>
+          <circle class="flow" cx="150" cy="84" r="3.5" fill="#143d5c" style="--dx:86px;--dy:40px;animation-delay:1.8s"/>
+        </svg>
+        <h3 class="cf-h">Connettori &amp; MCP</h3>
+        <p class="cf-p">L'AI si collega ai tuoi gestionali, database e server: legge e scrive sui sistemi che usi già, senza ricopiare niente a mano.</p>
+      </div>
+
+      <!-- Tracciabilità -->
+      <div class="cf-card">
+        <svg class="cf-viz" viewBox="0 0 300 168" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <line x1="40" y1="78" x2="278" y2="78" stroke="#143d5c" stroke-opacity=".16" stroke-width="2"/>
+          <line class="trace-prog" x1="40" y1="78" x2="278" y2="78" stroke="#d4a747" stroke-width="3" stroke-dasharray="238" stroke-dashoffset="238" stroke-linecap="round"/>
+          <g font-family="IBM Plex Mono, monospace" font-size="7.5" fill="#143d5c" fill-opacity=".55" text-anchor="middle">
+            <text x="40" y="108">ORIGINE</text><text x="119" y="108">LAVORAZ.</text><text x="198" y="108">TRASPORTO</text><text x="278" y="108">CONSEGNA</text>
+          </g>
+          <circle class="trace-stop ts1" cx="40" cy="78" r="10" stroke="#143d5c" stroke-opacity=".3" stroke-width="2"/>
+          <circle class="trace-stop ts2" cx="119" cy="78" r="10" stroke="#143d5c" stroke-opacity=".3" stroke-width="2"/>
+          <circle class="trace-stop ts3" cx="198" cy="78" r="10" stroke="#143d5c" stroke-opacity=".3" stroke-width="2"/>
+          <circle class="trace-stop ts4" cx="278" cy="78" r="10" stroke="#143d5c" stroke-opacity=".3" stroke-width="2"/>
+          <circle class="anim-token" cx="40" cy="78" r="6" fill="#d4a747"/>
+        </svg>
+        <h3 class="cf-h">Tracciabilità di filiera</h3>
+        <p class="cf-p">Ogni passaggio — origine, lavorazione, trasporto, consegna — viene registrato e collegato. Tracci "chi‑cosa‑quando" in un secondo.</p>
+      </div>
     </div>
   </div>
 </section>
