@@ -755,12 +755,14 @@
       if (!praf) praf = requestAnimationFrame(stepParts);
     }
 
+    let prevP = 0;
     const onScroll = () => {
       const y = window.scrollY; let p;
       if (y <= S0) { targetPin = 0; targetSq = 0; p = 0; }
       else { p = (y - S0) / range; targetPin = Math.min(y - S0, range); targetSq = Math.min(p, 1); }
-      if (state === 'intact' && p >= 1) { state = 'boom'; explode(); }
+      if (state === 'intact' && !launching && prevP < 1 && p >= 1) { state = 'boom'; explode(); }   // smash diretto fino in fondo
       else if (state === 'boom' && p <= 0.5) { state = 'intact'; stage.classList.remove('boom'); }
+      prevP = p;
     };
     const loop = () => {
       pin += (targetPin - pin) * 0.2;
@@ -780,12 +782,12 @@
     function maybeRelease() {
       if (launching || state !== 'intact' || !armed || !compressing) return;
       const p = (window.scrollY - S0) / range;
-      if (p > 0.3 && p < 0.97) {
+      if (p > 0.12 && p < 0.97) {
         armed = false; compressing = false; launching = true;
-        let v = (0.4 + p) * 13;
+        let v = p * 38;                                  // inerzia ∝ compressione (come il flick del dito)
         const se = document.scrollingElement || document.documentElement, html = document.documentElement;
         const prevSB = html.style.scrollBehavior; html.style.scrollBehavior = 'auto';
-        const fling = () => { se.scrollTop += v; v *= 0.86; if (v > 0.6 && state === 'intact') requestAnimationFrame(fling); else { launching = false; html.style.scrollBehavior = prevSB; } };
+        const fling = () => { se.scrollTop += v; v *= 0.94; if (v > 0.5) requestAnimationFrame(fling); else { launching = false; html.style.scrollBehavior = prevSB; } };
         requestAnimationFrame(fling);
       }
     }
