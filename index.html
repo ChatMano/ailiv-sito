@@ -222,8 +222,7 @@
   .draw-underline.draw path { animation: drawLine .8s cubic-bezier(.16,1,.3,1) forwards; }
 
   /* Sfera viva: alone pulsante + glint rotante + satelliti in orbita */
-  .orb-stage { display: inline-block; position: relative; z-index: 0; transform: translateY(var(--pin,0px)) scale(var(--sx,1), var(--sy,1)); transform-origin: top center; will-change: transform; }
-  .orb-stage.boom .orb-wrap { visibility: hidden; }
+  .orb-stage { display: inline-block; position: relative; z-index: 0; transform: scale(var(--sx,1), var(--sy,1)); transform-origin: center center; will-change: transform; }
   .orb-wrap { position: relative; }
   .orb-glow { position: absolute; inset: -16%; border-radius: 50%; background: radial-gradient(circle, rgba(212,167,71,.55), rgba(212,167,71,0) 64%); filter: blur(12px); animation: glowPulse 4s ease-in-out infinite; }
   @keyframes glowPulse { 0%,100% { opacity: .42; transform: scale(.9); } 50% { opacity: .95; transform: scale(1.1); } }
@@ -699,118 +698,25 @@
     }
   }
 
-  // Fisica: la palla si schiaccia sotto l'header e ESPLODE quando troppo compressa (poi si ricompone)
+  // Molla: la palla resta al suo posto, si comprime in base alla velocità di scroll e si rigonfia (rimbalzo) quando ti fermi. La pagina scrolla normalmente.
   const stage = document.querySelector('.orb-stage');
   if (stage && !reduce) {
-    const nav = document.querySelector('nav');
-    const orbEl = stage.querySelector('.orb');
-    const range = 150;
-    let m = 60, S0 = 0, pin = 0, sq = 0, sqv = 0, targetPin = 0, targetSq = 0, raf = null, state = 'intact';
-
-    const burst = document.createElement('div');
-    burst.style.cssText = 'position:fixed;left:0;top:0;width:0;height:0;z-index:40;pointer-events:none;';
-    document.body.appendChild(burst);
-
-    const calc = () => { const prev = stage.style.transform; stage.style.transform = 'none'; m = (nav ? nav.offsetHeight : 56) + 4; S0 = Math.max(0, stage.getBoundingClientRect().top + window.scrollY - m); stage.style.transform = prev; };
-
-    let parts = [], praf = null, pf = 0;
-    function stepParts() {
-      pf++;
-      let alive = false;
-      parts.forEach(p => {
-        if (p.life <= 0) return;
-        p.vy += 0.45; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.life -= 0.013;
-        const tw = 0.4 + 0.6 * Math.abs(Math.sin(pf * p.tw + p.ph));   // scintillio
-        p.el.style.transform = 'translate(' + p.x.toFixed(1) + 'px,' + p.y.toFixed(1) + 'px) scale(' + (Math.max(0, p.life) * (0.65 + 0.55 * tw)).toFixed(2) + ')';
-        p.el.style.opacity = (Math.max(0, p.life) * tw).toFixed(2);
-        if (p.life > 0) alive = true; else p.el.remove();
-      });
-      praf = alive ? requestAnimationFrame(stepParts) : null;
-    }
-    function explode() {
-      const r = orbEl.getBoundingClientRect();
-      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-      stage.classList.add('boom');
-      const shock = document.createElement('div');
-      shock.style.cssText = 'position:fixed;left:' + cx + 'px;top:' + cy + 'px;width:24px;height:24px;margin:-12px;border-radius:50%;border:3px solid rgba(212,167,71,.85);transform:scale(.2);opacity:1;transition:transform .55s cubic-bezier(.2,.7,.3,1),opacity .55s;';
-      burst.appendChild(shock);
-      requestAnimationFrame(() => { shock.style.transform = 'scale(8)'; shock.style.opacity = '0'; });
-      setTimeout(() => shock.remove(), 620);
-      const flash = document.createElement('div');
-      flash.style.cssText = 'position:fixed;left:' + cx + 'px;top:' + cy + 'px;width:130px;height:130px;margin:-65px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(212,167,71,.5) 40%,transparent 70%);opacity:1;transform:scale(.4);transition:transform .35s ease-out,opacity .4s ease-out;';
-      burst.appendChild(flash);
-      requestAnimationFrame(() => { flash.style.transform = 'scale(2.6)'; flash.style.opacity = '0'; });
-      setTimeout(() => flash.remove(), 430);
-      parts = [];
-      const N = 24;
-      for (let i = 0; i < N; i++) {
-        const el = document.createElement('i');
-        const size = 5 + Math.random() * 9, white = Math.random() < 0.3;
-        el.style.cssText = 'position:fixed;left:0;top:0;width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + (white ? '#fff' : 'var(--gold)') + ';box-shadow:0 0 14px rgba(212,167,71,.95),0 0 6px rgba(255,255,255,.8);will-change:transform,opacity;';
-        el.style.transform = 'translate(' + cx + 'px,' + cy + 'px)';
-        burst.appendChild(el);
-        const ang = (Math.PI * 2 * i / N) + (Math.random() - 0.5) * 0.6, sp = 6 + Math.random() * 9;
-        parts.push({ el, x: cx, y: cy, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp + 3, life: 1, ph: Math.random() * 6.28, tw: 0.5 + Math.random() * 0.7 });
-      }
-      if (!praf) praf = requestAnimationFrame(stepParts);
-    }
-
-    let prevP = 0;
-    const onScroll = () => {
-      const y = window.scrollY; let p;
-      if (y <= S0) { p = 0; if (!launching) { targetPin = 0; targetSq = 0; } }
-      else { p = (y - S0) / range; if (!launching) { targetPin = Math.min(y - S0, range); targetSq = Math.min(p, 1); } }
-      if (state === 'intact' && !launching && prevP < 1 && p >= 1) { state = 'boom'; explode(); }   // smash diretto fino in fondo
-      else if (state === 'boom' && p <= 0.5) { state = 'intact'; stage.classList.remove('boom'); }
-      prevP = p;
-    };
+    let vel = 0, lastY = window.scrollY, sq = 0, sqv = 0, raf = null;
     const loop = () => {
-      pin += (targetPin - pin) * 0.2;
-      const damp = launching ? 0.88 : 0.74;                          // più rimbalzo al rilascio (rigonfia)
-      sqv += (targetSq - sq) * 0.2; sqv *= damp; sq += sqv;
-      const sy = Math.min(1.35, Math.max(0.4, 1 - sq * 0.5));        // sq<0 -> sy>1 = la palla si rigonfia
-      const sx = 1 + (1 - sy) * 0.62;
-      stage.style.setProperty('--pin', pin.toFixed(2) + 'px');
+      vel *= 0.82;                                              // la velocità di scroll si smorza
+      const targetSq = Math.min(Math.abs(vel) * 0.02, 0.5);     // compressione proporzionale alla velocità di scroll
+      sqv += (targetSq - sq) * 0.18; sqv *= 0.84; sq += sqv;    // molla con rimbalzo (rigonfia con overshoot)
+      const sy = Math.min(1.28, Math.max(0.5, 1 - sq * 0.55));  // sq<0 -> sy>1 = la palla si rigonfia
+      const sx = 1 + (1 - sy) * 0.6;
       stage.style.setProperty('--sy', sy.toFixed(3));
       stage.style.setProperty('--sx', sx.toFixed(3));
-      if (Math.abs(targetPin - pin) > 0.1 || Math.abs(sqv) > 0.0004 || Math.abs(targetSq - sq) > 0.001) raf = requestAnimationFrame(loop);
-      else raf = null;
+      if (Math.abs(vel) > 0.06 || Math.abs(sqv) > 0.0004 || Math.abs(sq) > 0.0015) raf = requestAnimationFrame(loop);
+      else { raf = null; stage.style.setProperty('--sy', '1'); stage.style.setProperty('--sx', '1'); }
     };
     const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
-
-    // Forza elastica: comprimi e rilascia -> la molla spinge la pagina verso il basso
-    let lastY = window.scrollY, armed = true, launching = false, compressing = false, relTimer = null;
-    function maybeRelease() {
-      if (launching || state !== 'intact' || !armed || !compressing) return;
-      const p = (window.scrollY - S0) / range;
-      if (p > 0.12 && p < 0.97) {
-        armed = false; compressing = false; launching = true;
-        targetSq = 0;                                    // la molla si rigonfia: torna rotonda con rimbalzo
-        let v = p * 38;                                  // inerzia ∝ compressione (come il flick del dito)
-        const se = document.scrollingElement || document.documentElement, html = document.documentElement;
-        const prevSB = html.style.scrollBehavior; html.style.scrollBehavior = 'auto';
-        const fling = () => {
-          se.scrollTop += v; v *= 0.94;
-          targetPin = Math.max(0, se.scrollTop - S0); kick();        // tengo la palla in cima, visibile, mentre rigonfia
-          if (v > 0.5) requestAnimationFrame(fling);
-          else { launching = false; html.style.scrollBehavior = prevSB; stage.style.transition = 'opacity .3s'; stage.style.opacity = '0'; }
-        };
-        requestAnimationFrame(fling);
-      }
-    }
-
-    calc();
-    if (window.scrollY > S0 + range) { state = 'boom'; stage.classList.add('boom'); }
-    onScroll(); kick();
     addEventListener('scroll', () => {
-      const y = window.scrollY; const dir = y - lastY; lastY = y;
-      const pp = (y - S0) / range;
-      if (pp < 0.12) { armed = true; compressing = false; if (stage.style.opacity === '0') { stage.style.transition = 'opacity .25s'; stage.style.opacity = '1'; } }
-      if (dir > 0.5 && pp > 0.15) compressing = true; else if (dir < -0.5) compressing = false;
-      onScroll(); kick();
-      if (!launching) { clearTimeout(relTimer); relTimer = setTimeout(maybeRelease, 140); }
+      const y = window.scrollY; vel = 0.45 * vel + 0.55 * (y - lastY); lastY = y; kick();
     }, { passive: true });
-    addEventListener('resize', () => { calc(); onScroll(); kick(); }, { passive: true });
   }
 
   // Barra di progresso scroll
