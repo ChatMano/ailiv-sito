@@ -247,45 +247,271 @@
     .orb-stage { transform: none !important; }
   }
 
-  /* ===================== COME FUNZIONA — animazioni esplicative ===================== */
-  .cf-grid { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
-  @media (min-width: 860px) { .cf-grid { grid-template-columns: repeat(3, 1fr); } }
-  .cf-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 1.4rem; transition: all .3s; }
-  .cf-card:hover { transform: translateY(-3px); box-shadow: 0 18px 44px rgba(20,61,92,0.08); border-color: rgba(20,61,92,0.18); }
-  .cf-viz { width: 100%; height: 168px; background: linear-gradient(180deg,#fcfbf8,#f5f3ee); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 1.1rem; overflow: hidden; display: block; }
-  .cf-h { font-weight: 700; font-size: 1.05rem; margin-bottom: .3rem; }
-  .cf-p { font-size: .86rem; color: rgba(20,61,92,0.68); line-height: 1.5; }
-  .cf-viz .flow, .cf-viz .anim-token, .cf-viz .anim-scan, .cf-viz .ocr-r, .cf-viz .trace-stop, .cf-viz .mcp-node, .cf-viz .mcp-core { transform-box: fill-box; }
+  /* ===================== COME FUNZIONA — animazioni interattive ===================== */
+  .cf-row { display:grid; grid-template-columns:1fr; gap:1.4rem; align-items:center; margin-bottom:3rem; }
+  .cf-row:last-of-type { margin-bottom:0; }
+  @media (min-width:880px){ .cf-row{ grid-template-columns:1.12fr 1fr; gap:3rem; } .cf-row.rev .cf-viz{ order:2; } .cf-row.rev .cf-row-text{ order:1; } }
+  .cf-viz { position:relative; width:100%; height:320px; background:linear-gradient(180deg,#fcfbf8,#f3f0e9); border:1px solid var(--line); border-radius:20px; overflow:hidden; }
+  .cf-row-text h3 { font-size:1.55rem; font-weight:700; letter-spacing:-.02em; line-height:1.15; margin-bottom:.6rem; color:var(--ink); }
+  .cf-row-text p { font-size:1.02rem; color:rgba(20,61,92,.7); line-height:1.6; }
 
-  /* OCR */
-  @keyframes ocrScan { 0% { transform: translateY(0); opacity: 0 } 8% { opacity: 1 } 80% { opacity: 1 } 100% { transform: translateY(96px); opacity: 0 } }
-  .anim-scan { animation: ocrScan 3s ease-in-out infinite; }
-  @keyframes ocrRow { 0%,16% { opacity: 0; transform: translateX(8px) } 38%,90% { opacity: 1; transform: translateX(0) } 100% { opacity: 0 } }
-  .ocr-r { opacity: 0; animation: ocrRow 3s ease-in-out infinite; }
-  .ocr-r2 { animation-delay: .22s } .ocr-r3 { animation-delay: .44s }
+  /* --- ocr --- */
+.ocr-svg{display:block;width:100%;height:100%;font-family:'IBM Plex Mono',monospace;}
+.ocr-doc{cursor:pointer;outline:none;}
+.ocr-doc:focus-visible .ocr-docbg{stroke:#d4a747;stroke-width:2.5;}
+.ocr-docshadow{fill:rgba(14,44,67,0.10);}
+.ocr-doc:hover .ocr-docbg{stroke:rgba(20,61,92,0.32);}
+.ocr-doctitle{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:1px;fill:#143d5c;}
+.ocr-docbadge{fill:rgba(212,167,71,0.16);stroke:rgba(212,167,71,0.5);stroke-width:1;}
+.ocr-docbadgetx{font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:700;letter-spacing:0.5px;fill:#b8902f;}
+.ocr-doctotal{fill:rgba(20,61,92,0.07);stroke:rgba(20,61,92,0.16);stroke-width:1;}
+.ocr-doctotaltx{font-family:'IBM Plex Mono',monospace;font-size:7px;font-weight:700;letter-spacing:0.5px;fill:#143d5c;}
 
-  /* Connettori / MCP */
-  @keyframes mcpFlow { 0% { transform: translate(0,0); opacity: 0 } 14% { opacity: 1 } 86% { opacity: 1 } 100% { transform: translate(var(--dx,0), var(--dy,0)); opacity: 0 } }
-  .flow { animation: mcpFlow 2.4s linear infinite; }
-  @keyframes mcpPulse { 0%,100% { opacity: .9 } 50% { opacity: 1 } }
-  .mcp-node { animation: mcpPulse 2.4s ease-in-out infinite; }
-  @keyframes mcpCore { 0%,100% { transform: scale(1) } 50% { transform: scale(1.06) } }
-  .mcp-core { transform-origin: center; animation: mcpCore 2.4s ease-in-out infinite; }
+.ocr-beamwrap{opacity:0;}
+.ocr-scanning .ocr-beamwrap{opacity:1;}
+.ocr-beamglow{filter:blur(1px);}
 
-  /* Tracciabilità */
-  @keyframes traceToken { 0% { transform: translateX(0) } 100% { transform: translateX(238px) } }
-  .anim-token { animation: traceToken 3.6s linear infinite; }
-  @keyframes traceProg { 0% { stroke-dashoffset: 238 } 100% { stroke-dashoffset: 0 } }
-  .trace-prog { animation: traceProg 3.6s linear infinite; }
-  @keyframes traceLit { 0%,2% { fill: #fff } 5%,12% { fill: var(--gold) } 18%,100% { fill: #fff } }
-  .trace-stop { fill: #fff; animation: traceLit 3.6s linear infinite; }
-  .ts2 { animation-delay: 1s } .ts3 { animation-delay: 2s } .ts4 { animation-delay: 3s }
+.ocr-arrow{opacity:0.85;}
 
-  @media (prefers-reduced-motion: reduce) {
-    .anim-scan, .ocr-r, .flow, .mcp-node, .mcp-core, .anim-token, .trace-prog, .trace-stop { animation: none !important; }
-    .ocr-r { opacity: 1 !important; }
-    .trace-prog { stroke-dashoffset: 0 !important; }
-  }
+.ocr-datahead{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;fill:rgba(20,61,92,0.55);}
+.ocr-pill rect:first-of-type{fill:#ffffff;stroke:rgba(20,61,92,0.14);stroke-width:1;}
+.ocr-pill circle{fill:#d4a747;}
+.ocr-pill .ocr-lbl{fill:rgba(20,61,92,0.30);}
+.ocr-pill .ocr-val{fill:rgba(20,61,92,0.55);}
+.ocr-pill{opacity:0;transform:translateX(10px);transform-box:fill-box;transform-origin:left center;transition:opacity .34s ease,transform .34s ease;}
+.ocr-pill.ocr-on{opacity:1;transform:translateX(0);}
+
+.ocr-btn{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:9px;padding:10px 22px;border:none;border-radius:999px;background:linear-gradient(180deg,#d4a747,#b8902f);color:#0e2c43;font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.2px;cursor:pointer;box-shadow:0 6px 16px rgba(184,144,47,0.35),inset 0 1px 0 rgba(255,255,255,0.35);touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .15s ease,box-shadow .2s ease,filter .2s ease;z-index:3;}
+.ocr-btn:hover{filter:brightness(1.04);box-shadow:0 8px 20px rgba(184,144,47,0.45),inset 0 1px 0 rgba(255,255,255,0.4);}
+.ocr-btn:active{transform:translateX(-50%) translateY(1px) scale(0.985);}
+.ocr-btn:focus-visible{outline:2px solid #143d5c;outline-offset:2px;}
+.ocr-btndot{width:9px;height:9px;border-radius:50%;background:#0e2c43;box-shadow:0 0 0 0 rgba(14,44,67,0.5);}
+.ocr-scanning .ocr-btndot{animation:ocr-pulse 1s ease-out infinite;}
+.ocr-btntx{white-space:nowrap;}
+
+.ocr-hint{position:absolute;left:50%;bottom:54px;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.4px;color:rgba(20,61,92,0.5);white-space:nowrap;pointer-events:none;opacity:.85;z-index:2;animation:ocr-hintfloat 2.6s ease-in-out infinite;}
+
+@keyframes ocr-pulse{0%{box-shadow:0 0 0 0 rgba(14,44,67,0.5);}100%{box-shadow:0 0 0 7px rgba(14,44,67,0);}}
+@keyframes ocr-hintfloat{0%,100%{opacity:.5;}50%{opacity:.9;}}
+
+@media (prefers-reduced-motion: reduce){
+  .ocr-pill{transition:none;}
+  .ocr-btndot{animation:none !important;}
+  .ocr-hint{animation:none !important;}
+}
+  /* --- mcp --- */
+.mcp-svg{display:block;width:100%;height:100%;touch-action:manipulation;}
+.mcp-node{cursor:pointer;outline:none;}
+.mcp-node-circle{fill:#fff;stroke:#143d5c;stroke-width:2;transition:stroke .25s ease,stroke-width .25s ease;}
+.mcp-node.mcp-active .mcp-node-circle{stroke:#d4a747;stroke-width:3;}
+.mcp-node-ring{fill:none;stroke:#d4a747;stroke-width:2;opacity:0;transition:opacity .25s ease;}
+.mcp-node.mcp-active .mcp-node-ring{opacity:.55;}
+.mcp-node:focus-visible .mcp-node-ring{opacity:.55;}
+.mcp-node-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.5px;fill:#143d5c;text-anchor:middle;pointer-events:none;font-weight:600;transition:fill .25s ease;}
+.mcp-node.mcp-active .mcp-node-label{fill:#b8902f;}
+.mcp-node-icon{fill:none;stroke:#143d5c;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;pointer-events:none;transition:stroke .25s ease;}
+.mcp-node.mcp-active .mcp-node-icon{stroke:#b8902f;}
+.mcp-link{stroke:#143d5c;stroke-width:1.4;opacity:.16;fill:none;transition:opacity .25s ease,stroke .25s ease,stroke-width .25s ease;}
+.mcp-link.mcp-active{stroke:#d4a747;opacity:.7;stroke-width:2.2;}
+.mcp-hub-glow{fill:#d4a747;opacity:.18;}
+.mcp-hub-circle{stroke:#b8902f;stroke-width:2;}
+.mcp-hub-text{font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:22px;fill:#0e2c43;text-anchor:middle;dominant-baseline:central;letter-spacing:1px;pointer-events:none;}
+.mcp-amb{fill:#143d5c;opacity:.22;pointer-events:none;}
+.mcp-pulse{fill:#d4a747;pointer-events:none;opacity:0;}
+.mcp-hint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;color:rgba(20,61,92,0.55);background:rgba(255,255,255,0.6);padding:4px 10px;border-radius:20px;border:1px solid rgba(20,61,92,0.12);pointer-events:none;transition:opacity .4s ease;white-space:nowrap;}
+.mcp-hint.mcp-hidden{opacity:0;}
+@keyframes mcp-hubpulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+.mcp-hub-glow.mcp-anim{animation:mcp-hubpulse 3.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+@media (prefers-reduced-motion:reduce){.mcp-hub-glow.mcp-anim{animation:none;}.mcp-hint{opacity:0;}}
+  /* --- trace --- */
+.trace-svg{display:block;width:100%;height:100%;touch-action:none;user-select:none;-webkit-user-select:none}
+.trace-kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2.4px;fill:#b8902f;font-weight:600}
+.trace-head{font-family:inherit;font-size:21px;font-weight:700;fill:#0e2c43;letter-spacing:.2px}
+.trace-track{stroke:rgba(20,61,92,0.18);stroke-width:4;stroke-linecap:round}
+.trace-track-fill{stroke:url(#trace-grad-gold);stroke-width:5;stroke-linecap:round}
+
+.trace-st-line{stroke:rgba(20,61,92,0.16);stroke-width:2}
+.trace-st-line.trace-on{stroke:rgba(212,167,71,0.55)}
+.trace-st-base{fill:#fff;stroke:rgba(20,61,92,0.22);stroke-width:2;transition:stroke .25s ease}
+.trace-st-fill{fill:url(#trace-grad-gold);opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.4);transition:opacity .28s ease,transform .28s cubic-bezier(.34,1.56,.64,1)}
+.trace-st-inner{fill:#0e2c43;opacity:.55;transition:fill .25s ease,opacity .25s ease}
+.trace-station.trace-on .trace-st-base{stroke:rgba(184,144,47,0.0)}
+.trace-station.trace-on .trace-st-fill{opacity:1;transform:scale(1)}
+.trace-station.trace-on .trace-st-inner{fill:#fff;opacity:1}
+.trace-station.trace-pop .trace-st-fill{animation:trace-pop .42s ease}
+@keyframes trace-pop{0%{transform:scale(1)}38%{transform:scale(1.32)}100%{transform:scale(1)}}
+
+.trace-st-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.4px;fill:#143d5c;opacity:.6;text-anchor:middle;transition:opacity .25s ease,fill .25s ease}
+.trace-station.trace-on .trace-st-label{opacity:1;fill:#b8902f;font-weight:600}
+
+.trace-card-bg{fill:#0e2c43;stroke:rgba(212,167,71,0.55);stroke-width:1}
+.trace-card-dot{fill:#d4a747}
+.trace-card-t1{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;fill:#d4a747;text-transform:uppercase}
+.trace-card-t2{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:#fafaf7;letter-spacing:.4px}
+
+.trace-token{cursor:grab}
+.trace-token.trace-drag{cursor:grabbing}
+.trace-token-halo{fill:#d4a747;opacity:.16;filter:url(#trace-soft)}
+.trace-token-ring{fill:#fff;stroke:#b8902f;stroke-width:2}
+.trace-token-core{fill:url(#trace-grad-token)}
+.trace-token-spark{fill:#fff;opacity:.7}
+.trace-token.trace-drag .trace-token-halo{opacity:.3}
+
+.trace-pulse{animation:trace-pulse 2.4s ease-in-out infinite}
+@keyframes trace-pulse{0%,100%{r:22;opacity:.16}50%{r:27;opacity:.28}}
+
+.trace-hint{position:absolute;left:60px;bottom:18px;display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.6px;color:#143d5c;opacity:.62;pointer-events:none;transition:opacity .4s ease}
+.trace-hint-grip{width:13px;height:13px;border-radius:50%;background:#d4a747;box-shadow:0 0 0 4px rgba(212,167,71,0.18);animation:trace-grip 2.4s ease-in-out infinite}
+@keyframes trace-grip{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.trace-hint.trace-hide{opacity:0}
+
+@media (prefers-reduced-motion: reduce){
+  .trace-pulse,.trace-hint-grip{animation:none}
+  .trace-st-fill{transition:none}
+  .trace-station.trace-pop .trace-st-fill{animation:none}
+}
+  /* --- chat --- */
+.cf-chat .chat-svg{display:block;}
+
+.cf-chat .chat-chips{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:62px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  padding:0 26px;
+  box-sizing:border-box;
+  touch-action:manipulation;
+}
+.cf-chat .chat-chip{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;
+  line-height:1;
+  color:#143d5c;
+  background:#ffffff;
+  border:1.3px solid rgba(20,61,92,0.22);
+  border-radius:999px;
+  padding:8px 13px;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:transform .14s ease,background .14s ease,border-color .14s ease,box-shadow .14s ease;
+  box-shadow:0 1px 0 rgba(20,61,92,0.04);
+  -webkit-tap-highlight-color:transparent;
+}
+.cf-chat .chat-chip:hover{
+  background:#fafaf7;
+  border-color:#d4a747;
+  color:#0e2c43;
+}
+.cf-chat .chat-chip:active{transform:translateY(1px) scale(0.97);}
+.cf-chat .chat-chip:focus-visible{outline:2px solid #d4a747;outline-offset:2px;}
+.cf-chat .chat-chip.chat-pulse{
+  animation:chat-chipPulse 2.4s ease-in-out infinite;
+  border-color:#d4a747;
+}
+.cf-chat .chat-chips.chat-busy{opacity:.45;pointer-events:none;}
+
+@keyframes chat-chipPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(212,167,71,0.0);}
+  45%{box-shadow:0 0 0 5px rgba(212,167,71,0.18);}
+  70%{box-shadow:0 0 0 7px rgba(212,167,71,0.0);}
+}
+
+.cf-chat .chat-hint{
+  position:absolute;
+  right:16px;
+  bottom:66px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9.5px;
+  letter-spacing:.04em;
+  color:rgba(20,61,92,0.5);
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .4s ease;
+}
+.cf-chat .chat-hint.chat-show{opacity:1;animation:chat-hintFloat 2.6s ease-in-out infinite;}
+
+@keyframes chat-hintFloat{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-2px);}
+}
+
+/* SVG message animation */
+.cf-chat .chat-msg{opacity:0;transform-box:fill-box;}
+.cf-chat .chat-msg.chat-in{animation:chat-msgIn .34s cubic-bezier(.2,.8,.3,1) forwards;}
+@keyframes chat-msgIn{
+  0%{opacity:0;}
+  100%{opacity:1;}
+}
+.cf-chat .chat-dot{animation:chat-dotBlink 1.1s ease-in-out infinite;}
+.cf-chat .chat-dot.chat-d2{animation-delay:.18s;}
+.cf-chat .chat-dot.chat-d3{animation-delay:.36s;}
+@keyframes chat-dotBlink{
+  0%,80%,100%{opacity:.28;}
+  40%{opacity:1;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .cf-chat .chat-chip.chat-pulse{animation:none;}
+  .cf-chat .chat-hint.chat-show{animation:none;}
+  .cf-chat .chat-msg.chat-in{animation:none;opacity:1;}
+  .cf-chat .chat-dot{animation:none;opacity:.6;}
+}
+  /* --- local --- */
+.local-svg{width:100%;height:100%;display:block;touch-action:manipulation;}
+.local-dot{fill:#d4a747;}
+.local-shake{transform-box:fill-box;transform-origin:center;}
+.local-shaking{animation:local-shake 0.45s ease;}
+@keyframes local-shake{
+  0%,100%{transform:translateX(0) rotate(0deg);}
+  20%{transform:translateX(-2.5px) rotate(-1.5deg);}
+  40%{transform:translateX(2.5px) rotate(1.5deg);}
+  60%{transform:translateX(-1.8px) rotate(-1deg);}
+  80%{transform:translateX(1.8px) rotate(1deg);}
+}
+.local-cloud-x{stroke:#b8902f;}
+.local-idle-dot{animation:local-pulse 2.4s ease-in-out infinite;}
+@keyframes local-pulse{0%,100%{opacity:0.85;}50%{opacity:0.35;}}
+.local-btn{
+  position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.02em;
+  color:#fafaf7;background:linear-gradient(180deg,#143d5c,#0e2c43);
+  border:1px solid rgba(212,167,71,0.55);border-radius:9px;
+  padding:8px 16px;cursor:pointer;user-select:none;touch-action:manipulation;
+  box-shadow:0 4px 12px rgba(14,44,67,0.22);transition:transform 0.12s ease,box-shadow 0.12s ease,border-color 0.12s ease;
+  z-index:3;white-space:nowrap;
+}
+.local-btn:hover{transform:translateX(-50%) translateY(-1px);border-color:rgba(212,167,71,0.9);box-shadow:0 6px 16px rgba(14,44,67,0.28);}
+.local-btn:active{transform:translateX(-50%) translateY(0);}
+.local-btn:disabled{opacity:0.6;cursor:default;}
+.local-btn-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#d4a747;margin-right:7px;vertical-align:middle;}
+.local-badge{
+  position:absolute;left:14px;top:13px;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.05em;
+  color:#143d5c;background:rgba(255,255,255,0.7);
+  border:1px solid rgba(20,61,92,0.18);border-radius:6px;
+  padding:4px 8px;display:flex;align-items:center;gap:6px;z-index:3;
+}
+.local-badge-led{width:7px;height:7px;border-radius:50%;background:#d4a747;box-shadow:0 0 0 0 rgba(212,167,71,0.6);}
+.local-badge-led.local-live{animation:local-led 2s ease-in-out infinite;}
+@keyframes local-led{0%,100%{box-shadow:0 0 0 0 rgba(212,167,71,0.55);}50%{box-shadow:0 0 0 4px rgba(212,167,71,0);}}
+.local-toast{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.9);
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.02em;
+  color:#fafaf7;background:rgba(14,44,67,0.94);
+  border:1px solid rgba(212,167,71,0.5);border-radius:9px;
+  padding:9px 14px;opacity:0;pointer-events:none;z-index:4;
+  transition:opacity 0.22s ease,transform 0.22s ease;white-space:nowrap;
+  box-shadow:0 8px 22px rgba(14,44,67,0.3);
+}
+.local-toast.local-show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+.local-toast-bar{display:inline-block;width:10px;height:2px;background:#b8902f;margin-right:8px;vertical-align:middle;border-radius:1px;}
+@media (prefers-reduced-motion:reduce){
+  .local-idle-dot,.local-badge-led.local-live{animation:none!important;}
+}
 </style>
 </head>
 <body>
@@ -465,81 +691,346 @@
   </div>
 </section>
 
-<!-- ============ COME FUNZIONA (animazioni esplicative) ============ -->
+<!-- ============ COME FUNZIONA (animazioni interattive) ============ -->
 <section id="comefunziona" class="py-24 px-6 bg-white">
   <div class="max-w-6xl mx-auto">
-    <div class="mb-14 max-w-3xl reveal">
+    <div class="mb-16 max-w-3xl reveal">
       <span class="eyebrow mb-6">COME FUNZIONA</span>
-      <h2 class="display text-4xl md:text-6xl mt-6">
-        I concetti,<br><span class="accent">in movimento.</span>
-      </h2>
-      <p class="text-lg text-[#0e2c43]/65 mt-6 leading-relaxed">Tre dei mattoni che combiniamo, spiegati in un colpo d'occhio. Non slide: è quello che gira davvero.</p>
+      <h2 class="display text-4xl md:text-6xl mt-6">Toccale.<br><span class="accent">Funzionano davvero.</span></h2>
+      <p class="text-lg text-[#0e2c43]/65 mt-6 leading-relaxed">I concetti dietro ai nostri sistemi, spiegati con animazioni che puoi usare davvero. Prova: scansiona, trascina i nodi, chatta.</p>
     </div>
 
-    <div class="cf-grid reveal-children">
-      <!-- OCR -->
-      <div class="cf-card">
-        <svg class="cf-viz" viewBox="0 0 300 168" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs><linearGradient id="ocrG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4a747" stop-opacity="0"/><stop offset="1" stop-color="#d4a747" stop-opacity=".45"/></linearGradient></defs>
-          <rect x="26" y="26" width="104" height="120" rx="8" fill="#fff" stroke="#143d5c" stroke-opacity=".22"/>
-          <rect x="40" y="44" width="56" height="7" rx="3.5" fill="#143d5c" opacity=".3"/>
-          <rect x="40" y="60" width="76" height="5" rx="2.5" fill="#143d5c" opacity=".15"/>
-          <rect x="40" y="72" width="64" height="5" rx="2.5" fill="#143d5c" opacity=".15"/>
-          <rect x="40" y="92" width="76" height="5" rx="2.5" fill="#143d5c" opacity=".15"/>
-          <rect x="40" y="104" width="54" height="5" rx="2.5" fill="#143d5c" opacity=".15"/>
-          <rect x="40" y="124" width="44" height="7" rx="3.5" fill="#d4a747" opacity=".55"/>
-          <g class="anim-scan"><rect x="26" y="26" width="104" height="3" fill="#d4a747"/><rect x="26" y="29" width="104" height="13" fill="url(#ocrG)"/></g>
-          <path d="M138 86 h16 m-5 -4 l5 4 l-5 4" stroke="#b8902f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <g class="ocr-r ocr-r1"><rect x="170" y="48" width="104" height="22" rx="6" fill="#fff" stroke="#d4a747" stroke-opacity=".45"/><circle cx="183" cy="59" r="3.5" fill="#d4a747"/><rect x="193" y="55" width="34" height="4" rx="2" fill="#143d5c" opacity=".5"/><rect x="234" y="54" width="30" height="9" rx="2" fill="#143d5c" opacity=".15"/></g>
-          <g class="ocr-r ocr-r2"><rect x="170" y="76" width="104" height="22" rx="6" fill="#fff" stroke="#d4a747" stroke-opacity=".45"/><circle cx="183" cy="87" r="3.5" fill="#d4a747"/><rect x="193" y="83" width="34" height="4" rx="2" fill="#143d5c" opacity=".5"/><rect x="234" y="82" width="30" height="9" rx="2" fill="#143d5c" opacity=".15"/></g>
-          <g class="ocr-r ocr-r3"><rect x="170" y="104" width="104" height="22" rx="6" fill="#fff" stroke="#d4a747" stroke-opacity=".45"/><circle cx="183" cy="115" r="3.5" fill="#d4a747"/><rect x="193" y="111" width="34" height="4" rx="2" fill="#143d5c" opacity=".5"/><rect x="234" y="110" width="30" height="9" rx="2" fill="#143d5c" opacity=".15"/></g>
-        </svg>
-        <h3 class="cf-h">OCR — la carta diventa dati</h3>
-        <p class="cf-p">Fotografi una fattura o un DDT: il sistema la legge riga per riga e la trasforma in dati strutturati, pronti per contabilità e analisi.</p>
+      <div class="cf-row reveal">
+        <div class="cf-viz cf-ocr" data-cf="ocr">
+<svg class="ocr-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="Un documento cartaceo viene scansionato e trasformato in dati strutturati" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="ocr-paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f5f3ee"/>
+    </linearGradient>
+    <linearGradient id="ocr-beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d4a747" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#d4a747" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#d4a747" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="ocr-glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d4a747" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#d4a747" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#d4a747" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="ocr-paperclip">
+      <rect x="26" y="40" width="178" height="232" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <!-- LEFT: document -->
+  <g class="ocr-doc" tabindex="0" role="button" aria-label="Scansiona il documento">
+    <rect class="ocr-docshadow" x="30" y="46" width="178" height="232" rx="8"/>
+    <rect class="ocr-docbg" x="26" y="40" width="178" height="232" rx="8" fill="url(#ocr-paper)" stroke="rgba(20,61,92,0.18)" stroke-width="1.5"/>
+    <!-- header -->
+    <text class="ocr-doctitle" x="42" y="68">FATTURA</text>
+    <rect class="ocr-docbadge" x="150" y="56" width="40" height="15" rx="3"/>
+    <text class="ocr-docbadgetx" x="170" y="67" text-anchor="middle">DDT</text>
+    <line x1="42" y1="78" x2="190" y2="78" stroke="rgba(20,61,92,0.18)" stroke-width="1"/>
+    <!-- fake text lines -->
+    <g class="ocr-lines" fill="rgba(20,61,92,0.22)">
+      <rect x="42" y="90" width="60" height="5" rx="2.5"/>
+      <rect x="42" y="101" width="92" height="5" rx="2.5"/>
+      <rect x="42" y="120" width="148" height="4" rx="2"/>
+      <rect x="42" y="130" width="120" height="4" rx="2"/>
+      <rect x="42" y="140" width="140" height="4" rx="2"/>
+      <rect x="42" y="150" width="100" height="4" rx="2"/>
+      <rect x="42" y="170" width="148" height="4" rx="2"/>
+      <rect x="42" y="180" width="132" height="4" rx="2"/>
+      <rect x="42" y="190" width="146" height="4" rx="2"/>
+      <rect x="42" y="200" width="110" height="4" rx="2"/>
+      <rect x="42" y="220" width="148" height="4" rx="2"/>
+      <rect x="42" y="230" width="90" height="4" rx="2"/>
+    </g>
+    <rect class="ocr-doctotal" x="118" y="248" width="72" height="14" rx="3"/>
+    <text class="ocr-doctotaltx" x="124" y="258">TOTALE</text>
+
+    <!-- scan beam (inside clip) -->
+    <g clip-path="url(#ocr-paperclip)">
+      <g class="ocr-beamwrap">
+        <rect class="ocr-beamglow" x="26" y="-14" width="178" height="28" fill="url(#ocr-beam)"/>
+        <rect class="ocr-beamline" x="26" y="-1" width="178" height="2" fill="#d4a747"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- arrow -->
+  <g class="ocr-arrow" fill="none" stroke="#d4a747" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="216" y1="156" x2="236" y2="156"/>
+    <polyline points="230,150 237,156 230,162"/>
+  </g>
+
+  <!-- RIGHT: structured data -->
+  <g class="ocr-data">
+    <text class="ocr-datahead" x="252" y="58">DATI ESTRATTI</text>
+    <g class="ocr-pill" data-i="0">
+      <rect x="252" y="68" width="206" height="34" rx="9"/>
+      <circle cx="268" cy="85" r="5"/>
+      <rect class="ocr-lbl" x="282" y="76" width="46" height="6" rx="3"/>
+      <rect class="ocr-val" x="282" y="88" width="120" height="7" rx="3.5"/>
+    </g>
+    <g class="ocr-pill" data-i="1">
+      <rect x="252" y="108" width="206" height="34" rx="9"/>
+      <circle cx="268" cy="125" r="5"/>
+      <rect class="ocr-lbl" x="282" y="116" width="38" height="6" rx="3"/>
+      <rect class="ocr-val" x="282" y="128" width="96" height="7" rx="3.5"/>
+    </g>
+    <g class="ocr-pill" data-i="2">
+      <rect x="252" y="148" width="206" height="34" rx="9"/>
+      <circle cx="268" cy="165" r="5"/>
+      <rect class="ocr-lbl" x="282" y="156" width="54" height="6" rx="3"/>
+      <rect class="ocr-val" x="282" y="168" width="134" height="7" rx="3.5"/>
+    </g>
+    <g class="ocr-pill" data-i="3">
+      <rect x="252" y="188" width="206" height="34" rx="9"/>
+      <circle cx="268" cy="205" r="5"/>
+      <rect class="ocr-lbl" x="282" y="196" width="42" height="6" rx="3"/>
+      <rect class="ocr-val" x="282" y="208" width="108" height="7" rx="3.5"/>
+    </g>
+    <g class="ocr-pill" data-i="4">
+      <rect x="252" y="228" width="206" height="34" rx="9"/>
+      <circle cx="268" cy="245" r="5"/>
+      <rect class="ocr-lbl" x="282" y="236" width="50" height="6" rx="3"/>
+      <rect class="ocr-val" x="282" y="248" width="86" height="7" rx="3.5"/>
+    </g>
+  </g>
+</svg>
+
+<button class="ocr-btn" type="button" aria-label="Avvia la scansione del documento">
+  <span class="ocr-btndot"></span>
+  <span class="ocr-btntx">Scansiona</span>
+</button>
+<div class="ocr-hint" aria-hidden="true">tocca il documento o premi Scansiona</div>
+        </div>
+        <div class="cf-row-text">
+          <h3>La carta diventa dati</h3>
+          <p>Scansiona una fattura cartacea e guarda l'OCR estrarre righe, quantità e prezzi in dati strutturati, pronti per il gestionale.</p>
+        </div>
       </div>
 
-      <!-- Connettori / MCP -->
-      <div class="cf-card">
-        <svg class="cf-viz" viewBox="0 0 300 168" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <g stroke="#143d5c" stroke-opacity=".16" stroke-width="2">
-            <line x1="150" y1="84" x2="64" y2="44"/><line x1="150" y1="84" x2="64" y2="124"/><line x1="150" y1="84" x2="236" y2="44"/><line x1="150" y1="84" x2="236" y2="124"/>
-          </g>
-          <g font-family="IBM Plex Mono, monospace" font-size="8" fill="#143d5c" fill-opacity=".55" text-anchor="middle">
-            <text x="64" y="20">GESTIONALE</text><text x="64" y="150">DATABASE</text><text x="236" y="20">FATTURE</text><text x="236" y="150">SERVER</text>
-          </g>
-          <circle class="mcp-node" cx="64" cy="44" r="15" fill="#fff" stroke="#143d5c" stroke-opacity=".3"/>
-          <circle class="mcp-node" cx="64" cy="124" r="15" fill="#fff" stroke="#143d5c" stroke-opacity=".3" style="animation-delay:.6s"/>
-          <circle class="mcp-node" cx="236" cy="44" r="15" fill="#fff" stroke="#143d5c" stroke-opacity=".3" style="animation-delay:1.2s"/>
-          <circle class="mcp-node" cx="236" cy="124" r="15" fill="#fff" stroke="#143d5c" stroke-opacity=".3" style="animation-delay:1.8s"/>
-          <circle class="mcp-core" cx="150" cy="84" r="26" fill="#d4a747"/>
-          <text x="150" y="89" text-anchor="middle" font-size="15" font-weight="800" fill="#0e2c43" font-family="Inter, sans-serif">AI</text>
-          <circle class="flow" cx="64" cy="44" r="3.5" fill="#d4a747" style="--dx:86px;--dy:40px"/>
-          <circle class="flow" cx="150" cy="84" r="3.5" fill="#143d5c" style="--dx:-86px;--dy:40px;animation-delay:.6s"/>
-          <circle class="flow" cx="236" cy="44" r="3.5" fill="#d4a747" style="--dx:-86px;--dy:40px;animation-delay:1.2s"/>
-          <circle class="flow" cx="150" cy="84" r="3.5" fill="#143d5c" style="--dx:86px;--dy:40px;animation-delay:1.8s"/>
-        </svg>
-        <h3 class="cf-h">Connettori &amp; MCP</h3>
-        <p class="cf-p">L'AI si collega ai tuoi gestionali, database e server: legge e scrive sui sistemi che usi già, senza ricopiare niente a mano.</p>
+      <div class="cf-row reveal rev">
+        <div class="cf-viz cf-mcp" data-cf="mcp">
+<svg class="mcp-svg" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="L'AI collegata ai tuoi sistemi tramite connettori MCP: gestionale, database, fatture, server">
+  <defs>
+    <radialGradient id="mcp-hubgrad" cx="50%" cy="42%" r="60%">
+      <stop offset="0%" stop-color="#e6c468"/>
+      <stop offset="100%" stop-color="#d4a747"/>
+    </radialGradient>
+  </defs>
+  <g class="mcp-links"></g>
+  <g class="mcp-amb-layer"></g>
+  <g class="mcp-nodes"></g>
+  <g class="mcp-hub" transform="translate(240,160)">
+    <circle class="mcp-hub-glow mcp-anim" r="54"/>
+    <circle class="mcp-hub-circle" r="38" fill="url(#mcp-hubgrad)"/>
+    <text class="mcp-hub-text" y="1">AI</text>
+  </g>
+  <g class="mcp-pulse-layer"></g>
+</svg>
+<div class="mcp-hint">passa o tocca un nodo</div>
+        </div>
+        <div class="cf-row-text">
+          <h3>Connettori &amp; MCP</h3>
+          <p>Un unico hub AI si collega a gestionale, database, fatture e server: tocca un nodo per veder viaggiare i dati nei due sensi.</p>
+        </div>
       </div>
 
-      <!-- Tracciabilità -->
-      <div class="cf-card">
-        <svg class="cf-viz" viewBox="0 0 300 168" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <line x1="40" y1="78" x2="278" y2="78" stroke="#143d5c" stroke-opacity=".16" stroke-width="2"/>
-          <line class="trace-prog" x1="40" y1="78" x2="278" y2="78" stroke="#d4a747" stroke-width="3" stroke-dasharray="238" stroke-dashoffset="238" stroke-linecap="round"/>
-          <g font-family="IBM Plex Mono, monospace" font-size="7.5" fill="#143d5c" fill-opacity=".55" text-anchor="middle">
-            <text x="40" y="108">ORIGINE</text><text x="119" y="108">LAVORAZ.</text><text x="198" y="108">TRASPORTO</text><text x="278" y="108">CONSEGNA</text>
-          </g>
-          <circle class="trace-stop ts1" cx="40" cy="78" r="10" stroke="#143d5c" stroke-opacity=".3" stroke-width="2"/>
-          <circle class="trace-stop ts2" cx="119" cy="78" r="10" stroke="#143d5c" stroke-opacity=".3" stroke-width="2"/>
-          <circle class="trace-stop ts3" cx="198" cy="78" r="10" stroke="#143d5c" stroke-opacity=".3" stroke-width="2"/>
-          <circle class="trace-stop ts4" cx="278" cy="78" r="10" stroke="#143d5c" stroke-opacity=".3" stroke-width="2"/>
-          <circle class="anim-token" cx="40" cy="78" r="6" fill="#d4a747"/>
-        </svg>
-        <h3 class="cf-h">Tracciabilità di filiera</h3>
-        <p class="cf-p">Ogni passaggio — origine, lavorazione, trasporto, consegna — viene registrato e collegato. Tracci "chi‑cosa‑quando" in un secondo.</p>
+      <div class="cf-row reveal">
+        <div class="cf-viz cf-trace" data-cf="trace">
+<svg class="trace-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="Catena di tracciabilità con quattro tappe: origine, lavorazione, trasporto, consegna. Trascina il token per registrare ogni passaggio." preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="trace-grad-gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d4a747"/>
+      <stop offset="1" stop-color="#b8902f"/>
+    </linearGradient>
+    <radialGradient id="trace-grad-token" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#e7c069"/>
+      <stop offset="0.55" stop-color="#d4a747"/>
+      <stop offset="1" stop-color="#b8902f"/>
+    </radialGradient>
+    <filter id="trace-soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.2"/>
+    </filter>
+    <clipPath id="trace-clip-prog">
+      <rect class="trace-prog-clip" x="60" y="186" width="0" height="12"/>
+    </clipPath>
+  </defs>
+
+  <text class="trace-kicker" x="60" y="44">FILIERA · TRACCIABILITÀ</text>
+  <text class="trace-head" x="60" y="72">Ogni passaggio registrato</text>
+
+  <!-- base track -->
+  <line class="trace-track" x1="60" y1="192" x2="420" y2="192"/>
+  <!-- progress track (clipped) -->
+  <g clip-path="url(#trace-clip-prog)">
+    <line class="trace-track-fill" x1="60" y1="192" x2="420" y2="192"/>
+  </g>
+
+  <!-- ticks group built by JS for stations -->
+  <g class="trace-stations"></g>
+
+  <!-- registration card -->
+  <g class="trace-card" transform="translate(60,118)" opacity="0">
+    <rect class="trace-card-bg" x="-78" y="-30" width="156" height="46" rx="9"/>
+    <circle class="trace-card-dot" cx="-62" cy="-7" r="4"/>
+    <text class="trace-card-t1" x="-50" y="-11">registrato</text>
+    <text class="trace-card-t2" x="-62" y="6"></text>
+  </g>
+
+  <!-- token -->
+  <g class="trace-token" transform="translate(60,192)">
+    <circle class="trace-token-halo" r="22"/>
+    <circle class="trace-token-ring" r="14"/>
+    <circle class="trace-token-core" r="10"/>
+    <circle class="trace-token-spark" cx="-3.2" cy="-3.4" r="2.6"/>
+  </g>
+</svg>
+
+<div class="trace-hint" aria-hidden="true">
+  <span class="trace-hint-grip"></span>trascina il token
+</div>
+        </div>
+        <div class="cf-row-text">
+          <h3>Tracciabilità di filiera</h3>
+          <p>Trascina il token lungo la catena: ogni tappa superata si registra con lotto e orario, così ogni passaggio resta documentato.</p>
+        </div>
       </div>
-    </div>
+
+      <div class="cf-row reveal rev">
+        <div class="cf-viz cf-chat" data-cf="chat">
+<svg class="chat-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="Finestra di chat con un assistente AI che risponde automaticamente">
+  <defs>
+    <linearGradient id="chat-bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fafaf7"/>
+      <stop offset="1" stop-color="#f5f3ee"/>
+    </linearGradient>
+    <linearGradient id="chat-headGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#143d5c"/>
+      <stop offset="1" stop-color="#0e2c43"/>
+    </linearGradient>
+    <linearGradient id="chat-avGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d4a747"/>
+      <stop offset="1" stop-color="#b8902f"/>
+    </linearGradient>
+    <clipPath id="chat-winClip"><rect x="40" y="20" width="400" height="280" rx="18"/></clipPath>
+    <clipPath id="chat-listClip"><rect x="40" y="64" width="400" height="186"/></clipPath>
+  </defs>
+
+  <!-- window frame -->
+  <rect x="40" y="20" width="400" height="280" rx="18" fill="#ffffff" stroke="rgba(20,61,92,0.14)" stroke-width="1.4"/>
+
+  <g clip-path="url(#chat-winClip)">
+    <!-- header -->
+    <rect x="40" y="20" width="400" height="44" fill="url(#chat-headGrad)"/>
+    <circle cx="68" cy="42" r="13" fill="url(#chat-avGrad)"/>
+    <path d="M62 45.5 q6 5 12 0" fill="none" stroke="#0e2c43" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="64" cy="39.5" r="1.5" fill="#0e2c43"/>
+    <circle cx="72" cy="39.5" r="1.5" fill="#0e2c43"/>
+    <text x="90" y="39" fill="#fafaf7" font-size="12.5" font-weight="600" font-family="Inter,system-ui,sans-serif">Assistente AI</text>
+    <circle cx="93.5" cy="51" r="3" fill="#5bbd7a"/>
+    <text x="101" y="54.5" fill="rgba(250,250,247,0.78)" font-size="10" font-family="'IBM Plex Mono',monospace">online · risponde 24/7</text>
+
+    <!-- message list group (translated by JS for scroll) -->
+    <g clip-path="url(#chat-listClip)">
+      <g class="chat-list"></g>
+    </g>
+
+    <!-- chip area background -->
+    <rect class="chat-chipBg" x="40" y="250" width="400" height="50" fill="#fafaf7" stroke="rgba(20,61,92,0.10)" stroke-width="1"/>
+  </g>
+
+  <!-- idle hint pulse ring (around first chip), drawn by JS as needed -->
+</svg>
+
+<!-- chips overlay (HTML buttons, absolutely positioned over the chip bar) -->
+<div class="chat-chips" aria-label="Risposte rapide">
+  <button type="button" class="chat-chip" data-q="orari">Orari?</button>
+  <button type="button" class="chat-chip" data-q="prenota">Prenotare un tavolo</button>
+  <button type="button" class="chat-chip" data-q="prezzi">Quanto costa?</button>
+</div>
+
+<div class="chat-hint" aria-hidden="true">tocca una risposta</div>
+        </div>
+        <div class="cf-row-text">
+          <h3>Assistente che risponde 24/7</h3>
+          <p>Un agente conversazionale on-brand: tocca una risposta rapida e l'assistente scrive in tempo reale, sempre disponibile per i tuoi clienti.</p>
+        </div>
+      </div>
+
+      <div class="cf-row reveal">
+        <div class="cf-viz cf-local" data-cf="local">
+<svg class="local-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="AI locale on-premise: i dati restano in sede">
+  <defs>
+    <linearGradient id="local-rackGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#143d5c"/>
+      <stop offset="1" stop-color="#0e2c43"/>
+    </linearGradient>
+    <linearGradient id="local-roofGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a4a6e"/>
+      <stop offset="1" stop-color="#143d5c"/>
+    </linearGradient>
+    <linearGradient id="local-pkgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e6bd5e"/>
+      <stop offset="1" stop-color="#d4a747"/>
+    </linearGradient>
+    <clipPath id="local-buildingClip">
+      <rect x="158" y="150" width="164" height="128" rx="8"/>
+    </clipPath>
+  </defs>
+  <line x1="40" y1="278" x2="440" y2="278" stroke="rgba(20,61,92,0.18)" stroke-width="1.5"/>
+  <g class="local-cloud">
+    <g transform="translate(330,46)">
+      <path d="M -34 12 Q -40 -2 -26 -4 Q -24 -18 -6 -16 Q 2 -28 18 -18 Q 36 -22 38 -4 Q 50 -2 44 12 Z" fill="#ffffff" stroke="rgba(20,61,92,0.22)" stroke-width="1.5"/>
+      <line class="local-cloud-x" x1="-6" y1="-9" x2="14" y2="7" stroke-width="2.4" stroke-linecap="round"/>
+      <line class="local-cloud-x" x1="14" y1="-9" x2="-6" y2="7" stroke-width="2.4" stroke-linecap="round"/>
+    </g>
+  </g>
+  <path id="local-outPath" d="M 240 150 C 250 118 290 96 330 70" fill="none" stroke="rgba(20,61,92,0.16)" stroke-width="2" stroke-dasharray="5 6"/>
+  <g class="local-rack local-shake" id="local-shakeGroup">
+    <path d="M 150 150 L 240 126 L 330 150 Z" fill="url(#local-roofGrad)" stroke="rgba(212,167,71,0.25)" stroke-width="1"/>
+    <rect x="158" y="150" width="164" height="128" rx="8" fill="url(#local-rackGrad)" stroke="rgba(212,167,71,0.3)" stroke-width="1.5"/>
+    <g clip-path="url(#local-buildingClip)">
+      <g stroke="rgba(212,167,71,0.18)" stroke-width="1">
+        <line x1="158" y1="178" x2="322" y2="178"/>
+        <line x1="158" y1="206" x2="322" y2="206"/>
+        <line x1="158" y1="234" x2="322" y2="234"/>
+      </g>
+      <g fill="#d4a747" opacity="0.55">
+        <circle cx="172" cy="166" r="2"/><circle cx="182" cy="166" r="2"/>
+        <circle cx="172" cy="194" r="2"/><circle cx="182" cy="194" r="2"/>
+        <circle cx="172" cy="222" r="2"/><circle cx="182" cy="222" r="2"/>
+      </g>
+      <path id="local-loopPath" d="M 210 192 C 210 174 270 174 270 192 C 270 210 210 210 210 192 Z" fill="none" stroke="rgba(212,167,71,0.35)" stroke-width="1.5" stroke-dasharray="3 5"/>
+    </g>
+    <g transform="translate(240,250)">
+      <path d="M -7 -2 V -7 a 7 7 0 0 1 14 0 V -2" fill="none" stroke="#d4a747" stroke-width="2.6"/>
+      <rect x="-11" y="-2" width="22" height="18" rx="3.5" fill="#d4a747"/>
+      <circle cx="0" cy="6" r="2.6" fill="#0e2c43"/>
+      <rect x="-1" y="6" width="2" height="5" rx="1" fill="#0e2c43"/>
+    </g>
+  </g>
+  <g id="local-dotsLayer">
+    <circle class="local-dot local-d0" r="3.2" cx="210" cy="192"/>
+    <circle class="local-dot local-d1" r="3.2" cx="210" cy="192"/>
+    <circle class="local-dot local-d2" r="3.2" cx="210" cy="192"/>
+    <circle class="local-dot local-idle-dot local-d3" r="2.4" cx="210" cy="192"/>
+  </g>
+  <rect id="local-pkg" x="-10" y="-10" width="14" height="14" rx="3" fill="url(#local-pkgGrad)" stroke="#b8902f" stroke-width="1" opacity="0" transform="translate(240,150)"/>
+</svg>
+<div class="local-badge"><span class="local-badge-led local-live"></span>ON-PREMISE: ON</div>
+<div class="local-toast" id="local-toast"><span class="local-toast-bar"></span>Bloccato: restano in sede</div>
+<button class="local-btn" id="local-btn" type="button"><span class="local-btn-dot"></span>Prova a mandarli fuori</button>
+        </div>
+        <div class="cf-row-text">
+          <h3>I dati restano in sede</h3>
+          <p>L'AI gira sul tuo server on-premise: i dati circolano solo all'interno e non escono mai verso il cloud.</p>
+        </div>
+      </div>
   </div>
 </section>
 
@@ -971,6 +1462,925 @@
       card.addEventListener('pointerleave', () => { card.style.transform = ''; });
     });
   }
+
+// ===== ocr =====
+function ocrInit(root){
+  var svg = root.querySelector('.ocr-svg');
+  var docG = root.querySelector('.ocr-doc');
+  var btn = root.querySelector('.ocr-btn');
+  var beam = root.querySelector('.ocr-beamwrap');
+  var pills = Array.prototype.slice.call(root.querySelectorAll('.ocr-pill'));
+  var hint = root.querySelector('.ocr-hint');
+  if(!svg || !btn) return;
+
+  var reduce = false;
+  try { reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
+
+  // scan band geometry (paper interior, in viewBox units)
+  var TOP = 40, BOT = 272, H = BOT - TOP;
+  var rafId = null, idleId = null;
+  var revealTimers = [];
+  var scanning = false;
+  var hintHidden = false;
+
+  function clearTimers(){
+    for(var i=0;i<revealTimers.length;i++){ clearTimeout(revealTimers[i]); }
+    revealTimers = [];
+  }
+  function setBeam(y){
+    if(beam) beam.setAttribute('transform','translate(0,'+y+')');
+  }
+  function resetPills(){
+    for(var i=0;i<pills.length;i++){ pills[i].classList.remove('ocr-on'); }
+  }
+  function showAllPills(){
+    for(var i=0;i<pills.length;i++){ pills[i].classList.add('ocr-on'); }
+  }
+
+  // Reduced motion: static, everything visible, no loops
+  if(reduce){
+    root.classList.add('ocr-scanning');
+    setBeam(H * 0.5);
+    showAllPills();
+    if(hint) hint.style.display = 'none';
+    // base interaction: clicking still reveals (already shown) - keep button harmless
+    var staticScan = function(){ showAllPills(); };
+    btn.addEventListener('click', staticScan);
+    if(docG){ docG.addEventListener('click', staticScan); }
+    return;
+  }
+
+  function hideHintOnce(){
+    if(hintHidden || !hint) return;
+    hintHidden = true;
+    hint.style.transition = 'opacity .4s ease';
+    hint.style.opacity = '0';
+  }
+
+  // ---- IDLE loop: gentle scan sweep, pills softly pulse ----
+  function startIdle(){
+    if(idleId) return;
+    root.classList.add('ocr-scanning'); // shows beam (faint via low contrast) during idle? keep subtle
+    var start = null;
+    var period = 4200; // ms for one sweep
+    function idleFrame(ts){
+      if(scanning){ idleId = null; return; }
+      if(start === null) start = ts;
+      var t = ((ts - start) % period) / period; // 0..1
+      // ease the sweep, pause at bottom
+      var sweep = t < 0.72 ? (t/0.72) : 1;
+      var eased = sweep<0.5 ? 2*sweep*sweep : 1-Math.pow(-2*sweep+2,2)/2;
+      setBeam(TOP + H * eased);
+      // soft pulse pills opacity (subtle invite)
+      var p = 0.5 + 0.5*Math.sin((ts/700));
+      for(var i=0;i<pills.length;i++){
+        pills[i].style.opacity = (0.10 + 0.12*p).toFixed(3);
+        pills[i].style.transform = 'translateX(6px)';
+      }
+      idleId = requestAnimationFrame(idleFrame);
+    }
+    idleId = requestAnimationFrame(idleFrame);
+  }
+  function stopIdle(){
+    if(idleId){ cancelAnimationFrame(idleId); idleId = null; }
+    // clear inline styles set during idle so classes take over
+    for(var i=0;i<pills.length;i++){
+      pills[i].style.opacity = '';
+      pills[i].style.transform = '';
+    }
+  }
+
+  // ---- Active scan triggered by user ----
+  function runScan(){
+    if(scanning) return;
+    scanning = true;
+    hideHintOnce();
+    stopIdle();
+    clearTimers();
+    resetPills();
+    root.classList.add('ocr-scanning');
+
+    var dur = 1500; // ms beam travel
+    var startTs = null;
+    var pillStep = dur / (pills.length + 1);
+
+    // schedule pill reveals as beam passes
+    for(var i=0;i<pills.length;i++){
+      (function(idx){
+        var t = setTimeout(function(){
+          if(pills[idx]) pills[idx].classList.add('ocr-on');
+        }, Math.round(pillStep * (idx + 0.6)));
+        revealTimers.push(t);
+      })(i);
+    }
+
+    function frame(ts){
+      if(startTs === null) startTs = ts;
+      var t = (ts - startTs) / dur;
+      if(t >= 1){
+        setBeam(BOT);
+        showAllPills();
+        // finish: beam fades, data stays
+        var ft = setTimeout(function(){
+          root.classList.remove('ocr-scanning');
+          scanning = false;
+          // resume gentle idle but keep pills visible -> custom: light idle that doesn't hide pills
+          startIdleKeep();
+        }, 260);
+        revealTimers.push(ft);
+        rafId = null;
+        return;
+      }
+      var eased = t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
+      setBeam(TOP + H * eased);
+      rafId = requestAnimationFrame(frame);
+    }
+    if(rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(frame);
+  }
+
+  // idle that keeps revealed pills visible (used after a scan completed)
+  var idleKeepId = null;
+  function startIdleKeep(){
+    if(idleKeepId) return;
+    function f(ts){
+      if(scanning){ idleKeepId = null; return; }
+      // subtle pulse on circles only via opacity of whole data group? keep pills on, gentle pulse
+      var p = 0.5 + 0.5*Math.sin(ts/720);
+      for(var i=0;i<pills.length;i++){
+        if(pills[i].classList.contains('ocr-on')){
+          pills[i].style.opacity = (0.85 + 0.15*p).toFixed(3);
+        }
+      }
+      idleKeepId = requestAnimationFrame(f);
+    }
+    idleKeepId = requestAnimationFrame(f);
+  }
+  function stopIdleKeep(){
+    if(idleKeepId){ cancelAnimationFrame(idleKeepId); idleKeepId = null; }
+    for(var i=0;i<pills.length;i++){ pills[i].style.opacity=''; }
+  }
+
+  // wire events
+  function onActivate(e){
+    if(e) e.preventDefault();
+    stopIdle(); stopIdleKeep();
+    runScan();
+  }
+  btn.addEventListener('click', onActivate);
+  if(docG){
+    docG.addEventListener('click', onActivate);
+    docG.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ onActivate(e); }
+    });
+  }
+
+  // kick off idle invitation
+  startIdle();
+}
+
+// ===== mcp =====
+function mcpInit(root){
+  var svg=root.querySelector('.mcp-svg');
+  if(!svg)return;
+  var SVGNS='http://www.w3.org/2000/svg';
+  var mq=window.matchMedia;
+  var reduce=mq&&mq('(prefers-reduced-motion:reduce)').matches;
+  var canHover=mq&&mq('(hover:hover)').matches;
+  var hub={x:240,y:160};
+  var defs=[
+    {label:'GESTIONALE',x:88,y:78,icon:'grid'},
+    {label:'DATABASE',x:392,y:78,icon:'db'},
+    {label:'FATTURE',x:88,y:250,icon:'doc'},
+    {label:'SERVER',x:392,y:250,icon:'srv'}
+  ];
+  var linksG=root.querySelector('.mcp-links');
+  var ambG=root.querySelector('.mcp-amb-layer');
+  var nodesG=root.querySelector('.mcp-nodes');
+  var pulseG=root.querySelector('.mcp-pulse-layer');
+  var hint=root.querySelector('.mcp-hint');
+
+  function mk(tag,attrs){var e=document.createElementNS(SVGNS,tag);if(attrs){for(var k in attrs)e.setAttribute(k,attrs[k]);}return e;}
+  function iconPath(type){
+    switch(type){
+      case 'grid':return 'M-7 -7H-1V-1H-7Z M1 -7H7V-1H1Z M-7 1H-1V7H-7Z M1 1H7V7H1Z';
+      case 'db':return 'M-7 -6c0 -1.7 3.1 -3 7 -3s7 1.3 7 3v12c0 1.7 -3.1 3 -7 3s-7 -1.3 -7 -3Z M-7 -6c0 1.7 3.1 3 7 3s7 -1.3 7 -3 M-7 0c0 1.7 3.1 3 7 3s7 -1.3 7 -3';
+      case 'doc':return 'M-6 -8H3L7 -4V8H-6Z M3 -8V-4H7 M-3 0H4 M-3 3H4 M-3 -3H1';
+      case 'srv':return 'M-8 -7H8V-1H-8Z M-8 1H8V7H-8Z M-5 -4H-5.01 M-5 4H-5.01 M2 -4H6 M2 4H6';
+    }
+    return '';
+  }
+  function lerp(a,b,t){return a+(b-a)*t;}
+
+  var nodes=[];
+  defs.forEach(function(d){
+    var dx=d.x-hub.x, dy=d.y-hub.y;
+    var dist=Math.sqrt(dx*dx+dy*dy)||1;
+    var ux=dx/dist, uy=dy/dist;
+    var hubR=40, nodeR=26;
+    var p1={x:hub.x+ux*hubR, y:hub.y+uy*hubR};
+    var p2={x:d.x-ux*nodeR, y:d.y-uy*nodeR};
+
+    var link=mk('line',{x1:p1.x,y1:p1.y,x2:p2.x,y2:p2.y,'class':'mcp-link'});
+    linksG.appendChild(link);
+
+    var amb=mk('circle',{r:2,'class':'mcp-amb',cx:p1.x,cy:p1.y});
+    ambG.appendChild(amb);
+
+    var g=mk('g',{'class':'mcp-node',tabindex:'0',role:'button','aria-label':d.label});
+    g.appendChild(mk('circle',{r:32,'class':'mcp-node-ring',cx:d.x,cy:d.y}));
+    g.appendChild(mk('circle',{r:nodeR,'class':'mcp-node-circle',cx:d.x,cy:d.y}));
+    g.appendChild(mk('path',{'class':'mcp-node-icon',d:iconPath(d.icon),transform:'translate('+d.x+','+(d.y-4)+') scale(0.7)'}));
+    var t=mk('text',{'class':'mcp-node-label',x:d.x,y:d.y+40});
+    t.textContent=d.label;
+    g.appendChild(t);
+    nodesG.appendChild(g);
+
+    nodes.push({def:d,g:g,link:link,amb:amb,p1:p1,p2:p2,active:false,ambPhase:Math.random(),pulses:[],to:null});
+  });
+
+  var interacted=false;
+  function setActive(n,on){
+    if(n.active===on)return;
+    n.active=on;
+    if(on){n.g.classList.add('mcp-active');n.link.classList.add('mcp-active');spawnPulse(n);}
+    else{n.g.classList.remove('mcp-active');n.link.classList.remove('mcp-active');}
+  }
+  function activate(n){
+    if(!interacted){interacted=true;if(hint)hint.classList.add('mcp-hidden');}
+    setActive(n,true);
+  }
+  function spawnPulse(n){
+    if(reduce)return;
+    for(var i=0;i<3;i++){
+      var c=mk('circle',{r:i===0?3.2:2.6,'class':'mcp-pulse'});
+      pulseG.appendChild(c);
+      n.pulses.push({el:c,t:-(i*0.22),dir:(i%2===0?1:-1),speed:0.9});
+    }
+  }
+
+  nodes.forEach(function(n){
+    n.g.addEventListener('pointerenter',function(){if(canHover)activate(n);});
+    n.g.addEventListener('pointerleave',function(){if(canHover)setActive(n,false);});
+    n.g.addEventListener('pointerdown',function(e){
+      e.preventDefault();
+      activate(n);
+      if(n.to)clearTimeout(n.to);
+      if(!canHover)n.to=setTimeout(function(){setActive(n,false);},2600);
+    });
+    n.g.addEventListener('keydown',function(e){
+      if(e.key==='Enter'||e.key===' '){
+        e.preventDefault();activate(n);
+        if(n.to)clearTimeout(n.to);
+        n.to=setTimeout(function(){setActive(n,false);},2600);
+      }
+    });
+    n.g.addEventListener('blur',function(){if(!canHover)setActive(n,false);});
+  });
+
+  if(reduce){
+    nodes.forEach(function(n){
+      n.amb.setAttribute('cx',lerp(n.p1.x,n.p2.x,0.5));
+      n.amb.setAttribute('cy',lerp(n.p1.y,n.p2.y,0.5));
+      n.amb.style.opacity='0.22';
+    });
+    return;
+  }
+
+  var last=null, raf=null;
+  function frame(now){
+    if(last===null)last=now;
+    var dt=(now-last)/1000;if(dt>0.05)dt=0.05;last=now;
+    nodes.forEach(function(n){
+      n.ambPhase+=dt*0.18;
+      if(n.ambPhase>1)n.ambPhase-=1;
+      var ap=n.ambPhase;
+      n.amb.setAttribute('cx',lerp(n.p1.x,n.p2.x,ap));
+      n.amb.setAttribute('cy',lerp(n.p1.y,n.p2.y,ap));
+      n.amb.style.opacity=(0.10+0.16*Math.sin(ap*Math.PI)).toFixed(3);
+      for(var i=n.pulses.length-1;i>=0;i--){
+        var p=n.pulses[i];
+        p.t+=dt*p.speed;
+        if(p.t<0){p.el.style.opacity='0';continue;}
+        var travel=p.t%2;
+        var u=travel<1?travel:(2-travel);
+        var sx,sy,ex,ey;
+        if(p.dir>0){sx=n.p1.x;sy=n.p1.y;ex=n.p2.x;ey=n.p2.y;}
+        else{sx=n.p2.x;sy=n.p2.y;ex=n.p1.x;ey=n.p1.y;}
+        p.el.setAttribute('cx',lerp(sx,ex,u));
+        p.el.setAttribute('cy',lerp(sy,ey,u));
+        var fade=Math.sin(u*Math.PI);
+        p.el.style.opacity=(n.active?(0.4+0.6*fade):0).toFixed(3);
+        if(!n.active&&p.t>0.2){pulseG.removeChild(p.el);n.pulses.splice(i,1);}
+      }
+    });
+    raf=requestAnimationFrame(frame);
+  }
+  raf=requestAnimationFrame(frame);
+}
+
+// ===== trace =====
+function traceInit(root){
+  var svg = root.querySelector('.trace-svg');
+  if(!svg) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var token = root.querySelector('.trace-token');
+  var halo = root.querySelector('.trace-token-halo');
+  var progClip = root.querySelector('.trace-prog-clip');
+  var card = root.querySelector('.trace-card');
+  var cardTxt = root.querySelector('.trace-card-t2');
+  var hint = root.querySelector('.trace-hint');
+  var stationsG = root.querySelector('.trace-stations');
+
+  var X0 = 60, X1 = 420, Y = 192;
+  var labels = ['ORIGINE','LAVORAZIONE','TRASPORTO','CONSEGNA'];
+  var lots = ['#A14','#A14','#B07','#B07'];
+  var times = ['08:05','11:20','14:32','16:58'];
+  var n = labels.length;
+
+  var reduce = false;
+  try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
+
+  // build stations
+  var stations = [];
+  for(var i=0;i<n;i++){
+    var sx = X0 + (X1 - X0) * (i/(n-1));
+    var g = document.createElementNS(NS,'g');
+    g.setAttribute('class','trace-station');
+    g.setAttribute('data-i', i);
+
+    var tick = document.createElementNS(NS,'line');
+    tick.setAttribute('class','trace-st-line');
+    tick.setAttribute('x1', sx); tick.setAttribute('y1', Y-3);
+    tick.setAttribute('x2', sx); tick.setAttribute('y2', Y+18);
+    g.appendChild(tick);
+
+    var base = document.createElementNS(NS,'circle');
+    base.setAttribute('class','trace-st-base');
+    base.setAttribute('cx', sx); base.setAttribute('cy', Y); base.setAttribute('r', 9);
+    g.appendChild(base);
+
+    var fill = document.createElementNS(NS,'circle');
+    fill.setAttribute('class','trace-st-fill');
+    fill.setAttribute('cx', sx); fill.setAttribute('cy', Y); fill.setAttribute('r', 9);
+    g.appendChild(fill);
+
+    var inner = document.createElementNS(NS,'circle');
+    inner.setAttribute('class','trace-st-inner');
+    inner.setAttribute('cx', sx); inner.setAttribute('cy', Y); inner.setAttribute('r', 3);
+    g.appendChild(inner);
+
+    var lab = document.createElementNS(NS,'text');
+    lab.setAttribute('class','trace-st-label');
+    lab.setAttribute('x', sx); lab.setAttribute('y', Y+34);
+    lab.textContent = labels[i];
+    g.appendChild(lab);
+
+    stationsG.appendChild(g);
+    stations.push({g:g, x:sx, on:false, tick:tick});
+  }
+
+  // geometry helper: convert client coords to svg x
+  function clientToSvgX(clientX, clientY){
+    var pt;
+    try {
+      pt = svg.createSVGPoint();
+      pt.x = clientX; pt.y = clientY;
+      var m = svg.getScreenCTM();
+      if(m){
+        var p = pt.matrixTransform(m.inverse());
+        return p.x;
+      }
+    } catch(e){}
+    // fallback via bounding box
+    var r = svg.getBoundingClientRect();
+    var vb = svg.viewBox.baseVal;
+    return vb.x + (clientX - r.left) / r.width * vb.width;
+  }
+
+  var pos = X0; // current token x in svg coords
+  var dragging = false;
+  var lastReached = -1;
+
+  function setPos(x){
+    pos = Math.max(X0, Math.min(X1, x));
+    token.setAttribute('transform','translate('+pos+','+Y+')');
+    progClip.setAttribute('width', Math.max(0, pos - X0));
+    var reached = -1;
+    for(var i=0;i<n;i++){
+      var st = stations[i];
+      var passed = pos >= st.x - 0.5;
+      if(passed){
+        reached = i;
+        if(!st.on){
+          st.on = true;
+          st.g.classList.add('trace-on');
+          st.tick.classList.add('trace-on');
+          if(!reduce){
+            st.g.classList.remove('trace-pop');
+            // force reflow to restart animation
+            void st.g.getBBox;
+            st.g.classList.add('trace-pop');
+          }
+        }
+      } else {
+        if(st.on){
+          st.on = false;
+          st.g.classList.remove('trace-on','trace-pop');
+          st.tick.classList.remove('trace-on');
+        }
+      }
+    }
+    if(reached !== lastReached){
+      lastReached = reached;
+      if(reached >= 0){
+        showCard(reached);
+      } else {
+        card.setAttribute('opacity','0');
+      }
+    } else if(reached >= 0){
+      // keep card following horizontally
+      positionCard(reached);
+    }
+  }
+
+  function positionCard(i){
+    var cx = stations[i].x;
+    cx = Math.max(78+10, Math.min(480-78-10, cx));
+    card.setAttribute('transform','translate('+cx+',118)');
+  }
+
+  function showCard(i){
+    positionCard(i);
+    cardTxt.textContent = 'lotto '+lots[i]+' · '+times[i];
+    card.setAttribute('opacity','1');
+  }
+
+  // idle animation
+  var idleRAF = null;
+  var idleT = 0;
+  var idleDir = 1;
+  var idleActive = false;
+
+  function startIdle(){
+    if(reduce || idleActive) return;
+    idleActive = true;
+    halo.classList.add('trace-pulse');
+    var last = null;
+    function frame(ts){
+      if(!idleActive){ idleRAF = null; return; }
+      if(last === null) last = ts;
+      var dt = (ts - last) / 1000;
+      last = ts;
+      // sweep 0..1 over ~6s, ping-pong
+      idleT += idleDir * dt / 6;
+      if(idleT >= 1){ idleT = 1; idleDir = -1; }
+      if(idleT <= 0){ idleT = 0; idleDir = 1; }
+      // ease in-out
+      var e = idleT*idleT*(3-2*idleT);
+      setPos(X0 + (X1 - X0) * e);
+      idleRAF = window.requestAnimationFrame(frame);
+    }
+    idleRAF = window.requestAnimationFrame(frame);
+  }
+
+  function stopIdle(){
+    idleActive = false;
+    halo.classList.remove('trace-pulse');
+    if(idleRAF){ window.cancelAnimationFrame(idleRAF); idleRAF = null; }
+  }
+
+  // drag handlers
+  var moveHandler = null, upHandler = null;
+
+  function onDown(e){
+    e.preventDefault();
+    stopIdle();
+    dragging = true;
+    token.classList.add('trace-drag');
+    if(hint) hint.classList.add('trace-hide');
+    // sync idle phase to current pos so resume is smooth
+    var frac = (pos - X0) / (X1 - X0);
+    idleT = frac; idleDir = (frac < 1 ? 1 : -1);
+    setPos(clientToSvgX(e.clientX, e.clientY));
+
+    moveHandler = function(ev){
+      ev.preventDefault();
+      setPos(clientToSvgX(ev.clientX, ev.clientY));
+    };
+    upHandler = function(ev){
+      dragging = false;
+      token.classList.remove('trace-drag');
+      window.removeEventListener('pointermove', moveHandler);
+      window.removeEventListener('pointerup', upHandler);
+      window.removeEventListener('pointercancel', upHandler);
+      moveHandler = null; upHandler = null;
+      // resume idle from current position
+      var f = (pos - X0) / (X1 - X0);
+      idleT = f; idleDir = (f >= 1 ? -1 : 1);
+      startIdle();
+    };
+    window.addEventListener('pointermove', moveHandler);
+    window.addEventListener('pointerup', upHandler);
+    window.addEventListener('pointercancel', upHandler);
+  }
+
+  token.addEventListener('pointerdown', onDown);
+
+  // also allow grabbing by tapping anywhere near the track line
+  svg.addEventListener('pointerdown', function(e){
+    if(dragging) return;
+    if(e.target.closest && e.target.closest('.trace-token')) return;
+    var x = clientToSvgX(e.clientX, e.clientY);
+    var y = clientToSvgX(e.clientX, e.clientY); // unused
+    // approximate vertical check using svg point
+    var sy;
+    try {
+      var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+      var m = svg.getScreenCTM();
+      sy = m ? pt.matrixTransform(m.inverse()).y : Y;
+    } catch(err){ sy = Y; }
+    if(Math.abs(sy - Y) <= 30 && x >= X0-12 && x <= X1+12){
+      onDown(e);
+    }
+  });
+
+  // init
+  if(reduce){
+    // static readable state: token at a meaningful midpoint, stations up to it lit
+    setPos(X0 + (X1 - X0) * 0.5);
+    if(hint) hint.classList.add('trace-hide');
+  } else {
+    setPos(X0);
+    startIdle();
+  }
+}
+
+// ===== chat =====
+function chatInit(root){
+  var SVGNS = "http://www.w3.org/2000/svg";
+  var svg = root.querySelector(".chat-svg");
+  var list = root.querySelector(".chat-list");
+  var chipsBar = root.querySelector(".chat-chips");
+  var chips = Array.prototype.slice.call(root.querySelectorAll(".chat-chip"));
+  var hint = root.querySelector(".chat-hint");
+  if(!svg || !list || !chipsBar) return;
+
+  var reduce = false;
+  try{ reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+
+  // viewport geometry (SVG user units)
+  var LIST_X = 48;            // left padding inside list
+  var LIST_W = 384;           // usable width
+  var VIEW_TOP = 64;          // top of visible list area
+  var VIEW_BOT = 250;         // bottom (chip bar starts)
+  var VIEW_H = VIEW_BOT - VIEW_TOP;
+  var MAXW = 232;             // max bubble width
+  var PAD = 12;               // bubble inner padding
+  var LH = 15;                // line height
+  var FS = 12;                // font size
+
+  var cursorY = VIEW_TOP + 14; // running layout cursor (in content space)
+  var scrollY = 0;             // current applied translate
+  var timers = [];
+  var busy = false;
+
+  function clearTimers(){
+    for(var i=0;i<timers.length;i++){ clearTimeout(timers[i]); }
+    timers = [];
+  }
+  function later(fn, ms){ var t = setTimeout(fn, ms); timers.push(t); return t; }
+
+  // crude word-wrap by character budget (monospace-ish estimate for Inter at 12px)
+  function wrap(text, maxChars){
+    var words = text.split(" ");
+    var lines = [], cur = "";
+    for(var i=0;i<words.length;i++){
+      var w = words[i];
+      var test = cur ? cur + " " + w : w;
+      if(test.length > maxChars && cur){ lines.push(cur); cur = w; }
+      else { cur = test; }
+    }
+    if(cur) lines.push(cur);
+    return lines;
+  }
+
+  function measure(lines){
+    var max = 0;
+    for(var i=0;i<lines.length;i++){ if(lines[i].length > max) max = lines[i].length; }
+    return max;
+  }
+
+  // Append a chat bubble. side: 'bot' | 'user'
+  function addBubble(text, side){
+    var maxChars = 34;
+    var lines = wrap(text, maxChars);
+    var charW = 6.4; // approx px per char at 12px Inter
+    var textW = Math.min(MAXW - PAD*2, Math.max(46, measure(lines) * charW));
+    var bw = textW + PAD*2;
+    var bh = lines.length * LH + PAD*2 - 3;
+
+    var isBot = side === "bot";
+    var bx = isBot ? LIST_X : (LIST_X + LIST_W - bw);
+
+    var g = document.createElementNS(SVGNS, "g");
+    g.setAttribute("class", "chat-msg");
+
+    var rect = document.createElementNS(SVGNS, "rect");
+    rect.setAttribute("x", bx);
+    rect.setAttribute("y", cursorY);
+    rect.setAttribute("width", bw);
+    rect.setAttribute("height", bh);
+    rect.setAttribute("rx", 13);
+    if(isBot){
+      rect.setAttribute("fill", "#f5f3ee");
+      rect.setAttribute("stroke", "rgba(20,61,92,0.12)");
+      rect.setAttribute("stroke-width", "1");
+    } else {
+      rect.setAttribute("fill", "#143d5c");
+    }
+    g.appendChild(rect);
+
+    var ty = cursorY + PAD + 11;
+    for(var i=0;i<lines.length;i++){
+      var t = document.createElementNS(SVGNS, "text");
+      t.setAttribute("x", bx + PAD);
+      t.setAttribute("y", ty + i*LH);
+      t.setAttribute("font-size", FS);
+      t.setAttribute("font-family", "Inter,system-ui,sans-serif");
+      t.setAttribute("fill", isBot ? "#0e2c43" : "#fafaf7");
+      t.textContent = lines[i];
+      g.appendChild(t);
+    }
+
+    list.appendChild(g);
+    cursorY += bh + 9;
+
+    if(reduce){ g.classList.add("chat-in"); }
+    else {
+      // trigger CSS fade + a tiny slide via transform
+      g.style.transform = "translateY(6px)";
+      requestAnimationFrame(function(){
+        g.classList.add("chat-in");
+        g.style.transition = "transform .34s cubic-bezier(.2,.8,.3,1)";
+        g.style.transform = "translateY(0)";
+      });
+    }
+    autoScroll();
+    return g;
+  }
+
+  // typing indicator bubble; returns the <g> so we can remove it
+  function addTyping(){
+    var bw = 56, bh = 30;
+    var g = document.createElementNS(SVGNS, "g");
+    g.setAttribute("class", "chat-msg");
+    var rect = document.createElementNS(SVGNS, "rect");
+    rect.setAttribute("x", LIST_X);
+    rect.setAttribute("y", cursorY);
+    rect.setAttribute("width", bw);
+    rect.setAttribute("height", bh);
+    rect.setAttribute("rx", 13);
+    rect.setAttribute("fill", "#f5f3ee");
+    rect.setAttribute("stroke", "rgba(20,61,92,0.12)");
+    rect.setAttribute("stroke-width", "1");
+    g.appendChild(rect);
+    var cy = cursorY + bh/2;
+    var cls = ["", "chat-d2", "chat-d3"];
+    for(var i=0;i<3;i++){
+      var c = document.createElementNS(SVGNS, "circle");
+      c.setAttribute("cx", LIST_X + 16 + i*12);
+      c.setAttribute("cy", cy);
+      c.setAttribute("r", 3);
+      c.setAttribute("fill", "#143d5c");
+      c.setAttribute("class", "chat-dot " + cls[i]);
+      g.appendChild(c);
+    }
+    list.appendChild(g);
+    cursorY += bh + 9;
+    if(reduce){ g.classList.add("chat-in"); }
+    else {
+      requestAnimationFrame(function(){ g.classList.add("chat-in"); });
+    }
+    autoScroll();
+    return g;
+  }
+
+  function removeTyping(g){
+    if(!g) return;
+    var h = 30 + 9;
+    if(g.parentNode) g.parentNode.removeChild(g);
+    cursorY -= h;
+  }
+
+  function autoScroll(){
+    var overflow = cursorY - VIEW_BOT;
+    var target = overflow > 0 ? -overflow : 0;
+    if(reduce){
+      scrollY = target;
+      list.setAttribute("transform", "translate(0," + target + ")");
+      return;
+    }
+    var start = scrollY, t0 = null, dur = 260;
+    function step(ts){
+      if(t0 === null) t0 = ts;
+      var k = Math.min(1, (ts - t0) / dur);
+      var e = 1 - Math.pow(1 - k, 3);
+      var v = start + (target - start) * e;
+      list.setAttribute("transform", "translate(0," + v + ")");
+      if(k < 1){ requestAnimationFrame(step); } else { scrollY = target; }
+    }
+    requestAnimationFrame(step);
+  }
+
+  var answers = {
+    orari: { u: "Quali sono gli orari?", b: "Siamo aperti da martedi a domenica, dalle 19:00 alle 23:30. Lunedi chiuso." },
+    prenota: { u: "Vorrei prenotare un tavolo", b: "Con piacere! Per quante persone e per quale sera vuoi prenotare?" },
+    prezzi: { u: "Quanto costa?", b: "Il menu alla carta parte da 14€ a piatto; il menu degustazione e 45€ a persona." }
+  };
+
+  function setBusy(b){
+    busy = b;
+    if(b){ chipsBar.classList.add("chat-busy"); }
+    else { chipsBar.classList.remove("chat-busy"); }
+  }
+
+  function stopIdle(){
+    for(var i=0;i<chips.length;i++){ chips[i].classList.remove("chat-pulse"); }
+    if(hint){ hint.classList.remove("chat-show"); }
+  }
+
+  function startIdle(){
+    if(reduce || busy) return;
+    if(chips[0]) chips[0].classList.add("chat-pulse");
+    if(hint){ hint.classList.add("chat-show"); }
+  }
+
+  function handle(key){
+    if(busy) return;
+    var a = answers[key];
+    if(!a) return;
+    stopIdle();
+    setBusy(true);
+
+    addBubble(a.u, "user");
+    later(function(){
+      var typing = addTyping();
+      later(function(){
+        removeTyping(typing);
+        addBubble(a.b, "bot");
+        later(function(){
+          setBusy(false);
+          startIdle();
+        }, 350);
+      }, 850);
+    }, 380);
+  }
+
+  for(var i=0;i<chips.length;i++){
+    (function(chip){
+      chip.addEventListener("pointerdown", function(ev){
+        // prevent double-firing / text selection on touch
+        if(ev.cancelable) ev.preventDefault();
+      });
+      chip.addEventListener("click", function(){
+        handle(chip.getAttribute("data-q"));
+      });
+    })(chips[i]);
+  }
+
+  // initial bot greeting
+  addBubble("Ciao! Sono l'assistente del ristorante, disponibile 24 ore su 24. Come posso aiutarti?", "bot");
+  startIdle();
+}
+
+// ===== local =====
+function localInit(root){
+  if(!root || root.__localInit) return;
+  root.__localInit = true;
+
+  var loopPath = root.querySelector('#local-loopPath');
+  var outPath = root.querySelector('#local-outPath');
+  var pkg = root.querySelector('#local-pkg');
+  var btn = root.querySelector('#local-btn');
+  var toast = root.querySelector('#local-toast');
+  var shakeGroup = root.querySelector('#local-shakeGroup');
+  var dots = [
+    root.querySelector('.local-d0'),
+    root.querySelector('.local-d1'),
+    root.querySelector('.local-d2')
+  ];
+
+  var reduce = false;
+  try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
+
+  var loopLen = loopPath.getTotalLength();
+  var outLen = outPath.getTotalLength();
+
+  var offsets = [0, 0.34, 0.68];
+  function placeOnLoop(dot, t){
+    var p = loopPath.getPointAtLength((((t % 1) + 1) % 1) * loopLen);
+    dot.setAttribute('cx', p.x.toFixed(2));
+    dot.setAttribute('cy', p.y.toFixed(2));
+  }
+  for (var i=0;i<dots.length;i++) placeOnLoop(dots[i], offsets[i]);
+
+  var startTs = null;
+  function tick(ts){
+    if (startTs === null) startTs = ts;
+    var elapsed = (ts - startTs) / 1000;
+    var speed = 0.16;
+    for (var i=0;i<dots.length;i++){
+      placeOnLoop(dots[i], offsets[i] + elapsed * speed);
+    }
+    requestAnimationFrame(tick);
+  }
+  if (!reduce) requestAnimationFrame(tick);
+
+  var pkgAnimating = false;
+  var toastTimer = null;
+
+  function triggerShake(){
+    shakeGroup.classList.remove('local-shaking');
+    void shakeGroup.getBoundingClientRect();
+    shakeGroup.classList.add('local-shaking');
+  }
+  function showToast(){
+    toast.classList.add('local-show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('local-show'); }, 1500);
+  }
+  function setPkg(t, opacity){
+    var p = outPath.getPointAtLength(t * outLen);
+    pkg.setAttribute('transform', 'translate(' + (p.x - 7).toFixed(2) + ',' + (p.y - 7).toFixed(2) + ')');
+    pkg.setAttribute('opacity', opacity.toFixed(2));
+  }
+
+  function runEscape(){
+    if (pkgAnimating) return;
+    pkgAnimating = true;
+    btn.disabled = true;
+
+    if (reduce){
+      setPkg(0.5, 1);
+      triggerShake();
+      showToast();
+      setTimeout(function(){
+        pkg.setAttribute('opacity','0');
+        pkgAnimating = false;
+        btn.disabled = false;
+      }, 1600);
+      return;
+    }
+
+    var phaseStart = null;
+    var outDur = 520, backDur = 460;
+    var midReached = false;
+    function ease(x){ return x<0.5 ? 2*x*x : 1-Math.pow(-2*x+2,2)/2; }
+    function anim(ts){
+      if (phaseStart === null) phaseStart = ts;
+      var t = ts - phaseStart;
+      if (t <= outDur){
+        setPkg(0.5 * ease(t/outDur), 1);
+        requestAnimationFrame(anim);
+      } else if (!midReached){
+        midReached = true;
+        triggerShake();
+        showToast();
+        phaseStart = ts;
+        requestAnimationFrame(anim);
+      } else if (t <= backDur){
+        var k2 = ease(t/backDur);
+        setPkg(0.5 * (1 - k2), 1 - 0.15*k2);
+        requestAnimationFrame(anim);
+      } else {
+        pkg.setAttribute('opacity','0');
+        pkgAnimating = false;
+        btn.disabled = false;
+      }
+    }
+    setPkg(0, 1);
+    requestAnimationFrame(anim);
+  }
+
+  function onPointer(e){ e.preventDefault(); runEscape(); }
+  btn.addEventListener('pointerup', onPointer);
+  btn.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); runEscape(); }
+  });
+}
+
+  // init lazy delle animazioni "Come funziona"
+  (function(){
+    var els = document.querySelectorAll('[data-cf]');
+    if (!els.length) return;
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(!e.isIntersecting) return; var el=e.target, fn=window[el.getAttribute('data-cf')+'Init'];
+        if(typeof fn==='function'){ try{ fn(el); }catch(err){ console.warn('cf init', el.getAttribute('data-cf'), err); } }
+        io.unobserve(el); });
+    }, { threshold: 0.15 });
+    els.forEach(function(el){ io.observe(el); });
+  })();
 </script>
 </body>
 </html>
