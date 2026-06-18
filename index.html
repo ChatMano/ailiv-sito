@@ -222,7 +222,7 @@
   .draw-underline.draw path { animation: drawLine .8s cubic-bezier(.16,1,.3,1) forwards; }
 
   /* Sfera viva: alone pulsante + glint rotante + satelliti in orbita */
-  .orb-stage { display: inline-block; position: relative; z-index: 0; transform: scale(var(--sx,1), var(--sy,1)); transform-origin: center center; will-change: transform; }
+  .orb-stage { display: inline-block; position: relative; z-index: 0; transform: translate(var(--otx,0px), var(--oty,0px)) scale(var(--sx,1), var(--sy,1)); transform-origin: center center; will-change: transform; }
   .orb-wrap { position: relative; }
   .orb-glow { position: absolute; inset: -16%; border-radius: 50%; background: radial-gradient(circle, rgba(212,167,71,.55), rgba(212,167,71,0) 64%); filter: blur(12px); animation: glowPulse 4s ease-in-out infinite; }
   @keyframes glowPulse { 0%,100% { opacity: .42; transform: scale(.9); } 50% { opacity: .95; transform: scale(1.1); } }
@@ -546,6 +546,14 @@
   .jrn-step.active .jrn-p { color: rgba(20,61,92,0.8); }
   @media (min-width: 720px) { .jrn-h { font-size: 1.5rem; } }
   @media (prefers-reduced-motion: reduce) { .jrn-step .jrn-dot { border-color:#d4a747; color:#0e2c43; } }
+  /* ===================== HERO — tilt giroscopio (mobile) ===================== */
+  .gyro-hint { display: none; }
+  @media (hover: none) and (pointer: coarse) {
+    .gyro-hint { display: inline-flex; align-items: center; gap: .45rem; margin-bottom: 1.6rem; font-family: 'IBM Plex Mono', monospace; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(20,61,92,0.5); padding: .45rem 1rem; border: 1px solid var(--line); border-radius: 9999px; background: #fff; }
+    .gyro-hint span { display: inline-block; animation: gyroWiggle 1.8s ease-in-out infinite; }
+  }
+  @keyframes gyroWiggle { 0%,100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
+  .gyro-hint.gone { opacity: 0; transition: opacity .5s; pointer-events: none; }
 </style>
 </head>
 <body>
@@ -619,6 +627,8 @@
       <a href="#contatti" class="btn-primary magnetic px-8 py-4 rounded-full font-semibold inline-flex items-center justify-center gap-2">Raccontaci come lavori →</a>
       <a href="#progetti" class="btn-ghost magnetic px-8 py-4 rounded-full font-semibold inline-flex items-center justify-center gap-2">Guarda i progetti</a>
     </div>
+
+    <p class="gyro-hint" aria-hidden="true"><span>📱</span> Inclina il telefono</p>
 
     <div class="flex justify-center reveal visible">
       <svg class="doodle" width="44" height="74" viewBox="0 0 44 74" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4 C18 24, 26 44, 22 62"/><path d="M9 48 L22 66 L35 48"/></svg>
@@ -2557,6 +2567,44 @@ function cineInit(canvas){
     window.addEventListener('resize', function(){ geom(); upd(); }, {passive:true});
   }
   jrnInit();
+})();
+
+// ===== Hero: tilt da giroscopio (mobile) =====
+(function(){
+  var orb = document.querySelector('.orb');
+  var stage = document.querySelector('.orb-stage');
+  if(!orb) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine = matchMedia('(hover: hover) and (pointer: fine)').matches; // desktop col mouse
+  var DOE = window.DeviceOrientationEvent;
+  if(reduce || fine || !DOE) return; // solo touch, niente reduce, solo se c'e' il sensore
+  var hint = document.querySelector('.gyro-hint');
+  var tx=0, ty=0, cx=0, cy=0, raf=null, got=false;
+  function onOrient(e){
+    if(e.gamma==null && e.beta==null) return;
+    if(!got){ got=true; if(hint) hint.classList.add('gone'); }
+    var g = Math.max(-28, Math.min(28, e.gamma||0))/28;          // sinistra-destra
+    var b = Math.max(-28, Math.min(28, (e.beta||0)-40))/28;      // avanti-indietro (centro ~40 gradi)
+    tx=g; ty=b;
+    if(!raf) raf=requestAnimationFrame(loop);
+  }
+  function loop(){
+    cx += (tx-cx)*0.08; cy += (ty-cy)*0.08;
+    orb.style.setProperty('--ory', (cx*22).toFixed(2)+'deg');
+    orb.style.setProperty('--orx', (-cy*22).toFixed(2)+'deg');
+    orb.style.setProperty('--ohx', (22 - cx*16).toFixed(1)+'%');
+    orb.style.setProperty('--ohy', (16 - cy*14).toFixed(1)+'%');
+    if(stage){ stage.style.setProperty('--otx', (cx*12).toFixed(1)+'px'); stage.style.setProperty('--oty', (cy*10).toFixed(1)+'px'); }
+    raf=requestAnimationFrame(loop);
+  }
+  function start(){ window.addEventListener('deviceorientation', onOrient, true); }
+  if(typeof DOE.requestPermission === 'function'){
+    var ask = function(){ DOE.requestPermission().then(function(st){ if(st==='granted') start(); }).catch(function(){}); };
+    window.addEventListener('touchend', ask, { once:true });
+    window.addEventListener('click', ask, { once:true });
+  } else {
+    start();
+  }
 })();
 </script>
 </body>
