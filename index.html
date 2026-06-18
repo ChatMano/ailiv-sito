@@ -531,6 +531,21 @@
   .cine-cta { background:#d4a747; color:#0e2c43; font-weight:700; transition:all .3s; box-shadow:0 16px 50px rgba(212,167,71,.32); }
   .cine-cta:hover { background:#fff; color:#0e2c43; transform:translateY(-2px); }
   @media (prefers-reduced-motion: reduce){ .cine-bg{ animation:none; } }
+  /* ===================== METODO — scroll journey line ===================== */
+  .jrn { position: relative; max-width: 640px; margin: 0 auto; }
+  .jrn-rail { position: absolute; left: 27px; top: 0; width: 2px; height: 0; background: rgba(20,61,92,0.12); border-radius: 2px; }
+  .jrn-fill { position: absolute; left: 26px; top: 0; width: 4px; height: 0; background: linear-gradient(180deg,#e0bd63,#b8902f); border-radius: 3px; box-shadow: 0 0 16px rgba(212,167,71,0.5); }
+  .jrn-step { position: relative; padding-left: 80px; padding-bottom: 2.6rem; }
+  .jrn-step:last-child { padding-bottom: 0; }
+  .jrn-dot { position: absolute; left: 8px; top: 0; width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 2px solid rgba(20,61,92,0.16); display: flex; align-items: center; justify-content: center; font-family: 'Archivo Black', sans-serif; font-size: .82rem; color: rgba(20,61,92,0.38); transition: all .45s cubic-bezier(.2,.8,.3,1); z-index: 2; }
+  .jrn-lbl { font-family: 'IBM Plex Mono', monospace; font-size: .68rem; letter-spacing: .14em; color: rgba(20,61,92,0.4); margin-bottom: .3rem; transition: color .4s; }
+  .jrn-h { font-size: 1.32rem; font-weight: 700; color: var(--ink); margin-bottom: .35rem; line-height: 1.2; }
+  .jrn-p { font-size: .95rem; color: rgba(20,61,92,0.6); line-height: 1.55; max-width: 460px; transition: color .4s; }
+  .jrn-step.active .jrn-dot { border-color: #d4a747; color: #0e2c43; transform: scale(1.1); box-shadow: 0 0 0 6px rgba(212,167,71,0.14), 0 6px 20px rgba(212,167,71,0.4); }
+  .jrn-step.active .jrn-lbl { color: #b8902f; }
+  .jrn-step.active .jrn-p { color: rgba(20,61,92,0.8); }
+  @media (min-width: 720px) { .jrn-h { font-size: 1.5rem; } }
+  @media (prefers-reduced-motion: reduce) { .jrn-step .jrn-dot { border-color:#d4a747; color:#0e2c43; } }
 </style>
 </head>
 <body>
@@ -1114,11 +1129,45 @@
       </a>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 reveal-children">
-      <div class="step"><div class="step-num">01</div><p class="mono text-xs text-[#b8902f] mt-3 mb-1">DISCOVERY</p><h3 class="text-lg font-bold mb-2">Guardiamo il processo</h3><p class="text-sm text-[#0e2c43]/70 leading-relaxed">Come lavori, che dati hai, quali gestionali usi. Capiamo dove l'AI sposta davvero qualcosa — e dove no.</p></div>
-      <div class="step"><div class="step-num">02</div><p class="mono text-xs text-[#b8902f] mt-3 mb-1">DESIGN</p><h3 class="text-lg font-bold mb-2">Proposta operativa</h3><p class="text-sm text-[#0e2c43]/70 leading-relaxed">Cosa costruiamo, su che stack, in quanto tempo e con che risultato atteso. Niente fuffa: un piano concreto.</p></div>
-      <div class="step"><div class="step-num">03</div><p class="mono text-xs text-[#b8902f] mt-3 mb-1">BUILD &amp; DEPLOY</p><h3 class="text-lg font-bold mb-2">Lo mettiamo in produzione</h3><p class="text-sm text-[#0e2c43]/70 leading-relaxed">Sviluppiamo e portiamo il sistema in funzione. Server, connettori, modelli, interfacce. Funziona davvero, non in demo.</p></div>
-      <div class="step"><div class="step-num">04</div><p class="mono text-xs text-[#b8902f] mt-3 mb-1">PRODUZIONE &amp; CARE</p><h3 class="text-lg font-bold mb-2">Lo facciamo girare</h3><p class="text-sm text-[#0e2c43]/70 leading-relaxed">Il sistema lavora. Noi lo manteniamo, lo evolviamo e ti mandiamo i numeri. Tu pensi al business.</p></div>
+    <div class="jrn">
+      <div class="jrn-rail"></div>
+      <div class="jrn-fill" id="jrnFill"></div>
+
+      <div class="jrn-step" data-jstep>
+        <div class="jrn-dot">01</div>
+        <div class="jrn-card">
+          <p class="jrn-lbl">DISCOVERY</p>
+          <h3 class="jrn-h">Guardiamo come lavori</h3>
+          <p class="jrn-p">Come lavori, che dati hai, quali strumenti usi. Capiamo dove l'AI ti fa davvero risparmiare tempo &mdash; e dove no.</p>
+        </div>
+      </div>
+
+      <div class="jrn-step" data-jstep>
+        <div class="jrn-dot">02</div>
+        <div class="jrn-card">
+          <p class="jrn-lbl">DESIGN</p>
+          <h3 class="jrn-h">Proposta operativa</h3>
+          <p class="jrn-p">Cosa costruiamo, quali agenti, su che numeri, in quanto tempo e con che risultato atteso. Niente fuffa: un piano concreto.</p>
+        </div>
+      </div>
+
+      <div class="jrn-step" data-jstep>
+        <div class="jrn-dot">03</div>
+        <div class="jrn-card">
+          <p class="jrn-lbl">BUILD &amp; DEPLOY</p>
+          <h3 class="jrn-h">Lo mettiamo a lavorare</h3>
+          <p class="jrn-p">Configuriamo gli strumenti, colleghiamo i dati, mettiamo gli agenti in funzione. Funziona davvero, non in demo.</p>
+        </div>
+      </div>
+
+      <div class="jrn-step" data-jstep>
+        <div class="jrn-dot">04</div>
+        <div class="jrn-card">
+          <p class="jrn-lbl">CARE</p>
+          <h3 class="jrn-h">Lo facciamo girare</h3>
+          <p class="jrn-p">Il sistema lavora. Noi lo manteniamo, lo evolviamo e ti mandiamo i numeri. Tu pensi all'azienda.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -2479,6 +2528,36 @@ function cineInit(canvas){
   io.observe(canvas);
   window.addEventListener('resize', function(){ size(); spawn(); });
 }
+
+// ===== Metodo: scroll journey line =====
+(function(){
+  function jrnInit(){
+    var jrn=document.querySelector('.jrn'); if(!jrn) return;
+    var fill=jrn.querySelector('.jrn-fill'), rail=jrn.querySelector('.jrn-rail');
+    var steps=[].slice.call(jrn.querySelectorAll('[data-jstep]'));
+    if(!steps.length||!fill||!rail) return;
+    var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var topPx=0, span=1;
+    function geom(){
+      topPx = steps[0].offsetTop + 20;
+      span = Math.max(1, (steps[steps.length-1].offsetTop + 20) - topPx);
+      rail.style.top=topPx+'px'; rail.style.height=span+'px'; fill.style.top=topPx+'px';
+    }
+    function upd(){
+      var r=jrn.getBoundingClientRect(), vh=window.innerHeight||document.documentElement.clientHeight;
+      var p=(vh*0.5 - r.top - topPx)/span; p=Math.max(0,Math.min(1,p));
+      fill.style.height=(p*span)+'px';
+      var reach=topPx + p*span;
+      for(var i=0;i<steps.length;i++){ var c=steps[i].offsetTop+20; if(reach>=c-2) steps[i].classList.add('active'); else steps[i].classList.remove('active'); }
+    }
+    geom();
+    if(reduce){ fill.style.height=span+'px'; steps.forEach(function(s){s.classList.add('active');}); return; }
+    upd();
+    window.addEventListener('scroll', upd, {passive:true});
+    window.addEventListener('resize', function(){ geom(); upd(); }, {passive:true});
+  }
+  jrnInit();
+})();
 </script>
 </body>
 </html>
