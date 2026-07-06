@@ -199,6 +199,10 @@
   .jrn-step.active .jrn-lbl { color: #b8902f; }
   .jrn-step.active .jrn-p { color: rgba(20,61,92,0.8); }
   @media (min-width: 720px) { .jrn-h { font-size: 1.5rem; } }
+  .sector-grid { display: grid; grid-template-columns: 1fr; gap: .5rem; }
+  @media (min-width: 700px) { .sector-grid { grid-template-columns: 1fr 1fr; gap: .55rem 2rem; } }
+  .sector-grid li { font-size: .9rem; color: rgba(20,61,92,.75); line-height: 1.45; padding-left: .8rem; border-left: 2px solid var(--gold); }
+  .sector-grid li b { color: var(--ink); }
   @media (prefers-reduced-motion: reduce) { .jrn-step .jrn-dot { border-color:#d4a747; color:#0e2c43; } }
 
   .jrn-do { font-family: 'IBM Plex Mono', monospace; font-size: .68rem; color: rgba(20,61,92,.5); margin-top: .45rem; }
@@ -429,7 +433,7 @@
         <span class="ln-mask"><span>Il lavoro ripetitivo lo fa l'AI.</span></span>
         <span class="ln-mask"><span>Tu torni a decidere.</span></span>
       </h1>
-      <p class="lead text-lg mb-7 max-w-md">Agenti che lavorano dentro i tuoi processi e una voce imparziale che ti legge i numeri.</p>
+      <p class="lead text-lg mb-7 max-w-md">Costruiamo sistemi AI su misura: leggono le fatture, ti avvisano quando un fornitore alza i prezzi, rispondono ai clienti anche di notte — e ogni mattina ti dicono se ci stai guadagnando.</p>
       <a href="#prenota" class="cta w-full sm:w-auto">Prenota il check-up gratuito</a>
       <p class="cta-note">30–45 min · mini-report con 2–3 opportunità · zero impegno</p>
     </div>
@@ -440,7 +444,7 @@
         <div class="reg-body" id="regBody"></div>
         <p class="reg-note">Esempi reali dai nostri sistemi, anonimizzati.</p>
       </div>
-      <p class="mono text-[.64rem] text-[#0e2c43]/45 mt-3">IN PRODUZIONE IN RISTORAZIONE MULTI-SEDE · CONSORZI · GRUPPI</p>
+      <p class="mono text-[.64rem] text-[#0e2c43]/45 mt-3">SISTEMI IN PRODUZIONE OGNI GIORNO IN AZIENDE ITALIANE</p>
     </div>
   </div>
 </section>
@@ -448,8 +452,18 @@
 <!-- ============ PER CHI È + SOMMARIO ============ -->
 <section class="px-5 pb-14">
   <div class="max-w-5xl mx-auto reveal">
-    <div class="qualbar">PMI ITALIANE · MULTI-SEDE · CONSORZI E FILIERE · GRUPPI · STUDI</div>
-    <p class="lead mt-4 mb-6">Lavoriamo con aziende strutturate. Se hai poco tempo e dati sparsi, sei nel posto giusto.</p>
+    <div class="qualbar">BAR · RISTORANTI · SALONI · HOTEL · NEGOZI · AZIENDE SU COMMESSA — CON 1 SEDE O 10</div>
+    <p class="lead mt-4 mb-6">Se hai un'attività vera, poco tempo e dati sparsi, sei nel posto giusto.</p>
+    <p class="mono text-[.66rem] tracking-[.14em] text-[#b8902f] uppercase mt-7 mb-3">Cosa può fare da te</p>
+    <ul class="sector-grid mb-7">
+      <li><b>Nel bar</b> — ti avvisa quando il fornitore del caffè ritocca il listino</li>
+      <li><b>Al ristorante</b> — food cost e incassi di ieri, pronti ogni mattina</li>
+      <li><b>Nei saloni</b> — risposte e appuntamenti gestiti anche di notte, sede per sede</li>
+      <li><b>In hotel</b> — preventivi risposti a mezzanotte, costi per camera in chiaro</li>
+      <li><b>In negozio</b> — cosa riordinare e cosa svendere, tra sedi e online</li>
+      <li><b>Su commessa</b> — il margine mentre il cantiere è aperto, non dopo</li>
+    </ul>
+    <p class="mono text-[.62rem] text-[#0e2c43]/45 mb-7">Ogni sistema è su misura: cosa si può collegare da te lo verifichiamo nel check-up, prima di promettere qualsiasi cosa.</p>
     <nav class="toc max-w-md">
       <a href="#problema"><span class="n">01</span> Il problema</a>
       <a href="#chatgpt"><span class="n">02</span> Perché non basta ChatGPT</a>
@@ -513,7 +527,7 @@
     <div>
       <p class="kicker reveal mb-6">03 / Cosa costruiamo — parte 1</p>
       <h2 class="h2x reveal mb-4">Agenti al fianco del team.</h2>
-      <p class="lead reveal mb-5">Si prendono il lavoro ripetitivo, ogni giorno:</p>
+      <p class="lead reveal mb-5">Non persone in più: programmi che lavorano da soli, al fianco dei tuoi. Ogni giorno:</p>
       <ul class="rv-kids space-y-2 text-[.95rem] text-[#0e2c43]/80">
         <li>— Fatture e DDT letti, registrati e controllati</li>
         <li>— Messaggi dei clienti gestiti, anche di notte</li>
@@ -758,7 +772,7 @@
       </div>
     </div>
     <div class="dots" id="projDots"><i class="on"></i><i></i><i></i><i></i></div>
-    <p class="mono text-[.64rem] text-[#0e2c43]/45 mt-5 reveal">Nomi coperti per riservatezza. I dettagli te li raccontiamo a voce.</p>
+    <p class="mono text-[.64rem] text-[#0e2c43]/45 mt-5 reveal">Nomi riservati qui in pagina: in call ti raccontiamo i casi per esteso.</p>
     <!-- SLOT TESTIMONIANZA (dormiente): incollare qui la quote reale del cliente quando arriva
     <blockquote class="mt-6 p-6 bg-[#fafaf7] border-l-4 border-[#d4a747] rounded-r-xl">
       <p class="text-lg font-semibold leading-snug">«...»</p>
@@ -785,7 +799,7 @@
       <div class="offer-block"><b>Il mini-report</b><p>Un documento scritto sul tuo caso — non un modello standard — con 2–3 opportunità concrete dove l'AI sposta tempo o soldi.</p></div>
       <div class="offer-block"><b>La decisione</b><p>Con il report in mano decidi tu se andare avanti, con noi o da solo. Il report resta a te comunque.</p></div>
       <div class="offer-block bg-[#fafaf7]">
-        <p class="mono text-[.68rem] text-[#0e2c43]/55 leading-relaxed">Seguiamo pochi progetti alla volta, per seguirli davvero: se il mese è pieno, si entra in lista.</p>
+        <p class="mono text-[.68rem] text-[#0e2c43]/55 leading-relaxed">Seguiamo pochi progetti alla volta, per seguirli davvero.</p>
       </div>
     </div>
 
@@ -819,7 +833,7 @@
           <p class="jrn-lbl">PROGETTO PILOTA</p>
           <h3 class="jrn-h">Una sola opportunità, quella col ritorno più rapido</h3>
           <p class="jrn-p">Costruiamo il primo sistema su un processo solo, con date scritte prima.</p>
-          <p class="jrn-do">Cosa fai tu: ci dai gli accessi e ci spieghi come lavorate.</p>
+          <p class="jrn-do">Cosa fai tu: ci autorizzi a leggere i dati che scegli tu (solo lettura, riservatezza firmata prima) e ci spieghi come lavorate.</p>
         </div>
       </div>
       <div class="jrn-step" data-jstep>
@@ -854,6 +868,10 @@
       <div class="faq-item">
         <button class="faq-q" type="button">Quanto costa?<span class="pm">+</span></button>
         <div class="faq-a"><div><p>Il check-up è gratis. Il progetto si quota su misura sul tuo caso: le cifre arrivano in call, chiare e messe per iscritto prima che tu firmi qualsiasi cosa.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Vi collegate a quello che uso già?<span class="pm">+</span></button>
+        <div class="faq-a"><div><p>Sì: cassa, gestionale (TeamSystem, Zucchetti, PMS alberghieri, Shopify, gestionali appuntamenti…), fatturazione, WhatsApp. All'inizio in sola lettura: non tocchiamo la cassa e non cambi il modo di lavorare. Se il tuo sistema non si può collegare bene, te lo diciamo prima — è esattamente a questo che serve il check-up.</p></div></div>
       </div>
       <div class="faq-item" id="faqDati">
         <button class="faq-q" type="button">I miei dati escono dall'azienda?<span class="pm">+</span></button>
@@ -983,7 +1001,7 @@
         <script src="https://link.msgsndr.com/js/form_embed.js"></script>
     </div>
 
-    <p class="mono text-[.66rem] text-[#0e2c43]/50 mt-5 leading-relaxed reveal">Cosa succede dopo: ti rispondiamo entro un giorno lavorativo per fissare la call. Seguiamo pochi progetti alla volta: se il mese è pieno, si entra in lista.</p>
+    <p class="mono text-[.66rem] text-[#0e2c43]/50 mt-5 leading-relaxed reveal">Cosa succede dopo: ti rispondiamo entro un giorno lavorativo per fissare la call. Seguiamo pochi progetti alla volta.</p>
   </div>
 </section>
 
