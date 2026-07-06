@@ -203,6 +203,7 @@
   @media (min-width: 700px) { .sector-grid { grid-template-columns: 1fr 1fr; gap: .55rem 2rem; } }
   .sector-grid li { font-size: .9rem; color: rgba(20,61,92,.75); line-height: 1.45; padding-left: .8rem; border-left: 2px solid var(--gold); }
   .sector-grid li b { color: var(--ink); }
+  .chat-action-yes { background: var(--gold) !important; color: var(--ink) !important; border-color: var(--gold-dark) !important; font-weight: 700; }
   @media (prefers-reduced-motion: reduce) { .jrn-step .jrn-dot { border-color:#d4a747; color:#0e2c43; } }
 
   .jrn-do { font-family: 'IBM Plex Mono', monospace; font-size: .68rem; color: rgba(20,61,92,.5); margin-top: .45rem; }
@@ -674,7 +675,7 @@
         </div>
       </div>
       <div class="reveal">
-        <p class="demo-cap">Demo — chiedi ai tuoi numeri (dati di esempio)</p>
+        <p class="demo-cap">Demo — così lavora, collegata ai tuoi sistemi (dati di esempio)</p>
         <div class="demo-viz" data-cf="chat">
 <svg class="chat-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="Finestra di chat con un assistente AI che risponde automaticamente">
   <defs>
@@ -842,7 +843,7 @@
           <p class="jrn-lbl">IN PRODUZIONE</p>
           <h3 class="jrn-h">Il sistema entra nel flusso reale</h3>
           <p class="jrn-p">Configuriamo strumenti e collegamenti; dove un errore costerebbe caro, l'AI propone e una persona approva.</p>
-          <p class="jrn-do">Cosa fai tu: lo usi. Configuriamo tutto noi.</p>
+          <p class="jrn-do">Cosa fai tu: lo usi — e se non hai mai usato un'AI, ti guidiamo passo passo, dall'installazione alla prima domanda.</p>
         </div>
       </div>
       <div class="jrn-step" data-jstep>
@@ -872,6 +873,10 @@
       <div class="faq-item">
         <button class="faq-q" type="button">Vi collegate a quello che uso già?<span class="pm">+</span></button>
         <div class="faq-a"><div><p>Sì: cassa, gestionale (TeamSystem, Zucchetti, PMS alberghieri, Shopify, gestionali appuntamenti…), fatturazione, WhatsApp. All'inizio in sola lettura: non tocchiamo la cassa e non cambi il modo di lavorare. Se il tuo sistema non si può collegare bene, te lo diciamo prima — è esattamente a questo che serve il check-up.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Cosa mi serve per usarlo?<span class="pm">+</span></button>
+        <div class="faq-a"><div><p>Tre cose, tutte semplici. <b>WhatsApp</b>, che hai già: lì arrivano report, avvisi e richieste di approvazione. Un abbonamento a <b>Claude o ChatGPT</b> (quello normale, circa 20 €/mese) se vuoi anche fargli domande in chat: è lì che "agganci" il tuo sistema. E se non li hai mai usati, <b>te li installiamo noi e ti guidiamo passo passo</b>, dalla prima domanda in poi. Nessun software nuovo da imparare, nessun computer speciale.</p></div></div>
       </div>
       <div class="faq-item" id="faqDati">
         <button class="faq-q" type="button">I miei dati escono dall'azienda?<span class="pm">+</span></button>
@@ -945,7 +950,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Non sono un'azienda tecnologica. Ha senso comunque?<span class="pm">+</span></button>
-        <div class="faq-a"><div><p>Non serve che lo sia. Configuriamo tutto noi, dietro le quinte: al tuo team chiediamo gli accessi e qualche ora per farci spiegare i processi, non di più. Poi si continua a lavorare come sempre, con meno lavoro ripetitivo sulle spalle.</p></div></div>
+        <div class="faq-a"><div><p>Non serve che lo sia. Configuriamo tutto noi, dietro le quinte: al tuo team chiediamo gli accessi e qualche ora per farci spiegare i processi, non di più. Poi si continua a lavorare come sempre, con meno lavoro ripetitivo sulle spalle. E se l'AI vorresti anche <b>usarla tu</b> ma non ti senti pratico, ti guidiamo passo passo: installazione, prime domande, primi automatismi — finché non vai da solo.</p></div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Quanto tempo serve per vedere qualcosa?<span class="pm">+</span></button>
@@ -1506,10 +1511,32 @@ function chatInit(root){
     requestAnimationFrame(step);
   }
 
-  var answers = {
-    orari: { u: "Com'è andata ieri?", b: "Incassi 4.310 euro su 3 sedi, +6% sul lunedi scorso. Scontrino medio stabile." },
-    prenota: { u: "I costi stanno salendo?", b: "Farina +9% dal fornitore principale questo mese. Riga segnalata, confronto pronto." },
-    prezzi: { u: "La campagna sta rendendo?", b: "Costo per nuovo cliente 8,40 euro, in salita da due mesi. I numeri dicono di rivederla." }
+  var scenes = {
+    orari: [
+      { u: "Com'è andata ieri?" },
+      { b: "Mi collego alla cassa…", t: 700 },
+      { b: "Ok, sono dentro. Ieri 4.310 € su 3 sedi, +6% sul lunedì scorso. Scontrino medio stabile.", t: 950 }
+    ],
+    prenota: [
+      { u: "I costi stanno salendo?" },
+      { b: "Apro le fatture degli ultimi 60 giorni…", t: 800 },
+      { b: "Trovato: farina +9% dal fornitore principale. Sui tuoi volumi sono 96 € al mese in più.", t: 1000 },
+      { b: "Ti preparo il confronto con altri due fornitori e te lo mando su WhatsApp?", t: 750,
+        actions: [
+          { label: "Sì, procedi", reply: "Sì, procedi", next: [ { b: "Fatto: confronto inviato su WhatsApp. E ti avviso io, al prossimo ritocco dei listini.", t: 850 } ] },
+          { label: "Non ora", reply: "Non ora", next: [ { b: "Ok, non tocco niente. Continuo a tenere d'occhio i listini per te.", t: 700 } ] }
+        ] }
+    ],
+    prezzi: [
+      { u: "La campagna sta rendendo?" },
+      { b: "Aspetta, mi collego al tuo account pubblicitario…", t: 900 },
+      { b: "Ok, sono dentro. La campagna «Omaggio nuovi clienti» non sta performando: 140 € spesi in 7 giorni, 3 clienti nuovi.", t: 1150 },
+      { b: "Quella «Clienti che tornano» rende il triplo. Posso spostare 10 € al giorno dalla prima alla seconda. Procedo?", t: 950,
+        actions: [
+          { label: "Sì, procedi", reply: "Sì, procedi", next: [ { b: "Fatto. Budget spostato e registrato. Ti aggiorno tra 48 ore coi numeri veri, non con le impressioni.", t: 900 } ] },
+          { label: "Non ora", reply: "Non ora", next: [ { b: "Ricevuto, non tocco niente. Te lo ripropongo tra qualche giorno coi dati aggiornati.", t: 750 } ] }
+        ] }
+    ]
   };
 
   function setBusy(b){
@@ -1529,25 +1556,63 @@ function chatInit(root){
     if(hint){ hint.classList.add("chat-show"); }
   }
 
+  function showChips(show){
+    for(var i=0;i<chips.length;i++){ chips[i].style.display = show ? "" : "none"; }
+  }
+
+  function clearActions(){
+    var olds = chipsBar.querySelectorAll(".chat-action");
+    for(var i=0;i<olds.length;i++){ if(olds[i].parentNode) olds[i].parentNode.removeChild(olds[i]); }
+  }
+
+  function showActions(actions){
+    showChips(false);
+    for(var i=0;i<actions.length;i++){
+      (function(a, idx){
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chat-chip chat-action" + (idx === 0 ? " chat-action-yes" : "");
+        btn.textContent = a.label;
+        btn.addEventListener("click", function(){
+          clearActions();
+          addBubble(a.reply, "user");
+          later(function(){
+            runSteps(a.next, function(){ showChips(true); setBusy(false); startIdle(); });
+          }, 380);
+        });
+        chipsBar.appendChild(btn);
+      })(actions[i], i);
+    }
+  }
+
+  function runSteps(steps, done){
+    var i = 0;
+    function next(){
+      if(i >= steps.length){ if(done) done(); return; }
+      var st = steps[i++];
+      if(st.u !== undefined){
+        addBubble(st.u, "user");
+        later(next, 420);
+      } else if(st.b !== undefined){
+        var typing = addTyping();
+        later(function(){
+          removeTyping(typing);
+          addBubble(st.b, "bot");
+          if(st.actions){ later(function(){ showActions(st.actions); }, 320); }
+          else { later(next, 330); }
+        }, reduce ? 150 : (st.t || 800));
+      } else { next(); }
+    }
+    next();
+  }
+
   function handle(key){
     if(busy) return;
-    var a = answers[key];
-    if(!a) return;
+    var sc = scenes[key];
+    if(!sc) return;
     stopIdle();
     setBusy(true);
-
-    addBubble(a.u, "user");
-    later(function(){
-      var typing = addTyping();
-      later(function(){
-        removeTyping(typing);
-        addBubble(a.b, "bot");
-        later(function(){
-          setBusy(false);
-          startIdle();
-        }, 350);
-      }, 850);
-    }, 380);
+    runSteps(sc, function(){ setBusy(false); startIdle(); });
   }
 
   for(var i=0;i<chips.length;i++){
@@ -1563,7 +1628,7 @@ function chatInit(root){
   }
 
   // initial bot greeting
-  addBubble("Chiedimi come va l'azienda: rispondo con i numeri, non con le opinioni.", "bot");
+  addBubble("Chiedimi come va l'azienda: mi collego ai tuoi sistemi e ti rispondo coi numeri.", "bot");
   startIdle();
 }
 
