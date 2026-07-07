@@ -62,6 +62,10 @@
   .hdr { position: fixed; top: 0; left: 0; right: 0; z-index: 50; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); background: rgba(250,250,247,.88); border-bottom: 1px solid rgba(20,61,92,.07); }
 
   /* ---------- hero ---------- */
+  .hero-wrap { position: relative; overflow: hidden; }
+  .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(250,250,247,.88) 0%, rgba(250,250,247,.78) 55%, var(--paper) 97%); }
+  .hero-content { position: relative; z-index: 2; }
   .h1x { font-weight: 800; letter-spacing: -.035em; line-height: 1.02; font-size: clamp(2.1rem, 8.4vw, 4.6rem); color: var(--ink); }
   .ln-mask { display: block; overflow: hidden; }
   .ln-mask > span { display: block; transform: translateY(110%); animation: lnUp .65s cubic-bezier(.16,1,.3,1) forwards; }
@@ -429,8 +433,10 @@
 </header>
 
 <!-- ============ HERO ============ -->
-<section id="top" class="pt-28 md:pt-36 pb-14 px-5">
-  <div class="max-w-5xl mx-auto grid md:grid-cols-[1.05fr_1fr] gap-10 items-center">
+<section id="top" class="hero-wrap pt-28 md:pt-36 pb-14 px-5">
+  <video id="heroVideo" class="hero-video" muted loop playsinline preload="none" poster="assets/video/hero-oro-poster.jpg" aria-hidden="true"></video>
+  <div class="hero-veil"></div>
+  <div class="hero-content max-w-5xl mx-auto grid md:grid-cols-[1.05fr_1fr] gap-10 items-center">
     <div>
       <p class="mono text-[.68rem] font-semibold tracking-[.2em] text-[#b8902f] uppercase mb-5">Colleghiamo la tua azienda all'AI: cassa, fatture, marketing, clienti</p>
       <h1 class="h1x mb-5">
@@ -1803,6 +1809,25 @@ function localInit(root){
         } else if (v.pause) { v.pause(); }
       });
     }, { threshold: 0.1 });
+    io.observe(v);
+  })();
+
+  // Video hero (inchiostro oro): lazy, play in viewport, fermo con reduced-motion
+  (function(){
+    var v = document.getElementById('heroVideo');
+    if (!v) return;
+    var reduce = false;
+    try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e) {}
+    if (reduce) return;
+    var loaded = false;
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          if (!loaded) { loaded = true; v.src = (innerWidth < 700 ? 'assets/video/hero-oro-480.mp4' : 'assets/video/hero-oro-720.mp4'); }
+          if (v.play) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+        } else if (v.pause) { v.pause(); }
+      });
+    }, { threshold: 0.05 });
     io.observe(v);
   })();
 </script>
