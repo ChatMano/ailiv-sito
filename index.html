@@ -119,6 +119,7 @@
 
   /* ---------- demo container ---------- */
   .demo-viz { position: relative; width: 100%; height: 320px; background: linear-gradient(180deg,#fcfbf8,#f3f0e9); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  .sec-video { display: block; width: 100%; border-radius: 18px; border: 1px solid var(--line); margin-bottom: 1.1rem; }
   .demo-cap { font-family: 'IBM Plex Mono', monospace; font-size: .66rem; letter-spacing: .1em; color: var(--gold-dark); margin-bottom: .6rem; text-transform: uppercase; }
   .demo-note { font-family: 'IBM Plex Mono', monospace; font-size: .64rem; color: rgba(20,61,92,.45); margin-top: .55rem; }
 
@@ -545,6 +546,7 @@
       <p class="reveal mt-6"><a class="cta-text" href="#prenota">Vedi cosa toglierebbe al tuo team →</a></p>
     </div>
     <div class="reveal">
+      <video id="agentiVideo" class="sec-video" muted loop playsinline preload="none" poster="assets/video/agenti-fatture-poster.jpg" aria-hidden="true"></video>
       <p class="demo-cap">Demo — tocca: la fattura si legge da sola</p>
       <div class="demo-viz" data-cf="ocr">
 <svg class="ocr-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="Un documento cartaceo viene scansionato e trasformato in dati strutturati" preserveAspectRatio="xMidYMid meet">
@@ -1373,6 +1375,8 @@ function chatInit(root){
   var scrollY = 0;             // current applied translate
   var timers = [];
   var busy = false;
+  var autoMode = false;
+  var userTouched = false;
 
   function clearTimers(){
     for(var i=0;i<timers.length;i++){ clearTimeout(timers[i]); }
@@ -1588,11 +1592,18 @@ function chatInit(root){
           clearActions();
           addBubble(a.reply, "user");
           later(function(){
-            runSteps(a.next, function(){ showChips(true); setBusy(false); startIdle(); });
+            runSteps(a.next, function(){ autoMode = false; showChips(true); setBusy(false); startIdle(); });
           }, 380);
         });
         chipsBar.appendChild(btn);
       })(actions[i], i);
+    }
+    if (autoMode && !reduce) {
+      later(function(){
+        if (userTouched) return;
+        var yes = chipsBar.querySelector(".chat-action-yes");
+        if (yes) yes.click();
+      }, 6000);
     }
   }
 
@@ -1639,8 +1650,17 @@ function chatInit(root){
   }
 
   // initial bot greeting
+  chipsBar.addEventListener("pointerdown", function(){ userTouched = true; }, true);
   addBubble("Chiedimi come va l'azienda: mi collego ai tuoi sistemi e ti rispondo coi numeri.", "bot");
   startIdle();
+  // Auto-play: la demo si simula da sola sulla scena della campagna, finche l'utente non tocca
+  if (!reduce) {
+    later(function(){
+      if (userTouched || busy) return;
+      autoMode = true;
+      handle("prezzi");
+    }, 1500);
+  }
 }
 
 
@@ -1828,6 +1848,25 @@ function localInit(root){
         } else if (v.pause) { v.pause(); }
       });
     }, { threshold: 0.05 });
+    io.observe(v);
+  })();
+
+  // Video sezione agenti (fatture scansionate): lazy + play in viewport
+  (function(){
+    var v = document.getElementById('agentiVideo');
+    if (!v) return;
+    var reduce = false;
+    try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e) {}
+    if (reduce) return;
+    var loaded = false;
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          if (!loaded) { loaded = true; v.src = (innerWidth < 700 ? 'assets/video/agenti-fatture-480.mp4' : 'assets/video/agenti-fatture-720.mp4'); }
+          if (v.play) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+        } else if (v.pause) { v.pause(); }
+      });
+    }, { threshold: 0.1 });
     io.observe(v);
   })();
 </script>
