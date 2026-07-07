@@ -973,7 +973,7 @@
 
 <!-- ============ BANDA STATEMENT ============ -->
 <section class="band px-5 py-24 text-center">
-  <video id="bandVideo" class="band-video" muted loop playsinline preload="none" poster="assets/video/band-notte-poster.jpg" aria-hidden="true"></video>
+  <video id="bandVideo" class="band-video" muted loop playsinline preload="none" poster="assets/video/band-ciclo-poster.jpg" aria-hidden="true"></video>
   <div class="band-shade"></div>
   <div class="band-inner max-w-3xl mx-auto reveal">
     <p class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">Tu stacchi. <span class="g">L'AI no.</span></p>
@@ -1798,7 +1798,7 @@ function localInit(root){
     var io = new IntersectionObserver(function(es){
       es.forEach(function(e){
         if (e.isIntersecting) {
-          if (!loaded) { loaded = true; v.src = (innerWidth < 700 ? 'assets/video/band-notte-480.mp4' : 'assets/video/band-notte-720.mp4'); }
+          if (!loaded) { loaded = true; v.src = (innerWidth < 700 ? 'assets/video/band-ciclo-480.mp4' : 'assets/video/band-ciclo-720.mp4'); }
           if (v.play) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
         } else if (v.pause) { v.pause(); }
       });
