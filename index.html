@@ -137,6 +137,28 @@
   .flip-hint { font-family: 'IBM Plex Mono', monospace; font-size: .64rem; color: var(--gold-dark); margin-top: .8rem; }
   .face.real .num { font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--gold-dark); }
 
+  /* ---------- connettori (come si collega) ---------- */
+  .con-flow { position: relative; max-width: 680px; }
+  .con-flow::before { content: ''; position: absolute; left: 17px; top: 26px; bottom: 26px; width: 2px; background: rgba(20,61,92,0.12); border-radius: 2px; }
+  .con-pulse { position: absolute; left: 12px; top: 26px; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 12px rgba(212,167,71,.8); animation: conPulse 6s cubic-bezier(.45,.05,.55,.95) infinite; z-index: 1; }
+  @keyframes conPulse { 0% { top: 24px; opacity: 0 } 6% { opacity: 1 } 94% { opacity: 1 } 100% { top: calc(100% - 40px); opacity: 0 } }
+  .con-step { position: relative; padding-left: 52px; padding-bottom: 1.8rem; }
+  .con-step:last-child { padding-bottom: 0; }
+  .con-dot { position: absolute; left: 6px; top: 8px; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 2px solid var(--gold); z-index: 2; }
+  .con-tag { font-family: 'IBM Plex Mono', monospace; font-size: .62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: .3rem; }
+  .con-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 1.15rem 1.25rem; }
+  .con-card h3 { font-weight: 800; font-size: 1.08rem; margin-bottom: .4rem; }
+  .con-card p { font-size: .92rem; color: rgba(20,61,92,.75); line-height: 1.55; }
+  .con-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .7rem; }
+  .con-chips span { font-family: 'IBM Plex Mono', monospace; font-size: .6rem; font-weight: 600; letter-spacing: .08em; padding: .28rem .55rem; border-radius: 6px; background: rgba(212,167,71,.1); color: var(--gold-dark); border: 1px solid rgba(212,167,71,.4); }
+  .con-note { font-family: 'IBM Plex Mono', monospace; font-size: .68rem; color: rgba(20,61,92,.55); line-height: 1.6; margin-top: .7rem; border-top: 1px dashed var(--line); padding-top: .7rem; }
+  .con-due { display: grid; gap: .8rem; margin-top: .2rem; }
+  @media (min-width: 640px) { .con-due { grid-template-columns: 1fr 1fr; } }
+  .con-g { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: 1.6rem; }
+  .con-g span { font-family: 'IBM Plex Mono', monospace; font-size: .64rem; color: rgba(20,61,92,.55); }
+  .con-g b { color: var(--gold-dark); }
+  @media (prefers-reduced-motion: reduce) { .con-pulse { animation: none; opacity: 0; } }
+
   /* ---------- progetti ---------- */
   .projs { display: grid; gap: 1rem; }
   @media (min-width: 860px) { .projs { grid-template-columns: 1fr 1fr; } }
@@ -478,8 +500,9 @@
       <a href="#problema"><span class="n">01</span> Il problema</a>
       <a href="#chatgpt"><span class="n">02</span> Perché una chat non basta</a>
       <a href="#gamba1"><span class="n">03</span> Cosa costruiamo</a>
-      <a href="#progetti"><span class="n">05</span> Progetti in produzione</a>
-      <a href="#offerta" class="gold"><span class="n">06</span> Richiedi il check-up →</a>
+      <a href="#collega"><span class="n">05</span> Come si collega</a>
+      <a href="#progetti"><span class="n">06</span> Progetti in produzione</a>
+      <a href="#offerta" class="gold"><span class="n">07</span> Richiedi il check-up →</a>
     </nav>
   </div>
 </section>
@@ -748,10 +771,73 @@
   </div>
 </section>
 
-<!-- ============ 05 / PROGETTI ============ -->
+
+<!-- ============ 05 / COME SI COLLEGA ============ -->
+<section id="collega" class="px-5 py-16">
+  <div class="max-w-5xl mx-auto">
+    <p class="kicker reveal mb-6">05 / Come si collega</p>
+    <h2 class="h2x reveal mb-3">Ci colleghiamo a quello che usi già.</h2>
+    <p class="lead reveal mb-10 max-w-lg">Nessun programma nuovo da imparare, nessun cambio di abitudini: il sistema si collega ai programmi che usi già — e l'analisi ti arriva dove sei già.</p>
+
+    <div class="con-flow reveal">
+      <div class="con-pulse" aria-hidden="true"></div>
+
+      <div class="con-step">
+        <div class="con-dot"></div>
+        <p class="con-tag">Da te · I programmi che usi già</p>
+        <div class="con-card">
+          <p>Restano tuoi, con <b>accesso in sola lettura</b>: non modifichiamo mai nulla nei tuoi sistemi.</p>
+          <div class="con-chips"><span>CASSA</span><span>NEGOZIO ONLINE (SHOPIFY…)</span><span>GESTIONALE (TEAMSYSTEM, ZUCCHETTI…)</span><span>FATTURE</span><span>WHATSAPP</span><span>CAMPAGNE META &amp; GOOGLE</span></div>
+        </div>
+      </div>
+
+      <div class="con-step">
+        <div class="con-dot"></div>
+        <p class="con-tag">Il ponte · I connettori Ailiv</p>
+        <div class="con-card">
+          <p>Per ogni programma costruiamo un <b>connettore su misura</b>: un piccolo ponte digitale che va a leggere i tuoi numeri al posto tuo, li ordina e li tiene aggiornati — ogni notte, e in tempo reale dove la fonte lo permette. I tuoi sistemi restano la fonte ufficiale; il ponte ne tiene una copia di lavoro ordinata e protetta, in Europa o direttamente in sede tua.</p>
+          <p class="con-note">Non tutto si collega uguale — nel check-up te lo diciamo programma per programma: <b>si collega da sola</b> (verificando cosa prevede la tua licenza) · <b>serve scaricare un file ogni tanto</b>, e lo automatizziamo noi · <b>i numeri stanno su carta o PDF</b>, e li facciamo leggere a un lettore automatico · <b>quel numero oggi non lo registra nessuno</b>, e ti diciamo come iniziare a raccoglierlo.</p>
+        </div>
+      </div>
+
+      <div class="con-step">
+        <div class="con-dot"></div>
+        <p class="con-tag">L'AI · Una sola, che vede l'insieme</p>
+        <div class="con-card">
+          <p>Interroga tutte le fonti, ma per ogni risposta riceve <b>solo il pezzetto di numeri che serve</b> — mai l'archivio intero. E incrocia quello che i tuoi programmi non si dicono: <b>le campagne con gli incassi</b>, <b>i listini con gli acquisti</b>, <b>i clienti con le vendite</b>.</p>
+        </div>
+      </div>
+
+      <div class="con-step">
+        <div class="con-dot"></div>
+        <p class="con-tag">A te · Dove ti arriva</p>
+        <div class="con-due">
+          <div class="con-card">
+            <h3>Su WhatsApp</h3>
+            <p>Report del mattino e avvisi <b>sul WhatsApp che hai già</b>: niente da installare, niente da pagare in più. E se un domani vorrai che il sistema anche <em>agisca</em>, è qui che arriva la richiesta di approvazione: <b>niente parte senza il tuo sì</b>.</p>
+          </div>
+          <div class="con-card">
+            <h3>Nel tuo Claude o ChatGPT</h3>
+            <p>Apri la chat e fai la domanda («com'è andata ieri?»): <b>il tuo sistema è lì dentro, già collegato da noi</b>. Serve un abbonamento (~20&nbsp;€/mese, lo attiviamo insieme in dieci minuti); se non li hai mai usati, ti guidiamo passo passo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="con-g reveal">
+      <span><b>Manutenzione inclusa</b> — se il tuo gestionale si aggiorna e il collegamento si rompe, lo sistemiamo noi</span>
+      <span><b>GDPR per iscritto</b> — riservatezza e trattamento dati prima di toccare qualsiasi cosa</span>
+      <span><b>Zero lock-in</b> — se un giorno smetti, spegniamo i ponti e i dati restano tuoi</span>
+    </div>
+
+    <p class="reveal lead mt-8 max-w-lg">Vuoi sapere cosa si collega da te? <a class="cta-text" href="#prenota">Richiedi il check-up gratuito →</a></p>
+  </div>
+</section>
+
+<!-- ============ 06 / PROGETTI ============ -->
 <section id="progetti" class="px-5 py-16 bg-white border-y border-[#143d5c]/8">
   <div class="max-w-5xl mx-auto">
-    <p class="kicker reveal mb-6">05 / Progetti in produzione</p>
+    <p class="kicker reveal mb-6">06 / Progetti in produzione</p>
     <h2 class="h2x reveal mb-8">Sistemi che girano adesso.</h2>
     <div class="projs reveal" id="projs">
       <div class="prj">
@@ -797,7 +883,7 @@
 <!-- ============ 06 / OFFERTA ============ -->
 <section id="offerta" class="px-5 py-16">
   <div class="max-w-3xl mx-auto">
-    <p class="kicker reveal mb-6">06 / L'offerta</p>
+    <p class="kicker reveal mb-6">07 / L'offerta</p>
     <h2 class="h2x reveal mb-3">Dove l'AI sposta qualcosa.<br>E dove no.</h2>
     <p class="lead reveal mb-8 max-w-lg">Una call di 30–45 minuti sui numeri e i processi della tua azienda. Nessuna presentazione, nessun preventivo a sorpresa.</p>
 
@@ -825,7 +911,7 @@
 <!-- ============ 07 / COME LAVORIAMO ============ -->
 <section class="px-5 py-16 bg-white border-y border-[#143d5c]/8">
   <div class="max-w-5xl mx-auto">
-    <p class="kicker reveal mb-6">07 / Come lavoriamo</p>
+    <p class="kicker reveal mb-6">08 / Come lavoriamo</p>
     <h2 class="h2x reveal mb-10">Si parte sempre dal check-up.</h2>
     <div class="jrn">
       <div class="jrn-rail"></div>
@@ -874,7 +960,7 @@
 <!-- ============ 08 / DOMANDE VERE ============ -->
 <section class="px-5 py-16">
   <div class="max-w-3xl mx-auto">
-    <p class="kicker reveal mb-6">08 / Domande vere</p>
+    <p class="kicker reveal mb-6">09 / Domande vere</p>
     <h2 class="h2x reveal mb-8">Le cose che chiedono tutti.</h2>
     <div class="reveal" id="faq">
       <div class="faq-item">
