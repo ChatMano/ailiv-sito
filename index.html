@@ -780,6 +780,8 @@
     <h2 class="h2x reveal mb-3">Ci colleghiamo a quello che usi già.</h2>
     <p class="lead reveal mb-10 max-w-lg">Nessun programma nuovo da imparare, nessun cambio di abitudini: il sistema si collega ai programmi che usi già — e l'analisi ti arriva dove sei già.</p>
 
+    <video id="collegaVideo" class="sec-video reveal" muted loop playsinline preload="none" poster="assets/video/con-ponte-poster.jpg" aria-hidden="true" style="max-width:680px"></video>
+
     <div class="con-flow reveal">
       <div class="con-pulse" aria-hidden="true"></div>
 
@@ -1950,6 +1952,25 @@ function localInit(root){
       es.forEach(function(e){
         if (e.isIntersecting) {
           if (!loaded) { loaded = true; v.src = (innerWidth < 700 ? 'assets/video/agenti-fatture-480.mp4' : 'assets/video/agenti-fatture-720.mp4'); }
+          if (v.play) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+        } else if (v.pause) { v.pause(); }
+      });
+    }, { threshold: 0.1 });
+    io.observe(v);
+  })();
+
+  // Video sezione connettori (il ponte): lazy + play in viewport
+  (function(){
+    var v = document.getElementById('collegaVideo');
+    if (!v) return;
+    var reduce = false;
+    try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e) {}
+    if (reduce) return;
+    var loaded = false;
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          if (!loaded) { loaded = true; v.src = (innerWidth < 700 ? 'assets/video/con-ponte-480.mp4' : 'assets/video/con-ponte-720.mp4'); }
           if (v.play) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
         } else if (v.pause) { v.pause(); }
       });
