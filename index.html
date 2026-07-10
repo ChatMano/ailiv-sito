@@ -134,6 +134,7 @@
   /* ---------- demo container ---------- */
   .demo-viz { position: relative; width: 100%; height: auto; aspect-ratio: 480/320; background: linear-gradient(180deg,#fcfbf8,#f3f0e9); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
   .demo-viz[data-cf="chat"] { aspect-ratio: 412/292; }
+  .demo-viz[data-cf="ocr"] { aspect-ratio: 480/400; }
   @media (max-width: 700px) { .demo-viz[data-cf="chat"] { margin-left: -1.25rem; margin-right: -1.25rem; width: calc(100% + 2.5rem); border-radius: 0; border-left: none; border-right: none; } }
   .sec-video { display: block; width: 100%; border-radius: 18px; border: 1px solid var(--line); margin-bottom: 1.1rem; }
   .demo-cap { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; letter-spacing: .1em; color: var(--gold-dark); margin-bottom: .6rem; text-transform: uppercase; }
@@ -620,7 +621,7 @@
       <video id="agentiVideo" class="sec-video" muted loop playsinline preload="none" poster="assets/video/agenti-fatture-poster.jpg" aria-hidden="true"></video>
       <p class="demo-cap">Demo — premi Scansiona: il DDT finisce in tabella da solo</p>
       <div class="demo-viz" data-cf="ocr">
-<svg class="ocr-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="Un DDT viene scansionato: prodotti e prezzi si scrivono da soli in una tabella" preserveAspectRatio="xMidYMid meet">
+<svg class="ocr-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="Un DDT viene scansionato: prodotti e prezzi si scrivono da soli in una tabella" preserveAspectRatio="xMidYMin meet">
   <defs>
     <linearGradient id="ocr-paper" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#ffffff"/>
