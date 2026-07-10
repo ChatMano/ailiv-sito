@@ -107,7 +107,7 @@
   @media (max-width: 859px) {
     .story { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: .9rem; margin: 0 -1.25rem; padding: 0 1.25rem .5rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .story::-webkit-scrollbar { display: none; }
-    .story-card { flex: 0 0 88%; scroll-snap-align: center; }
+    .story-card { flex: 0 0 96%; scroll-snap-align: center; }
   }
   .story-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
   .story-card img { display: block; width: 100%; height: auto; }
@@ -134,6 +134,7 @@
   /* ---------- demo container ---------- */
   .demo-viz { position: relative; width: 100%; height: auto; aspect-ratio: 480/320; background: linear-gradient(180deg,#fcfbf8,#f3f0e9); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
   .demo-viz[data-cf="chat"] { aspect-ratio: 412/292; }
+  @media (max-width: 700px) { .demo-viz[data-cf="chat"] { margin-left: -1.25rem; margin-right: -1.25rem; width: calc(100% + 2.5rem); border-radius: 0; border-left: none; border-right: none; } }
   .sec-video { display: block; width: 100%; border-radius: 18px; border: 1px solid var(--line); margin-bottom: 1.1rem; }
   .demo-cap { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; letter-spacing: .1em; color: var(--gold-dark); margin-bottom: .6rem; text-transform: uppercase; }
   .demo-note { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; color: rgba(20,61,92,.45); margin-top: .55rem; }
@@ -255,6 +256,17 @@
   .jrn-step.jrn-hl .jrn-dot { border-color: var(--gold); background: rgba(212,167,71,.1); color: var(--ink); }
   .jrn-step.jrn-hl .jrn-lbl { color: var(--gold-dark); }
 
+  /* ---------- prezzo grande ---------- */
+  .price-hero { position: relative; background: linear-gradient(180deg,#143d5c,#0e2c43); border-radius: 20px; padding: 2.6rem 1.5rem 2.5rem; text-align: center; margin-top: 2.2rem; color: #fafaf7; overflow: hidden; box-shadow: 8px 8px 0 rgba(20,61,92,.08); }
+  .price-kick { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; letter-spacing: .16em; color: #d4a747; margin-bottom: 1.2rem; line-height: 1.7; }
+  .price-row { display: flex; align-items: baseline; justify-content: center; gap: 1.4rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+  .price-old { font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 700; color: rgba(250,250,247,.45); text-decoration: line-through; text-decoration-color: rgba(212,167,71,.8); text-decoration-thickness: 3px; }
+  .price-new { font-family: 'Archivo Black', sans-serif; font-size: clamp(3.6rem, 10vw, 5.2rem); line-height: 1; color: #d4a747; }
+  .price-sub { font-size: 1rem; color: rgba(250,250,247,.78); max-width: 30rem; margin: 0 auto; line-height: 1.6; }
+  .price-sub b { color: #fafaf7; }
+  .price-stamp { position: absolute; top: 1.2rem; right: 1.2rem; font-family: 'IBM Plex Mono', monospace; font-size: .72rem; font-weight: 700; letter-spacing: .12em; color: #d4a747; border: 2px solid #d4a747; border-radius: 8px; padding: .35rem .6rem; transform: rotate(7deg); background: rgba(212,167,71,.12); }
+  @media (max-width: 520px) { .price-stamp { position: static; display: inline-block; margin-bottom: 1rem; transform: rotate(-2deg); } }
+
   /* ---------- demo: OCR ---------- */
   /* --- ocr --- */
 .ocr-svg{display:block;width:100%;height:100%;font-family:'IBM Plex Mono',monospace;}
@@ -275,6 +287,10 @@
 .ocr-arrow{opacity:0.85;}
 
 .ocr-datahead{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:1.5px;fill:rgba(20,61,92,0.55);}
+.ocr-colh{font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:1px;fill:rgba(20,61,92,0.55);}
+.ocr-cell{font-family:'IBM Plex Mono',monospace;font-size:11.5px;fill:rgba(20,61,92,0.85);}
+.ocr-cellp{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:700;fill:#143d5c;}
+.ocr-docline{font-family:'IBM Plex Mono',monospace;font-size:9.5px;fill:rgba(20,61,92,0.75);}
 .ocr-pill rect:first-of-type{fill:#ffffff;stroke:rgba(20,61,92,0.14);stroke-width:1;}
 .ocr-pill circle{fill:#d4a747;}
 .ocr-pill .ocr-lbl{fill:rgba(20,61,92,0.30);}
@@ -472,7 +488,7 @@
 <!-- ============ HEADER ============ -->
 <header class="hdr">
   <div class="max-w-5xl mx-auto px-5 py-3 flex items-center justify-between">
-    <a href="#top" class="flex items-center"><img src="assets/logo-ailiv.png" alt="Ailiv" class="h-8 md:h-9 w-auto"></a>
+    <a href="#top" class="flex items-center"><img src="assets/bollino-ailiv-hdr.png" alt="Ailiv" class="h-9 md:h-10 w-auto"></a>
     <a href="#prenota" class="mono text-[14px] font-semibold tracking-widest text-[#b8902f] uppercase">Richiedi →</a>
   </div>
 </header>
@@ -481,6 +497,9 @@
 <section id="top" class="hero-wrap pt-28 md:pt-36 pb-14 px-5">
   <video id="heroVideo" class="hero-video" muted loop playsinline preload="none" poster="assets/video/hero-oro-poster.jpg" aria-hidden="true"></video>
   <div class="hero-veil"></div>
+  <div class="hero-content max-w-5xl mx-auto mb-12">
+    <img src="assets/logo-ailiv-hero.png" alt="Ailiv" class="mx-auto h-20 md:h-28 w-auto" width="1400" height="608">
+  </div>
   <div class="hero-content max-w-5xl mx-auto grid md:grid-cols-[1.05fr_1fr] gap-10 items-center">
     <div>
       <p class="mono text-[.68rem] font-semibold tracking-[.2em] text-[#b8902f] uppercase mb-5">Costruiamo e gestiamo il cervello AI della tua azienda</p>
@@ -488,7 +507,7 @@
         <span class="ln-mask"><span>Il lavoro ripetitivo lo fa l'AI.</span></span>
         <span class="ln-mask"><span>Tu torni a decidere.</span></span>
       </h1>
-      <p class="lead text-lg mb-7 max-w-md">Un cervello che immagazzina i dati di cassa, fatture, campagne e clienti — e agenti che lavorano per te: leggono le fatture, ti avvisano se un fornitore alza i prezzi, ti dicono quali campagne rendono. Ogni mattina, report e avvisi automatici.</p>
+      <p class="lead text-lg mb-7 max-w-md">Un cervello che immagazzina i dati di cassa, fatture, campagne e clienti — e agenti che lavorano per te: leggono le fatture, ti avvisano se un fornitore alza i prezzi, ti dicono quali campagne rendono. Report e avvisi automatici: ogni giorno, ogni settimana o ogni mese — decidi tu.</p>
       <a href="#prenota" class="cta w-full sm:w-auto">Richiedi il check-up gratuito</a>
       <p class="cta-note">30–45 min · mini-report con 2–3 opportunità · zero impegno</p>
     </div>
@@ -506,9 +525,8 @@
 <!-- ============ PER CHI È + SOMMARIO ============ -->
 <section class="px-5 pb-14">
   <div class="max-w-5xl mx-auto reveal">
-    <div class="qualbar">PER PMI ITALIANE — CON 1 SEDE O 10</div>
-    <h2 class="h2x mt-8 mb-3">L'AI risponde bene.<br>A una domanda alla volta.</h2>
-    <p class="lead mb-7 max-w-xl">Magari la usi già: funziona. Ma ogni volta le rispieghi tutto da capo — e il quadro d'insieme della tua azienda non ce l'ha.</p>
+    <h2 class="h2x mt-4 mb-3">L'AI risponde bene.<br>Ma se avesse la visione totale della tua azienda?</h2>
+    <p class="lead mb-7 max-w-xl">Magari la usi già: funziona. Ma risponde a una domanda alla volta, e ogni volta le rispieghi tutto da capo.</p>
     <p class="mono text-[.72rem] tracking-[.14em] text-[#b8902f] uppercase mt-7 mb-3">Pensa se invece potessi</p>
     <ul class="sector-grid mb-7">
       <li><b>Sapere subito se un fornitore ritocca il listino</b> — riga per riga, non a sensazione</li>
@@ -516,7 +534,7 @@
       <li><b>Leggere ogni mese un conto economico in versione semplice</b> — quanto entra, quanto esce, cosa resta. Non a fine anno</li>
       <li><b>Capire quali campagne rendono e quali bruciano soldi</b> — e spostare il budget di conseguenza</li>
     </ul>
-    <p class="lead mb-4 max-w-xl">Con Ailiv non scegli: <b>i report ti arrivano da soli</b>, ogni mattina — e quando un numero non ti torna, <b>glielo chiedi</b>.</p>
+    <p class="lead mb-4 max-w-xl">Con Ailiv non scegli: <b>i report ti arrivano da soli</b> — ogni giorno, ogni settimana o ogni mese, lo decidi tu — e quando un numero non ti torna, <b>glielo chiedi</b>.</p>
     <p class="mono text-[.7rem] text-[#0e2c43]/45 mb-7">Ogni sistema è su misura: cosa si può collegare da te lo verifichiamo nel check-up gratuito, prima di promettere qualsiasi cosa.</p>
     <nav class="toc max-w-md">
       <a href="#problema"><span class="n">01</span> Il problema</a>
@@ -600,9 +618,9 @@
     </div>
     <div class="reveal">
       <video id="agentiVideo" class="sec-video" muted loop playsinline preload="none" poster="assets/video/agenti-fatture-poster.jpg" aria-hidden="true"></video>
-      <p class="demo-cap">Demo — tocca: la fattura si legge da sola</p>
+      <p class="demo-cap">Demo — premi Scansiona: il DDT finisce in tabella da solo</p>
       <div class="demo-viz" data-cf="ocr">
-<svg class="ocr-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="Un documento cartaceo viene scansionato e trasformato in dati strutturati" preserveAspectRatio="xMidYMid meet">
+<svg class="ocr-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="Un DDT viene scansionato: prodotti e prezzi si scrivono da soli in una tabella" preserveAspectRatio="xMidYMid meet">
   <defs>
     <linearGradient id="ocr-paper" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#ffffff"/>
@@ -628,27 +646,26 @@
     <rect class="ocr-docshadow" x="30" y="46" width="178" height="232" rx="8"/>
     <rect class="ocr-docbg" x="26" y="40" width="178" height="232" rx="8" fill="url(#ocr-paper)" stroke="rgba(20,61,92,0.18)" stroke-width="1.5"/>
     <!-- header -->
-    <text class="ocr-doctitle" x="42" y="68">FATTURA</text>
-    <rect class="ocr-docbadge" x="150" y="56" width="40" height="15" rx="3"/>
-    <text class="ocr-docbadgetx" x="170" y="67" text-anchor="middle">DDT</text>
+    <text class="ocr-doctitle" x="42" y="68">DDT</text>
+    <rect class="ocr-docbadge" x="112" y="56" width="78" height="15" rx="3"/>
+    <text class="ocr-docbadgetx" x="151" y="67" text-anchor="middle">FORNITORE</text>
     <line x1="42" y1="78" x2="190" y2="78" stroke="rgba(20,61,92,0.18)" stroke-width="1"/>
     <!-- fake text lines -->
     <g class="ocr-lines" fill="rgba(20,61,92,0.22)">
-      <rect x="42" y="90" width="60" height="5" rx="2.5"/>
-      <rect x="42" y="101" width="92" height="5" rx="2.5"/>
-      <rect x="42" y="120" width="148" height="4" rx="2"/>
-      <rect x="42" y="130" width="120" height="4" rx="2"/>
-      <rect x="42" y="140" width="140" height="4" rx="2"/>
-      <rect x="42" y="150" width="100" height="4" rx="2"/>
-      <rect x="42" y="170" width="148" height="4" rx="2"/>
-      <rect x="42" y="180" width="132" height="4" rx="2"/>
-      <rect x="42" y="190" width="146" height="4" rx="2"/>
-      <rect x="42" y="200" width="110" height="4" rx="2"/>
-      <rect x="42" y="220" width="148" height="4" rx="2"/>
-      <rect x="42" y="230" width="90" height="4" rx="2"/>
+      <rect x="42" y="88" width="60" height="5" rx="2.5"/>
+      <rect x="42" y="99" width="92" height="5" rx="2.5"/>
     </g>
-    <rect class="ocr-doctotal" x="118" y="248" width="72" height="14" rx="3"/>
-    <text class="ocr-doctotaltx" x="124" y="258">TOTALE</text>
+    <line x1="42" y1="116" x2="190" y2="116" stroke="rgba(20,61,92,0.14)" stroke-width="1"/>
+    <g class="ocr-docitems">
+      <text class="ocr-docline" x="42" y="134">Farina 00 25 kg</text><text class="ocr-docline" x="190" y="134" text-anchor="end">18,50</text>
+      <text class="ocr-docline" x="42" y="154">Mozzarella 5 kg</text><text class="ocr-docline" x="190" y="154" text-anchor="end">34,90</text>
+      <text class="ocr-docline" x="42" y="174">Pelati 24×400 g</text><text class="ocr-docline" x="190" y="174" text-anchor="end">28,80</text>
+      <text class="ocr-docline" x="42" y="194">Olio EVO 5 L</text><text class="ocr-docline" x="190" y="194" text-anchor="end">42,00</text>
+      <text class="ocr-docline" x="42" y="214">Carta forno 33×33</text><text class="ocr-docline" x="190" y="214" text-anchor="end">12,30</text>
+    </g>
+    <rect class="ocr-doctotal" x="106" y="248" width="84" height="14" rx="3"/>
+    <text class="ocr-doctotaltx" x="112" y="258">TOTALE</text>
+    <text class="ocr-doctotaltx" x="186" y="258" text-anchor="end">136,50</text>
 
     <!-- scan beam (inside clip) -->
     <g clip-path="url(#ocr-paperclip)">
@@ -665,38 +682,49 @@
     <polyline points="230,150 237,156 230,162"/>
   </g>
 
-  <!-- RIGHT: structured data -->
+  <!-- RIGHT: tabella stile foglio -->
   <g class="ocr-data">
-    <text class="ocr-datahead" x="252" y="58">DATI ESTRATTI</text>
+    <text class="ocr-datahead" x="252" y="58">SCRITTI IN TABELLA</text>
+    <g class="ocr-sheethead">
+      <rect x="252" y="66" width="206" height="22" fill="#f5f3ee" stroke="rgba(20,61,92,0.20)" stroke-width="1"/>
+      <line x1="388" y1="66" x2="388" y2="88" stroke="rgba(20,61,92,0.20)" stroke-width="1"/>
+      <text class="ocr-colh" x="260" y="81">PRODOTTO</text>
+      <text class="ocr-colh" x="450" y="81" text-anchor="end">PREZZO</text>
+    </g>
     <g class="ocr-pill" data-i="0">
-      <rect x="252" y="68" width="206" height="34" rx="9"/>
-      <circle cx="268" cy="85" r="5"/>
-      <rect class="ocr-lbl" x="282" y="76" width="46" height="6" rx="3"/>
-      <rect class="ocr-val" x="282" y="88" width="120" height="7" rx="3.5"/>
+      <rect x="252" y="88" width="206" height="26"/>
+      <line x1="388" y1="88" x2="388" y2="114" stroke="rgba(20,61,92,0.12)" stroke-width="1"/>
+      <text class="ocr-cell" x="260" y="105">Farina 00 25 kg</text>
+      <text class="ocr-cellp" x="450" y="105" text-anchor="end">18,50 €</text>
     </g>
     <g class="ocr-pill" data-i="1">
-      <rect x="252" y="108" width="206" height="34" rx="9"/>
-      <circle cx="268" cy="125" r="5"/>
-      <rect class="ocr-lbl" x="282" y="116" width="38" height="6" rx="3"/>
-      <rect class="ocr-val" x="282" y="128" width="96" height="7" rx="3.5"/>
+      <rect x="252" y="114" width="206" height="26"/>
+      <line x1="388" y1="114" x2="388" y2="140" stroke="rgba(20,61,92,0.12)" stroke-width="1"/>
+      <text class="ocr-cell" x="260" y="131">Mozzarella 5 kg</text>
+      <text class="ocr-cellp" x="450" y="131" text-anchor="end">34,90 €</text>
     </g>
     <g class="ocr-pill" data-i="2">
-      <rect x="252" y="148" width="206" height="34" rx="9"/>
-      <circle cx="268" cy="165" r="5"/>
-      <rect class="ocr-lbl" x="282" y="156" width="54" height="6" rx="3"/>
-      <rect class="ocr-val" x="282" y="168" width="134" height="7" rx="3.5"/>
+      <rect x="252" y="140" width="206" height="26"/>
+      <line x1="388" y1="140" x2="388" y2="166" stroke="rgba(20,61,92,0.12)" stroke-width="1"/>
+      <text class="ocr-cell" x="260" y="157">Pelati 24×400 g</text>
+      <text class="ocr-cellp" x="450" y="157" text-anchor="end">28,80 €</text>
     </g>
     <g class="ocr-pill" data-i="3">
-      <rect x="252" y="188" width="206" height="34" rx="9"/>
-      <circle cx="268" cy="205" r="5"/>
-      <rect class="ocr-lbl" x="282" y="196" width="42" height="6" rx="3"/>
-      <rect class="ocr-val" x="282" y="208" width="108" height="7" rx="3.5"/>
+      <rect x="252" y="166" width="206" height="26"/>
+      <line x1="388" y1="166" x2="388" y2="192" stroke="rgba(20,61,92,0.12)" stroke-width="1"/>
+      <text class="ocr-cell" x="260" y="183">Olio EVO 5 L</text>
+      <text class="ocr-cellp" x="450" y="183" text-anchor="end">42,00 €</text>
     </g>
     <g class="ocr-pill" data-i="4">
-      <rect x="252" y="228" width="206" height="34" rx="9"/>
-      <circle cx="268" cy="245" r="5"/>
-      <rect class="ocr-lbl" x="282" y="236" width="50" height="6" rx="3"/>
-      <rect class="ocr-val" x="282" y="248" width="86" height="7" rx="3.5"/>
+      <rect x="252" y="192" width="206" height="26"/>
+      <line x1="388" y1="192" x2="388" y2="218" stroke="rgba(20,61,92,0.12)" stroke-width="1"/>
+      <text class="ocr-cell" x="260" y="209">Carta forno 33×33</text>
+      <text class="ocr-cellp" x="450" y="209" text-anchor="end">12,30 €</text>
+    </g>
+    <g class="ocr-pill" data-i="5">
+      <rect x="252" y="218" width="206" height="26" style="fill:#f5f3ee"/>
+      <text class="ocr-cellp" x="260" y="235">TOTALE</text>
+      <text class="ocr-cellp" x="450" y="235" text-anchor="end">136,50 €</text>
     </g>
   </g>
 </svg>
@@ -720,7 +748,7 @@
     <h2 class="h2x reveal mb-4">Un cervello aziendale.<br>Tutti i tuoi dati, una sola memoria.</h2>
     <p class="lead reveal mb-9 max-w-xl">Il cervello immagazzina cassa, contabilità e marketing, li incrocia e produce report e avvisi automatici. A leggerteli è una voce che non ha niente da venderti. E ogni report lo puoi <b>approfondire</b>: chiedi il perché di un numero e scendi fino alla riga che lo spiega — è lì che si capisce dove intervenire e cosa migliorare.</p>
 
-    <div class="grid md:grid-cols-2 gap-8 items-start">
+    <div class="grid md:grid-cols-[0.85fr_1.15fr] gap-8 items-start">
       <div class="reveal">
         <p class="demo-cap">Tocca la carta: stessa campagna, due versioni</p>
         <div class="flipcard" id="flipCard" role="button" tabindex="0" aria-label="Confronta versione raccontata e numeri reali">
@@ -764,11 +792,9 @@
   <g clip-path="url(#chat-winClip)">
     <!-- header -->
     <rect x="40" y="20" width="400" height="44" fill="url(#chat-headGrad)"/>
-    <circle cx="68" cy="42" r="13" fill="url(#chat-avGrad)"/>
-    <path d="M62 45.5 q6 5 12 0" fill="none" stroke="#0e2c43" stroke-width="1.6" stroke-linecap="round"/>
-    <circle cx="64" cy="39.5" r="1.5" fill="#0e2c43"/>
-    <circle cx="72" cy="39.5" r="1.5" fill="#0e2c43"/>
-    <text class="chat-htitle" x="90" y="39" fill="#fafaf7" font-weight="600" font-family="Inter,system-ui,sans-serif">La voce imparziale</text>
+    <circle cx="68" cy="42" r="14.5" fill="#fafaf7"/>
+    <image href="assets/bollino-ailiv-hdr.png" x="57" y="33.5" width="22" height="17" preserveAspectRatio="xMidYMid meet"/>
+    <text class="chat-htitle" x="90" y="39" fill="#fafaf7" font-weight="700" letter-spacing="1.5" font-family="Inter,system-ui,sans-serif">AILIV</text>
     <circle cx="93.5" cy="51" r="3" fill="#5bbd7a"/>
     <text class="chat-hsub" x="101" y="54.5" fill="rgba(250,250,247,0.78)" font-family="'IBM Plex Mono',monospace">demo · dati di esempio</text>
 
@@ -846,7 +872,7 @@
         <div class="con-due">
           <div class="con-card">
             <h3>Report e avvisi automatici</h3>
-            <p>Ogni mattina un report; quando qualcosa si muove — un prezzo, una campagna — un avviso. <b>Senza che tu debba chiedere niente.</b> E se un domani vorrai che il sistema anche <em>agisca</em>: <b>niente parte senza il tuo sì</b>.</p>
+            <p>Un report ogni giorno, ogni settimana o ogni mese: <b>il ritmo lo decidi tu</b>. E quando qualcosa si muove — un prezzo, una campagna — un avviso. <b>Senza che tu debba chiedere niente.</b> E se un domani vorrai che il sistema anche <em>agisca</em>: <b>niente parte senza il tuo sì</b>.</p>
           </div>
           <div class="con-card">
             <h3>Nel tuo Claude o ChatGPT</h3>
@@ -928,10 +954,20 @@
       <div class="offer-block"><b>La call</b><p>30–45 minuti sui tuoi numeri e i tuoi processi, con chi poi costruisce davvero — non con un venditore.</p></div>
       <div class="offer-block"><b>Il mini-report</b><p>Un documento scritto sul tuo caso — non un modello standard — con 2–3 opportunità concrete dove l'AI sposta tempo o soldi.</p></div>
       <div class="offer-block"><b>La decisione</b><p>Con il report in mano decidi tu se andare avanti, con noi o da solo. Il report resta a te comunque.</p></div>
-      <div class="offer-block"><b>Il passo dopo, se ha senso</b><p>La <b>Mappa dei Collegamenti</b>: <s>1.690 €</s> <b>490 €</b>, prezzo bloccato fino al <b>30 settembre</b> — e scalati tutti dal progetto se prosegui entro 30 giorni. È l'unico prezzo che ti serve per cominciare.</p></div>
+      <div class="offer-block"><b>Il passo dopo, se ha senso</b><p>La <b>Mappa dei Collegamenti</b> — il prezzo è qui sotto, ed è l'unico che ti serve per cominciare.</p></div>
       <div class="offer-block bg-[#fafaf7]">
         <p class="mono text-[.68rem] text-[#0e2c43]/55 leading-relaxed">Seguiamo pochi progetti alla volta, per seguirli davvero.</p>
       </div>
+    </div>
+
+    <div class="price-hero reveal" id="prezzo">
+      <span class="price-stamp">FINO AL 30/09</span>
+      <p class="price-kick">IL PASSO DOPO IL CHECK-UP<br>LA MAPPA DEI COLLEGAMENTI</p>
+      <div class="price-row" aria-label="490 euro invece di 1.690 euro">
+        <span class="price-old">1.690 €</span>
+        <span class="price-new">490 €</span>
+      </div>
+      <p class="price-sub">Prezzo bloccato fino al <b>30 settembre</b>. Se parti col progetto entro 30 giorni, <b>si scala tutta dal setup</b> — e la Mappa resta tua comunque, anche se poi non prosegui.</p>
     </div>
 
     <div class="text-center mt-8 reveal">
@@ -1199,7 +1235,7 @@
     var body = document.getElementById('regBody');
     if (!body) return;
     var LINES = [
-      '07:12 <b>←</b> 14 fatture dalle foto',
+      '07:12 <b>←</b> 14 fatture nel database',
       '07:48 <b>←</b> listino fornitore nuovo',
       '08:02 <b>←</b> incassi di ieri, 3 sedi',
       '08:05 <b>→</b> report del mattino a te',
@@ -1498,7 +1534,7 @@ function chatInit(root){
   var VIEW_BOT = Math.min(250, Math.max(170, 306 - Math.ceil(barPx / chatScale) - 4)); // bottom (chip bar starts)
   if (hint) { hint.style.bottom = (barPx + 10) + "px"; }
   var VIEW_H = VIEW_BOT - VIEW_TOP;
-  var MAXW = 232;             // max bubble width
+  var MAXW = 300;             // max bubble width
   var PAD = 12;               // bubble inner padding
   var FS = chatScale < 0.9 ? 22 : 18; // font size (maggiorato dove il container e stretto)
   var LH = FS + 5;            // line height
@@ -1538,7 +1574,7 @@ function chatInit(root){
 
   // Append a chat bubble. side: 'bot' | 'user'
   function addBubble(text, side){
-    var charW = FS * 0.54; // approx px per char, Inter
+    var charW = FS * 0.62; // stima larga per non far uscire il testo dalla bolla
     var maxChars = Math.max(14, Math.floor((MAXW - PAD*2) / charW));
     var lines = wrap(text, maxChars);
     var textW = Math.min(MAXW - PAD*2, Math.max(46, measure(lines) * charW));
