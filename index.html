@@ -135,7 +135,7 @@
   .demo-viz { position: relative; width: 100%; height: auto; aspect-ratio: 480/320; background: linear-gradient(180deg,#fcfbf8,#f3f0e9); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
   .demo-viz[data-cf="chat"] { aspect-ratio: 412/292; }
   .demo-viz[data-cf="ocr"] { aspect-ratio: 480/400; }
-  @media (max-width: 700px) { .demo-viz[data-cf="chat"] { margin-left: -1.25rem; margin-right: -1.25rem; width: calc(100% + 2.5rem); border-radius: 0; border-left: none; border-right: none; } }
+  @media (max-width: 700px) { .demo-viz[data-cf="chat"] { aspect-ratio: 412/442; margin-left: -1.25rem; margin-right: -1.25rem; width: calc(100% + 2.5rem); border-radius: 0; border-left: none; border-right: none; } }
   .sec-video { display: block; width: 100%; border-radius: 18px; border: 1px solid var(--line); margin-bottom: 1.1rem; }
   .demo-cap { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; letter-spacing: .1em; color: var(--gold-dark); margin-bottom: .6rem; text-transform: uppercase; }
   .demo-note { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; color: rgba(20,61,92,.45); margin-top: .55rem; }
@@ -579,7 +579,7 @@
     <h2 class="h2x reveal mb-8">Una chat risponde.<br>Un sistema lavora.</h2>
     <div class="cmp-wrap reveal">
       <div class="cmp">
-        <h3>Un'AI da sola (ChatGPT, Claude, Gemini)</h3>
+        <h3>Un'AI da sola (quella che già conosci)</h3>
         <ul>
           <li>Risponde solo quando le scrivi</li>
           <li>Non conosce i tuoi dati: gliene incolli un pezzo alla volta</li>
@@ -598,7 +598,7 @@
       </div>
     </div>
     <p class="swipe-hint">← scorri per confrontare →</p>
-    <p class="reveal lead mt-7 max-w-lg">Ailiv collega la tua azienda all'AI: cassa, contabilità, fornitori, marketing, clienti. E per chi lo sa: sì, anche ChatGPT oggi si può collegare — ma i collegamenti qualcuno li deve costruire e mantenere sul tuo gestionale. È il nostro lavoro. <a class="cta-text" href="#prenota">Richiedi il check-up →</a></p>
+    <p class="reveal lead mt-7 max-w-lg">Ailiv collega la tua azienda all'AI: cassa, contabilità, fornitori, marketing, clienti. E per chi lo sa: sì, anche le chat AI più famose oggi si possono collegare — ma i collegamenti qualcuno li deve costruire e mantenere sul tuo gestionale. È il nostro lavoro. <a class="cta-text" href="#prenota">Richiedi il check-up →</a></p>
   </div>
 </section>
 
@@ -611,8 +611,8 @@
       <p class="lead reveal mb-5">Non persone da assumere: <b>programmi che lavorano da soli</b>, al fianco tuo e di chi c'è già:</p>
       <ul class="rv-kids space-y-2 text-[.95rem] text-[#0e2c43]/80">
         <li>— L'agente <b>documenti</b> legge fatture e DDT, li registra e li controlla</li>
-        <li>— L'agente <b>fatturazione</b> si collega a Fatture in Cloud e simili</li>
-        <li>— L'agente <b>campagne</b> tiene d'occhio Meta e Google e propone correzioni</li>
+        <li>— L'agente <b>fatturazione</b> si collega alla tua fatturazione elettronica</li>
+        <li>— L'agente <b>campagne</b> tiene d'occhio le tue campagne pubblicitarie e propone correzioni</li>
         <li>— L'agente <b>presenza digitale</b> controlla se le AI ti trovano — e come parlano di te</li>
       </ul>
       <p class="reveal mt-6"><a class="cta-text" href="#prenota">Vedi cosa toglierebbe al tuo team →</a></p>
@@ -788,7 +788,7 @@
   </defs>
 
   <!-- window frame -->
-  <rect x="40" y="20" width="400" height="280" rx="18" fill="#ffffff" stroke="rgba(20,61,92,0.14)" stroke-width="1.4"/>
+  <rect class="chat-frame" x="40" y="20" width="400" height="280" rx="18" fill="#ffffff" stroke="rgba(20,61,92,0.14)" stroke-width="1.4"/>
 
   <g clip-path="url(#chat-winClip)">
     <!-- header -->
@@ -846,7 +846,7 @@
         <p class="con-tag">Da te · Da dove entrano i dati</p>
         <div class="con-card">
           <p>I programmi che usi già restano tuoi: <b>noi li leggiamo soltanto</b>, non tocchiamo e non cambiamo niente. Fatture e DDT? Li fotografi, il sistema li legge da solo. Gestionale, cassa e fatturazione si collegano in automatico; campagne, sito e recensioni arrivano dai tuoi account.</p>
-          <div class="con-chips"><span>CASSA</span><span>NEGOZIO ONLINE (SHOPIFY…)</span><span>GESTIONALE (TEAMSYSTEM, ZUCCHETTI…)</span><span>FATTURE</span><span>CAMPAGNE META &amp; GOOGLE</span></div>
+          <div class="con-chips"><span>CASSA</span><span>NEGOZIO ONLINE</span><span>GESTIONALE</span><span>FATTURE</span><span>CAMPAGNE PUBBLICITARIE</span></div>
         </div>
       </div>
 
@@ -876,7 +876,7 @@
             <p>Un report ogni giorno, ogni settimana o ogni mese: <b>il ritmo lo decidi tu</b>. E quando qualcosa si muove — un prezzo, una campagna — un avviso. <b>Senza che tu debba chiedere niente.</b> E se un domani vorrai che il sistema anche <em>agisca</em>: <b>niente parte senza il tuo sì</b>.</p>
           </div>
           <div class="con-card">
-            <h3>Nel tuo Claude o ChatGPT</h3>
+            <h3>Nella tua chat AI</h3>
             <p>Apri la chat e fai la domanda («com'è andata ieri?»): <b>il tuo sistema è lì dentro, già collegato da noi</b>. Serve un abbonamento (~20&nbsp;€/mese, lo attiviamo insieme in dieci minuti); se non li hai mai usati, ti guidiamo passo passo.</p>
           </div>
         </div>
@@ -923,7 +923,7 @@
       <div class="prj">
         <span class="prj-tag">IN PRODUZIONE</span>
         <h3>La tua presenza sulle AI</h3>
-        <div class="prj-row"><b>Problema</b>I clienti ormai chiedono a ChatGPT, Gemini e Perplexity. Tu, lì dentro, ci sei?</div>
+        <div class="prj-row"><b>Problema</b>I clienti ormai lo chiedono alle AI. Tu, lì dentro, ci sei?</div>
         <div class="prj-row"><b>Sistema costruito</b>Un agente interroga le AI come farebbe un cliente: misura se ti trovano, cosa dicono di te e dei concorrenti.</div>
         <div class="prj-row"><b>Cosa fa oggi</b>Controlli periodici e correzioni: la visibilità sulle AI diventa un numero che leggi, non una sensazione.</div>
       </div>
@@ -1048,11 +1048,11 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Vi collegate a quello che uso già?<span class="pm">+</span></button>
-        <div class="faq-a"><div><p>Sì: cassa, gestionale (TeamSystem, Zucchetti, PMS alberghieri, Shopify, gestionali appuntamenti…), fatturazione. All'inizio in sola lettura: non tocchiamo la cassa e non cambi il modo di lavorare. Le azioni — come spostare un budget — si attivano solo dopo, se le vuoi tu, e ognuna parte solo col tuo sì. Se il tuo sistema non si può collegare bene, te lo diciamo prima: è a questo che serve il check-up.</p></div></div>
+        <div class="faq-a"><div><p>Sì: cassa, gestionale (quello che usi già: magazzino, appuntamenti, alberghiero, negozio online…), fatturazione. All'inizio in sola lettura: non tocchiamo la cassa e non cambi il modo di lavorare. Le azioni — come spostare un budget — si attivano solo dopo, se le vuoi tu, e ognuna parte solo col tuo sì. Se il tuo sistema non si può collegare bene, te lo diciamo prima: è a questo che serve il check-up.</p></div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Cosa mi serve per usarlo?<span class="pm">+</span></button>
-        <div class="faq-a"><div><p>Poco. I <b>report e gli avvisi arrivano da soli</b>: niente da installare, niente da imparare. Per fare <b>domande in chat</b> serve un abbonamento a <b>Claude o ChatGPT</b> (quello normale, circa 20 €/mese, e ne basta uno): è lì dentro che trovi il tuo sistema, già collegato da noi. Se non li hai mai usati, li attiviamo insieme e ti guidiamo passo passo, dalla prima domanda in poi. La chat da sola non basta — è il collegamento ai tuoi dati che la trasforma nel tuo cervello aziendale. E se domani quel fornitore alza i prezzi o sparisce, il sistema si aggancia a un altro modello: standard aperto, il lavoro resta tuo.</p></div></div>
+        <div class="faq-a"><div><p>Poco. I <b>report e gli avvisi arrivano da soli</b>: niente da installare, niente da imparare. Per fare <b>domande in chat</b> serve un abbonamento a <b>una delle grandi chat AI</b> (quello normale, circa 20 €/mese, e ne basta uno): è lì dentro che trovi il tuo sistema, già collegato da noi. Se non li hai mai usati, li attiviamo insieme e ti guidiamo passo passo, dalla prima domanda in poi. La chat da sola non basta — è il collegamento ai tuoi dati che la trasforma nel tuo cervello aziendale. E se domani quel fornitore alza i prezzi o sparisce, il sistema si aggancia a un altro modello: standard aperto, il lavoro resta tuo.</p></div></div>
       </div>
       <div class="faq-item" id="faqDati">
         <button class="faq-q" type="button">I miei dati escono dall'azienda?<span class="pm">+</span></button>
@@ -1530,14 +1530,22 @@ function chatInit(root){
   var LIST_X = 48;            // left padding inside list
   var LIST_W = 384;           // usable width
   var VIEW_TOP = 64;          // top of visible list area
+  var EXTRA = ((svg && svg.clientWidth) || 480) < 700 ? 150 : 0; // su schermi stretti la finestra si allunga
+  if (EXTRA) {
+    svg.setAttribute("viewBox", "34 14 412 " + (292 + EXTRA));
+    var fr = svg.querySelector(".chat-frame"); if (fr) fr.setAttribute("height", 280 + EXTRA);
+    var wc = document.getElementById("chat-winClip"); if (wc && wc.firstElementChild) wc.firstElementChild.setAttribute("height", 280 + EXTRA);
+    var lcl = document.getElementById("chat-listClip"); if (lcl && lcl.firstElementChild) lcl.firstElementChild.setAttribute("height", 186 + EXTRA);
+    var cbg = svg.querySelector(".chat-chipBg"); if (cbg) cbg.setAttribute("y", 250 + EXTRA);
+  }
   var chatScale = ((svg && svg.clientWidth) || 412) / 412;
   var barPx = (chipsBar && chipsBar.offsetHeight) || 80;
-  var VIEW_BOT = Math.min(250, Math.max(170, 306 - Math.ceil(barPx / chatScale) - 4)); // bottom (chip bar starts)
+  var VIEW_BOT = Math.min(250 + EXTRA, Math.max(170, 306 + EXTRA - Math.ceil(barPx / chatScale) - 4)); // bottom (chip bar starts)
   if (hint) { hint.style.bottom = (barPx + 10) + "px"; }
   var VIEW_H = VIEW_BOT - VIEW_TOP;
   var MAXW = 300;             // max bubble width
   var PAD = 12;               // bubble inner padding
-  var FS = chatScale < 0.9 ? 22 : 18; // font size (maggiorato dove il container e stretto)
+  var FS = EXTRA ? 20 : (chatScale < 0.9 ? 22 : 18); // font size (maggiorato dove il container e stretto)
   var LH = FS + 5;            // line height
 
   var cursorY = VIEW_TOP + 14; // running layout cursor (in content space)
@@ -1790,7 +1798,7 @@ function chatInit(root){
           removeTyping(typing);
           addBubble(st.b, "bot");
           if(st.actions){ later(function(){ showActions(st.actions); }, 320); }
-          else { later(next, 330); }
+          else { later(next, 380 + Math.min(4200, Math.round((st.b || "").length * 30))); }
         }, reduce ? 150 : (st.t || 800));
       } else { next(); }
     }
