@@ -103,11 +103,11 @@
 
   /* ---------- storia matassa ---------- */
   .story { display: grid; gap: 1rem; }
-  @media (min-width: 860px) { .story { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 860px) { .story { grid-template-columns: repeat(2, 1fr); gap: 1.4rem; } }
   @media (max-width: 859px) {
     .story { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: .9rem; margin: 0 -1.25rem; padding: 0 1.25rem .5rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .story::-webkit-scrollbar { display: none; }
-    .story-card { flex: 0 0 78%; scroll-snap-align: center; }
+    .story-card { flex: 0 0 88%; scroll-snap-align: center; }
   }
   .story-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
   .story-card img { display: block; width: 100%; height: auto; }
@@ -132,7 +132,8 @@
   @media (max-width: 759px) { .swipe-hint { display: block; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: rgba(20,61,92,.45); margin-top: .4rem; } }
 
   /* ---------- demo container ---------- */
-  .demo-viz { position: relative; width: 100%; height: 320px; background: linear-gradient(180deg,#fcfbf8,#f3f0e9); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  .demo-viz { position: relative; width: 100%; height: auto; aspect-ratio: 480/320; background: linear-gradient(180deg,#fcfbf8,#f3f0e9); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  .demo-viz[data-cf="chat"] { aspect-ratio: 412/292; }
   .sec-video { display: block; width: 100%; border-radius: 18px; border: 1px solid var(--line); margin-bottom: 1.1rem; }
   .demo-cap { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; letter-spacing: .1em; color: var(--gold-dark); margin-bottom: .6rem; text-transform: uppercase; }
   .demo-note { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; color: rgba(20,61,92,.45); margin-top: .55rem; }
@@ -494,9 +495,9 @@
 
     <div>
       <div class="reg">
-        <div class="reg-head"><span>IL LAVORO DI OGGI — FATTO DAL SISTEMA</span><span class="reg-dot"></span></div>
+        <div class="reg-head"><span>IL CERVELLO AL LAVORO — OGGI</span><span class="reg-dot"></span></div>
         <div class="reg-body" id="regBody"></div>
-        <p class="reg-note">Esempi reali dai nostri sistemi, anonimizzati.</p>
+        <p class="reg-note">← entrano i dati · → ti arrivano risposte. Esempio di una mattina tipo: la tua la vediamo nel check-up.</p>
       </div>
     </div>
   </div>
@@ -505,18 +506,18 @@
 <!-- ============ PER CHI È + SOMMARIO ============ -->
 <section class="px-5 pb-14">
   <div class="max-w-5xl mx-auto reveal">
-    <div class="qualbar">BAR · RISTORANTI · SALONI · HOTEL · NEGOZI · AZIENDE SU COMMESSA — CON 1 SEDE O 10</div>
-    <p class="lead mt-4 mb-6">Se hai un'attività vera, poco tempo e dati sparsi, sei nel posto giusto.</p>
-    <p class="mono text-[.66rem] tracking-[.14em] text-[#b8902f] uppercase mt-7 mb-3">Cosa può fare da te</p>
+    <div class="qualbar">PER PMI ITALIANE — CON 1 SEDE O 10</div>
+    <h2 class="h2x mt-8 mb-3">L'AI risponde bene.<br>A una domanda alla volta.</h2>
+    <p class="lead mb-7 max-w-xl">Magari la usi già: funziona. Ma ogni volta le rispieghi tutto da capo — e il quadro d'insieme della tua azienda non ce l'ha.</p>
+    <p class="mono text-[.72rem] tracking-[.14em] text-[#b8902f] uppercase mt-7 mb-3">Pensa se invece potessi</p>
     <ul class="sector-grid mb-7">
-      <li><b>Nel bar</b> — ti avvisa quando il fornitore del caffè ritocca il listino</li>
-      <li><b>Al ristorante</b> — food cost e incassi di ieri, pronti ogni mattina</li>
-      <li><b>Nei saloni</b> — quale sede rende e quale no, nero su bianco</li>
-      <li><b>In hotel</b> — costi per camera in chiaro e stagione sotto controllo</li>
-      <li><b>In negozio</b> — cosa riordinare e cosa svendere, tra sedi e online</li>
-      <li><b>Su commessa</b> — il margine mentre il cantiere è aperto, non dopo</li>
+      <li><b>Sapere subito se un fornitore ritocca il listino</b> — riga per riga, non a sensazione</li>
+      <li><b>Vedere ogni mattina quanto è entrato ieri</b>, sede per sede, senza chiedere a nessuno</li>
+      <li><b>Leggere ogni mese un conto economico in versione semplice</b> — quanto entra, quanto esce, cosa resta. Non a fine anno</li>
+      <li><b>Capire quali campagne rendono e quali bruciano soldi</b> — e spostare il budget di conseguenza</li>
     </ul>
-    <p class="mono text-[.62rem] text-[#0e2c43]/45 mb-7">Ogni sistema è su misura: cosa si può collegare da te lo verifichiamo nel check-up, prima di promettere qualsiasi cosa.</p>
+    <p class="lead mb-4 max-w-xl">Con Ailiv non scegli: <b>i report ti arrivano da soli</b>, ogni mattina — e quando un numero non ti torna, <b>glielo chiedi</b>.</p>
+    <p class="mono text-[.7rem] text-[#0e2c43]/45 mb-7">Ogni sistema è su misura: cosa si può collegare da te lo verifichiamo nel check-up gratuito, prima di promettere qualsiasi cosa.</p>
     <nav class="toc max-w-md">
       <a href="#problema"><span class="n">01</span> Il problema</a>
       <a href="#chatgpt"><span class="n">02</span> Perché una chat non basta</a>
@@ -587,8 +588,8 @@
   <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-center">
     <div>
       <p class="kicker reveal mb-6">03 / Cosa costruiamo — parte 1</p>
-      <h2 class="h2x reveal mb-4">Agenti al fianco del team.</h2>
-      <p class="lead reveal mb-5">Non persone in più: le <b>braccia del cervello</b> — programmi che lavorano da soli, al fianco dei tuoi:</p>
+      <h2 class="h2x reveal mb-4">Un esercito di agenti,<br>dedicato alla tua azienda.</h2>
+      <p class="lead reveal mb-5">Non persone da assumere: <b>programmi che lavorano da soli</b>, al fianco tuo e di chi c'è già:</p>
       <ul class="rv-kids space-y-2 text-[.95rem] text-[#0e2c43]/80">
         <li>— L'agente <b>documenti</b> legge fatture e DDT, li registra e li controlla</li>
         <li>— L'agente <b>fatturazione</b> si collega a Fatture in Cloud e simili</li>
@@ -717,7 +718,7 @@
   <div class="max-w-5xl mx-auto">
     <p class="kicker reveal mb-6">04 / Cosa costruiamo — parte 2</p>
     <h2 class="h2x reveal mb-4">Un cervello aziendale.<br>Tutti i tuoi dati, una sola memoria.</h2>
-    <p class="lead reveal mb-9 max-w-xl">Il cervello immagazzina cassa, contabilità e marketing, li incrocia e produce report e avvisi automatici. A leggerteli è una voce che non ha niente da venderti.</p>
+    <p class="lead reveal mb-9 max-w-xl">Il cervello immagazzina cassa, contabilità e marketing, li incrocia e produce report e avvisi automatici. A leggerteli è una voce che non ha niente da venderti. E ogni report lo puoi <b>approfondire</b>: chiedi il perché di un numero e scendi fino alla riga che lo spiega — è lì che si capisce dove intervenire e cosa migliorare.</p>
 
     <div class="grid md:grid-cols-2 gap-8 items-start">
       <div class="reveal">
@@ -739,7 +740,7 @@
       <div class="reveal">
         <p class="demo-cap">Demo — così lavora, collegata ai tuoi sistemi (dati di esempio)</p>
         <div class="demo-viz" data-cf="chat">
-<svg class="chat-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="Finestra di chat con un assistente AI che risponde automaticamente">
+<svg class="chat-svg" viewBox="34 14 412 292" width="100%" height="100%" role="img" aria-label="Finestra di chat con un assistente AI che risponde automaticamente">
   <defs>
     <linearGradient id="chat-bgGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#fafaf7"/>
@@ -815,9 +816,9 @@
 
       <div class="con-step">
         <div class="con-dot"></div>
-        <p class="con-tag">Da te · I programmi che usi già</p>
+        <p class="con-tag">Da te · Da dove entrano i dati</p>
         <div class="con-card">
-          <p>Restano tuoi, con <b>accesso in sola lettura</b>: non modifichiamo mai nulla nei tuoi sistemi.</p>
+          <p>I programmi che usi già restano tuoi: <b>noi li leggiamo soltanto</b>, non tocchiamo e non cambiamo niente. Fatture e DDT? Li fotografi, il sistema li legge da solo. Gestionale, cassa e fatturazione si collegano in automatico; campagne, sito e recensioni arrivano dai tuoi account.</p>
           <div class="con-chips"><span>CASSA</span><span>NEGOZIO ONLINE (SHOPIFY…)</span><span>GESTIONALE (TEAMSYSTEM, ZUCCHETTI…)</span><span>FATTURE</span><span>CAMPAGNE META &amp; GOOGLE</span></div>
         </div>
       </div>
@@ -1198,11 +1199,12 @@
     var body = document.getElementById('regBody');
     if (!body) return;
     var LINES = [
-      '07:12 — <b>14 fatture</b> registrate',
-      '07:31 — fornitore: <b>+9%</b> su 3 voci',
-      '08:05 — incassi: <b>report inviato</b>',
-      '09:40 — campagne: <b>1 avviso</b> per te',
-      '11:18 — DDT: <b>1 scarto</b> segnalato'
+      '07:12 <b>←</b> 14 fatture dalle foto',
+      '07:48 <b>←</b> listino fornitore nuovo',
+      '08:02 <b>←</b> incassi di ieri, 3 sedi',
+      '08:05 <b>→</b> report del mattino a te',
+      '09:40 <b>→</b> avviso: prezzi su, 3 voci',
+      '11:18 <b>→</b> campagne: 1 da rivedere'
     ];
     if (REDUCE) { body.innerHTML = LINES.map(function(l){ return '<div class="reg-line">' + l + '</div>'; }).join(''); return; }
     var li = 0;
@@ -1491,14 +1493,14 @@ function chatInit(root){
   var LIST_X = 48;            // left padding inside list
   var LIST_W = 384;           // usable width
   var VIEW_TOP = 64;          // top of visible list area
-  var chatScale = ((svg && svg.clientWidth) || 480) / 480;
+  var chatScale = ((svg && svg.clientWidth) || 412) / 412;
   var barPx = (chipsBar && chipsBar.offsetHeight) || 80;
-  var VIEW_BOT = Math.max(170, 320 - Math.ceil(barPx / chatScale) - 4); // bottom (chip bar starts)
+  var VIEW_BOT = Math.min(250, Math.max(170, 306 - Math.ceil(barPx / chatScale) - 4)); // bottom (chip bar starts)
   if (hint) { hint.style.bottom = (barPx + 10) + "px"; }
   var VIEW_H = VIEW_BOT - VIEW_TOP;
   var MAXW = 232;             // max bubble width
   var PAD = 12;               // bubble inner padding
-  var FS = chatScale < 0.8 ? 22 : 18; // font size (maggiorato dove il container e stretto)
+  var FS = chatScale < 0.9 ? 22 : 18; // font size (maggiorato dove il container e stretto)
   var LH = FS + 5;            // line height
 
   var cursorY = VIEW_TOP + 14; // running layout cursor (in content space)
