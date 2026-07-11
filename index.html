@@ -833,15 +833,15 @@
 
 <!-- chips overlay (HTML buttons, absolutely positioned over the chip bar) -->
 <div class="chat-chips" aria-label="Risposte rapide">
-  <button type="button" class="chat-chip" data-q="orari">Com'è andata ieri?</button>
-  <button type="button" class="chat-chip" data-q="prenota">I costi salgono?</button>
-  <button type="button" class="chat-chip" data-q="prezzi">La campagna rende?</button>
+  <button type="button" class="chat-chip" data-q="incassi">Com'è andata ieri?</button>
+  <button type="button" class="chat-chip" data-q="costi">I costi salgono?</button>
+  <button type="button" class="chat-chip" data-q="campagne">La campagna rende?</button>
 </div>
 
 <div class="chat-hint" aria-hidden="true">tocca una risposta</div>
         
         </div>
-        <p class="demo-note">L'AI vede solo ciò che autorizzi tu, in sola lettura. Le azioni partono solo dopo il tuo sì: senza il tuo sì non si muove un euro.</p>
+        <p class="demo-note">L'AI vede solo ciò che autorizzi tu, in sola lettura. Le azioni usano permessi separati e partono solo dopo il tuo sì — e ognuna resta registrata: cosa, quando, chi ha detto sì.</p>
       </div>
     </div>
     <p class="reveal lead mt-7 max-w-lg">Che i numeri oggi tu li abbia già o non li abbia ancora, ce ne occupiamo noi. <a class="cta-text" href="#prenota">Richiedi il check-up gratuito →</a></p>
@@ -1095,6 +1095,10 @@
         <div class="faq-a"><div><p>Sì: cassa, gestionale (quello che usi già: magazzino, appuntamenti, alberghiero, negozio online…), fatturazione. All'inizio in sola lettura: non tocchiamo la cassa e non cambi il modo di lavorare. Le azioni — come spostare un budget — si attivano solo dopo, se le vuoi tu, e ognuna parte solo col tuo sì. Se il tuo sistema non si può collegare bene, te lo diciamo prima: è a questo che serve il check-up.</p></div></div>
       </div>
       <div class="faq-item">
+        <button class="faq-q" type="button">Ho un consulente che se ne intende: cosa gli dico?<span class="pm">+</span></button>
+        <div class="faq-a"><div><p>Digli così: in ingresso API, export automatizzati o lettura automatica dei documenti; i dati in un database <b>in Europa o in sede vostra</b>, coi gestionali che restano la fonte ufficiale; la chat parla col sistema tramite <b>connettori standard (MCP)</b>, quindi il modello AI si cambia quando serve; <b>lettura e azioni usano permessi separati</b>, e ogni azione approvata resta scritta in un registro. Se vuole vedere com'è fatto un collegamento, in call glielo mostriamo volentieri: il vaglio tecnico ci fa comodo, non paura.</p></div></div>
+      </div>
+      <div class="faq-item reveal">
         <button class="faq-q" type="button">Cosa mi serve per usarlo?<span class="pm">+</span></button>
         <div class="faq-a"><div><p>Poco. I <b>report e gli avvisi arrivano da soli</b>: niente da installare, niente da imparare. Per fare <b>domande in chat</b> serve un abbonamento a <b>una delle grandi chat AI</b> (quello normale, circa 20 €/mese, e ne basta uno): è lì dentro che trovi il tuo sistema, già collegato da noi. Se non li hai mai usati, li attiviamo insieme e ti guidiamo passo passo, dalla prima domanda in poi. La chat da sola non basta — è il collegamento ai tuoi dati che la trasforma nel tuo cervello aziendale. E se domani quel fornitore alza i prezzi o sparisce, il sistema si aggancia a un altro modello: non sei legato a un solo fornitore di AI, il lavoro resta tuo.</p></div></div>
       </div>
@@ -1213,12 +1217,12 @@
 
     <div class="flex items-center gap-3 mb-7 reveal">
       <div class="avatar">AR</div>
-      <p class="text-sm text-[#0e2c43]/75"><b>Sono Andrea Rubei.</b> Automatizzo aziende da oltre dieci anni: <b>più di 20 aziende</b> e migliaia di automazioni scritte — script, fogli che si compilano da soli, flussi. Oggi presidio <b>più di 40 sistemi in produzione</b>: lettura documenti, fatturazione, casse multi-sede, campagne, assistenti che rispondono ai clienti. Quelli che vedi in demo non sono mockup: li costruisco io, e in call parli con me — non con un commerciale.</p>
+      <p class="text-sm text-[#0e2c43]/75"><b>Sono Andrea Rubei.</b> Automatizzo aziende da oltre dieci anni: <b>più di 20 aziende</b> e migliaia di automazioni scritte — script, fogli che si compilano da soli, flussi. Oggi presidio <b>più di 40 sistemi in produzione</b>: lettura documenti, fatturazione, casse multi-sede, campagne, assistenti che rispondono ai clienti. Le demo qui sopra sono ricostruzioni fedeli: i sistemi veri che replicano sono in produzione, e in call te ne mostro uno a schermo condiviso. Parli con me — non con un commerciale.</p>
     </div>
 
     <div class="formcard reveal">
       <p class="mono text-[.74rem] text-[#0e2c43]/75 leading-relaxed mb-3"><b>Patto chiaro:</b> il numero serve a una cosa sola — fissare la call. Una telefonata, concordata; se non rispondi ti scriviamo, non ti richiamiamo a raffica. E il tuo numero non entra in nessuna lista.</p>
-<!-- Form GoHighLevel — location AILIV (BphV4FTBieSmV7ou2li2) · "Form Sito ufficiale" -->
+<!-- Form contatti -->
         <iframe src="https://api.leadconnectorhq.com/widget/form/BurG4Q7fFt6liEwrBBuF"
           style="width:100%;border:none;border-radius:12px;min-height:479px"
           id="inline-BurG4Q7fFt6liEwrBBuF" data-layout='{"id":"INLINE"}'
@@ -1619,7 +1623,6 @@ function chatInit(root){
   var timers = [];
   var busy = false;
   var loopBusy = false;
-  var autoMode = false;
   var userTouched = false;
 
   function clearTimers(){
@@ -1771,12 +1774,12 @@ function chatInit(root){
   }
 
   var scenes = {
-    orari: [
+    incassi: [
       { u: "Com'è andata ieri?" },
       { b: "Mi collego alla cassa…", t: 700 },
       { b: "Ok, sono dentro. Ieri 4.310 € su 3 sedi, +6% sul lunedì scorso. Scontrino medio stabile.", t: 950 }
     ],
-    prenota: [
+    costi: [
       { u: "I costi stanno salendo?" },
       { b: "Apro le fatture degli ultimi 60 giorni…", t: 800 },
       { b: "Trovato: farina +9% dal fornitore principale. Sui tuoi volumi sono 96 € al mese in più.", t: 1000 },
@@ -1786,7 +1789,7 @@ function chatInit(root){
           { label: "Non ora", reply: "Non ora", next: [ { b: "Ok, non tocco niente. Continuo a tenere d'occhio i listini per te.", t: 700 } ] }
         ] }
     ],
-    prezzi: [
+    campagne: [
       { u: "La campagna sta rendendo?" },
       { b: "Aspetta, mi collego al tuo account pubblicitario…", t: 900 },
       { b: "Ok, sono dentro — con l'accesso in sola lettura che mi hai autorizzato. La campagna «Omaggio nuovi clienti» non sta performando: 140 € spesi in 7 giorni, 3 clienti nuovi.", t: 1150 },
@@ -1841,13 +1844,6 @@ function chatInit(root){
         });
         chipsBar.appendChild(btn);
       })(actions[i], i);
-    }
-    if (autoMode && !reduce) {
-      later(function(){
-        if (userTouched) return;
-        var yes = chipsBar.querySelector(".chat-action-yes");
-        if (yes) yes.click();
-      }, 6000);
     }
   }
 
