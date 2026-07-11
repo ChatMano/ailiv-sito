@@ -273,6 +273,12 @@
   .price-new { font-family: 'Archivo Black', sans-serif; font-size: clamp(3.6rem, 10vw, 5.2rem); line-height: 1; color: #d4a747; }
   .price-sub { font-size: 1rem; color: rgba(250,250,247,.78); max-width: 30rem; margin: 0 auto; line-height: 1.6; }
   .price-sub b { color: #fafaf7; }
+  .price-stack { text-align: left; max-width: 30rem; margin: 1.4rem auto 0; border: 1px solid rgba(212,167,71,.35); border-radius: 12px; padding: 1.1rem 1.2rem; background: rgba(250,250,247,.04); }
+  .price-stack-t { font-family: 'IBM Plex Mono', monospace; font-size: .74rem; letter-spacing: .12em; color: var(--gold); margin-bottom: .6rem; }
+  .price-stack ul { display: flex; flex-direction: column; gap: .45rem; }
+  .price-stack li { font-size: .92rem; color: rgba(250,250,247,.82); line-height: 1.5; padding-left: 1rem; position: relative; }
+  .price-stack li::before { content: '—'; position: absolute; left: 0; color: var(--gold); }
+  .price-stack-n { font-size: .85rem; color: rgba(250,250,247,.6); margin-top: .8rem; line-height: 1.55; }
   .price-stamp { position: absolute; top: 1.2rem; right: 1.2rem; font-family: 'IBM Plex Mono', monospace; font-size: .72rem; font-weight: 700; letter-spacing: .12em; color: #d4a747; border: 2px solid #d4a747; border-radius: 8px; padding: .35rem .6rem; transform: rotate(7deg); background: rgba(212,167,71,.12); }
   @media (max-width: 520px) { .price-stamp { position: static; display: inline-block; margin-bottom: 1rem; transform: rotate(-2deg); } }
 
@@ -502,7 +508,7 @@
 <header class="hdr">
   <div class="max-w-5xl mx-auto px-5 py-3 flex items-center justify-between">
     <a href="#top" class="flex items-center"><img src="assets/bollino-ailiv-hdr.png" alt="Ailiv" class="h-9 md:h-10 w-auto"></a>
-    <a href="#prenota" class="mono text-[14px] font-semibold tracking-widest text-[#8a6a1e] uppercase py-4 -my-4 px-2 -mx-2">Richiedi →</a>
+    <a href="#prenota" class="mono text-[14px] font-semibold tracking-widest text-[#8a6a1e] uppercase py-4 -my-4 px-2 -mx-2">Check-up gratuito →</a>
   </div>
 </header>
 
@@ -523,7 +529,7 @@
       </h1>
       <p class="lead text-lg mb-7 max-w-md">Un cervello che immagazzina i dati di cassa, fatture, campagne e clienti — e agenti che lavorano per te: leggono le fatture, ti avvisano se un fornitore alza i prezzi, ti dicono quali campagne rendono. Report e avvisi automatici: ogni giorno, ogni settimana o ogni mese — decidi tu.</p>
       <a href="#prenota" class="cta w-full sm:w-auto">Richiedi il check-up gratuito</a>
-      <p class="cta-note">30–45 min · mini-report con 2–3 opportunità · zero impegno</p>
+      <p class="cta-note">30–45 min · un mini-report scritto sui tuoi numeri, tuo comunque · zero impegno</p>
     </div>
 
     <div>
@@ -557,7 +563,7 @@
       <a href="#gamba2"><span class="n">04</span> Il cervello aziendale</a>
       <a href="#collega"><span class="n">05</span> Come si collega</a>
       <a href="#progetti"><span class="n">06</span> Progetti in produzione</a>
-      <a href="#offerta" class="gold"><span class="n">07</span> Richiedi il check-up →</a>
+      <a href="#prenota" class="gold"><span class="n">07</span> Richiedi il check-up →</a>
     </nav>
   </div>
 </section>
@@ -625,11 +631,11 @@
         <li>— L'agente <b>campagne</b> tiene d'occhio le tue campagne pubblicitarie e propone correzioni</li>
         <li>— L'agente <b>presenza digitale</b> controlla se le AI ti trovano — e come parlano di te</li>
       </ul>
-      <p class="reveal mt-6"><a class="cta-text" href="#prenota">Vedi cosa toglierebbe al tuo team →</a></p>
+      <p class="reveal mt-6"><a class="cta-text" href="#prenota">Richiedi il check-up gratuito →</a></p>
     </div>
     <div class="reveal">
       <video id="agentiVideo" class="sec-video" muted loop playsinline preload="none" poster="assets/video/agenti-fatture-poster.jpg" aria-hidden="true"></video>
-      <p class="demo-cap">Demo — premi Scansiona: il DDT finisce in tabella da solo</p>
+      <p class="demo-cap">Demo — premi Scansiona: il DDT finisce in tabella da solo (e a ogni scansione cambia settore)</p>
       <div class="demo-viz" data-cf="ocr">
 <svg class="ocr-svg" viewBox="0 0 480 320" width="100%" height="100%" role="img" aria-label="Un DDT viene scansionato: prodotti e prezzi si scrivono da soli in una tabella" preserveAspectRatio="xMidYMin meet">
   <defs>
@@ -835,7 +841,7 @@
         <p class="demo-note">L'AI vede solo ciò che autorizzi tu, in sola lettura. Le azioni partono solo dopo il tuo sì: senza il tuo sì non si muove un euro.</p>
       </div>
     </div>
-    <p class="reveal lead mt-7 max-w-lg">Che i numeri oggi tu li abbia già o non li abbia ancora, ce ne occupiamo noi. <a class="cta-text" href="#prenota">Parti dai tuoi →</a></p>
+    <p class="reveal lead mt-7 max-w-lg">Che i numeri oggi tu li abbia già o non li abbia ancora, ce ne occupiamo noi. <a class="cta-text" href="#prenota">Richiedi il check-up gratuito →</a></p>
   </div>
 </section>
 
@@ -907,7 +913,7 @@
       <figure class="story-card"><img src="assets/img/matassa-4-v4.jpg" alt="Ogni cavo collegato al posto giusto, il titolare si gode il caffe" loading="lazy" decoding="async" width="1200" height="670"><figcaption><span>4/4</span>Tutto connesso. Tu torni a decidere.</figcaption></figure>
     </div>
 
-    <div class="reveal mt-10"><p class="lead mb-4 max-w-lg">Vuoi sapere cosa si collega da te?</p><a href="#prenota" class="cta">Richiedi il check-up gratuito</a><p class="cta-note">30–45 min · mini-report con 2–3 opportunità · zero impegno</p></div>
+    <div class="reveal mt-10"><p class="lead mb-4 max-w-lg">Vuoi sapere cosa si collega da te?</p><a href="#prenota" class="cta">Richiedi il check-up gratuito</a><p class="cta-note">30–45 min · un mini-report scritto sui tuoi numeri, tuo comunque · zero impegno</p></div>
   </div>
 </section>
 
@@ -947,7 +953,7 @@
       </div>
     </div>
     <div class="dots" id="projDots"><i class="on"></i><i></i><i></i><i></i></div>
-    <p class="mono text-[.7rem] text-[#0e2c43]/75 mt-5 reveal">Nomi riservati qui in pagina: in call ti raccontiamo i casi per esteso.</p>
+    <p class="mono text-[.7rem] text-[#0e2c43]/75 mt-5 reveal">I nomi qui non ci sono per scelta dei clienti, non nostra: chi ha questi sistemi li considera un vantaggio sui concorrenti. La riservatezza che promettiamo a te vale anche per loro — in call ti raccontiamo i casi per esteso, coi numeri veri.</p>
     <!-- SLOT TESTIMONIANZA (dormiente): incollare qui la quote reale del cliente quando arriva
     <blockquote class="mt-6 p-6 bg-[#fafaf7] border-l-4 border-[#d4a747] rounded-r-xl">
       <p class="text-lg font-semibold leading-snug">«...»</p>
@@ -973,25 +979,39 @@
       <div class="offer-block"><b>La call</b><p>30–45 minuti sui tuoi numeri e i tuoi processi, con chi poi costruisce davvero — non con un venditore.</p></div>
       <div class="offer-block"><b>Il mini-report</b><p>Un documento scritto sul tuo caso — non un modello standard — con 2–3 opportunità concrete dove l'AI sposta tempo o soldi.</p></div>
       <div class="offer-block"><b>La decisione</b><p>Con il report in mano decidi tu se andare avanti, con noi o da solo. Il report resta a te comunque.</p></div>
-      <div class="offer-block"><b>Il passo dopo, se ha senso</b><p>La <strong>Mappa dei Collegamenti</strong> — il prezzo è qui sotto, ed è l'unico che ti serve per cominciare.</p></div>
+      <div class="offer-block"><b>Il passo dopo, se ha senso</b><p>La <strong>Mappa dei Collegamenti</strong> — il prezzo è qui sotto, ed è l'unico che ti serve per cominciare. Il check-up ti dice dove guardare, visto da fuori; la Mappa entra nei tuoi sistemi e ti dice cosa si collega davvero, con un preventivo che ci impegna nero su bianco.</p></div>
       <div class="offer-block bg-[#fafaf7]">
         <p class="mono text-[.7rem] text-[#0e2c43]/75 leading-relaxed">Seguiamo pochi progetti alla volta, per seguirli davvero.</p>
       </div>
     </div>
 
     <div class="price-hero reveal" id="prezzo">
-      <span class="price-stamp">FINO AL 30/09</span>
+      <span class="price-stamp">PREZZO DI LANCIO</span>
       <p class="price-kick">IL PASSO DOPO IL CHECK-UP<br>LA MAPPA DEI COLLEGAMENTI</p>
       <div class="price-row" aria-label="490 euro invece di 1.690 euro">
         <span class="price-old">1.690 €</span>
         <span class="price-new">490 €</span>
       </div>
-      <p class="price-sub">Prezzo bloccato fino al <b>30 settembre</b>. Se parti col progetto entro 30 giorni, <b>si scala tutta dal setup</b> — e la Mappa resta tua comunque, anche se poi non prosegui.</p>
+      <p class="price-sub">Perché 490 e non 1.690? Nessuna magia: i primi clienti tengono i nomi riservati, quindi oggi non possiamo mostrarti i casi con nome e cognome — <b>finché è così, la differenza la paghiamo noi</b>. Prezzo di lancio fino al <b>30 settembre</b>.</p>
+      <p class="price-sub mt-3">E se parti col progetto entro 30 giorni, <b>i 490 € si scalano tutti dal setup</b>: è un acconto, non un costo. La Mappa resta tua comunque.</p>
+      <div class="price-stack">
+        <p class="price-stack-t">DENTRO LA MAPPA</p>
+        <ul>
+          <li>Accessi di prova ai tuoi sistemi — solo lettura, riservatezza firmata prima</li>
+          <li>Ogni fonte dati classificata: si collega da sola / serve un file / va letta dalle foto / oggi non la registra nessuno</li>
+          <li>Cosa sblocca ogni collegamento, in ore risparmiate o numeri che oggi non vedi</li>
+          <li>L'ordine di priorità: da dove partire per il ritorno più rapido</li>
+          <li>Il preventivo del progetto scritto voce per voce, con le date</li>
+        </ul>
+        <p class="price-stack-n">È il lavoro di analisi che di solito trovi nascosto dentro un preventivo gonfiato. Noi lo vendiamo da solo — e resta tuo anche se non prosegui.</p>
+      </div>
+      <p class="price-sub mt-4">Le Mappe le facciamo di persona, una alla volta: quando siamo pieni entri in coda per il mese dopo — te lo diciamo prima, non dopo.</p>
+      <p class="mt-5"><a href="#prenota" class="cta">Si parte dal check-up gratuito</a></p>
     </div>
 
     <div class="text-center mt-8 reveal">
       <a href="#prenota" class="cta w-full sm:w-auto">Richiedi il check-up gratuito</a>
-      <p class="cta-note">Se non c'è margine per aiutarti, te lo diciamo e finisce lì.</p>
+      <p class="cta-note">30–45 min · un mini-report scritto sui tuoi numeri, tuo comunque · zero impegno</p>
     </div>
   </div>
 </section>
@@ -1018,7 +1038,7 @@
         <div class="jrn-card">
           <p class="jrn-lbl">LA MAPPA DEI COLLEGAMENTI · <s>1.690 €</s> 490 €</p>
           <h3 class="jrn-h">Verifichiamo cosa si collega davvero, da te</h3>
-          <p class="jrn-p">Entriamo nei tuoi sistemi con accessi di prova e ne esce la <b>Mappa</b>: ogni fonte classificata, cosa sblocca, e il preventivo scritto voce per voce. <b>Prezzo bloccato a 490 € invece di 1.690 € fino al 30 settembre</b> — e se parti col progetto entro 30 giorni, si scala tutta dal setup. La Mappa resta tua comunque.</p>
+          <p class="jrn-p">Entriamo nei tuoi sistemi con accessi di prova e ne esce la <b>Mappa</b>: ogni fonte classificata, cosa sblocca, e il preventivo scritto voce per voce. <b>490 € per chi arriva dal check-up</b> (listino 1.690 — prezzo di lancio fino al 30 settembre) e se parti col progetto entro 30 giorni <b>si scala tutta dal setup</b>: un acconto, non un costo. La Mappa resta tua comunque.</p>
           <p class="jrn-do">Cosa fai tu: ci autorizzi a leggere i dati che scegli tu (solo lettura, riservatezza firmata prima).</p>
         </div>
       </div>
@@ -1050,7 +1070,7 @@
         </div>
       </div>
     </div>
-    <p class="reveal lead mt-9 max-w-lg">Il passo 1 non ti costa niente ed è utile anche se poi fai da solo. <a class="cta-text" href="#prenota">Parti dal passo 1 →</a></p>
+    <p class="reveal lead mt-9 max-w-lg">Il passo 1 non ti costa niente ed è utile anche se poi fai da solo. <a class="cta-text" href="#prenota">Richiedi il check-up gratuito →</a></p>
   </div>
 </section>
 
@@ -1062,7 +1082,7 @@
     <div class="reveal" id="faq">
       <div class="faq-item">
         <button class="faq-q" type="button">Quanto costa?<span class="pm">+</span></button>
-        <div class="faq-a"><div><p>Il check-up è gratis. Il primo passo a pagamento è la <b>Mappa dei Collegamenti</b>: prezzo pieno 1.690 €, <b>bloccato a 490 € fino al 30 settembre</b> e <b>scalato tutto dal progetto</b> se prosegui entro 30 giorni. I progetti che nascono dalla Mappa partono tipicamente da qualche migliaio di euro — la cifra esatta, voce per voce, te la trovi <b>scritta nella Mappa</b> prima di firmare qualsiasi cosa. Nessun prezzo deciso a voce.</p></div></div>
+        <div class="faq-a"><div><p>Il check-up è gratis. Il primo passo a pagamento è la <b>Mappa dei Collegamenti</b>: a listino 1.690 €, <b>490 € per chi arriva dal check-up</b> (prezzo di lancio fino al 30 settembre) e <b>scalata tutta dal progetto</b> se prosegui entro 30 giorni. I progetti che nascono dalla Mappa partono tipicamente da qualche migliaio di euro — la cifra esatta, voce per voce, te la trovi <b>scritta nella Mappa</b> prima di firmare qualsiasi cosa. Nessun prezzo deciso a voce.</p></div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Vi collegate a quello che uso già?<span class="pm">+</span></button>
@@ -1187,10 +1207,11 @@
 
     <div class="flex items-center gap-3 mb-7 reveal">
       <div class="avatar">AR</div>
-      <p class="text-sm text-[#0e2c43]/75"><b>Andrea Rubei, founder</b><br>Parli con chi costruisce, non con un commerciale.</p>
+      <p class="text-sm text-[#0e2c43]/75"><b>Sono Andrea Rubei.</b> I sistemi che vedi in demo non sono mockup: sono quelli che girano ogni giorno nei progetti qui sopra, e li costruisco io. In call parli con me — non con un commerciale.</p>
     </div>
 
     <div class="formcard reveal">
+      <p class="mono text-[.74rem] text-[#0e2c43]/75 leading-relaxed mb-3"><b>Patto chiaro:</b> il numero serve a una cosa sola — fissare la call. Una telefonata, concordata; se non rispondi ti scriviamo, non ti richiamiamo a raffica. E il tuo numero non entra in nessuna lista.</p>
 <!-- Form GoHighLevel — location AILIV (BphV4FTBieSmV7ou2li2) · "Form Sito ufficiale" -->
         <iframe src="https://api.leadconnectorhq.com/widget/form/BurG4Q7fFt6liEwrBBuF"
           style="width:100%;border:none;border-radius:12px;min-height:479px"
@@ -1202,7 +1223,9 @@
         <script src="https://link.msgsndr.com/js/form_embed.js"></script>
     </div>
 
-    <p class="mono text-[.7rem] text-[#0e2c43]/75 mt-5 leading-relaxed reveal">Cosa succede dopo: ti rispondiamo entro un giorno lavorativo per fissare la call.</p>
+    <p class="mono text-[.7rem] text-[#0e2c43]/75 mt-5 leading-relaxed reveal">Cosa succede dopo: ti rispondiamo entro un giorno lavorativo per fissare la call — al giorno e all'ora che scegli tu.</p>
+
+    <p class="reveal mt-7 text-[.95rem] text-[#0e2c43]/80 max-w-xl leading-relaxed"><b>P.S.</b> — Scenario peggiore: investi 30 minuti e ti porti via un report scritto con 2–3 opportunità concrete, da usare anche da solo. Scenario migliore: tra qualche settimana il report del mattino ti arriva da solo, coi tuoi numeri. In entrambi i casi il report resta tuo — e se non c'è margine per aiutarti, te lo diciamo noi e finisce lì.</p>
   </div>
 </section>
 
@@ -1365,6 +1388,32 @@ function ocrInit(root){
   var scanning = false;
   var hintHidden = false;
 
+  // dataset rotanti: a ogni scansione il DDT cambia settore
+  var SETS = [
+    { items: [["Farina 00 25 kg","18,50"],["Mozzarella 5 kg","34,90"],["Pelati 24×400 g","28,80"],["Olio EVO 5 L","42,00"],["Carta forno 33×33","12,30"]], tot: "136,50" },
+    { items: [["Filtro olio ×4","38,00"],["Pastiglie freno","54,90"],["Olio motore 5 L","46,50"],["Ganasce post.","61,20"],["Lampade H7 ×10","24,90"]], tot: "225,50" },
+    { items: [["Cemento 25 kg ×20","96,00"],["Rete elettros. ×6","74,50"],["Mattoni ×80","68,00"],["Guanti nitrile","32,50"],["Silicone ×12","43,20"]], tot: "314,20" },
+    { items: [["Toner nero ×2","89,00"],["Risme A4 ×10","42,50"],["Guanti monouso","18,90"],["Disinfettante 5 L","27,60"],["Cancelleria varia","15,40"]], tot: "193,40" }
+  ];
+  var setIdx = 0;
+  var docLines = Array.prototype.slice.call(root.querySelectorAll('.ocr-docitems .ocr-docline'));
+  var tblNames = Array.prototype.slice.call(root.querySelectorAll('.ocr-pill .ocr-cell'));
+  var tblPrices = Array.prototype.slice.call(root.querySelectorAll('.ocr-pill .ocr-cellp'));
+  var docTotEls = Array.prototype.slice.call(root.querySelectorAll('.ocr-doctotaltx'));
+  function applySet(k){
+    var st = SETS[k];
+    for (var i = 0; i < 5; i++) {
+      if (docLines[i*2]) docLines[i*2].textContent = st.items[i][0];
+      if (docLines[i*2+1]) docLines[i*2+1].textContent = st.items[i][1];
+      if (tblNames[i]) tblNames[i].textContent = st.items[i][0];
+      if (tblPrices[i]) tblPrices[i].textContent = st.items[i][1] + " €";
+    }
+    if (tblPrices.length) tblPrices[tblPrices.length - 1].textContent = st.tot + " €";
+    for (var j = 0; j < docTotEls.length; j++) {
+      if (docTotEls[j].textContent !== "TOTALE") docTotEls[j].textContent = st.tot;
+    }
+  }
+
   function clearTimers(){
     for(var i=0;i<revealTimers.length;i++){ clearTimeout(revealTimers[i]); }
     revealTimers = [];
@@ -1386,7 +1435,7 @@ function ocrInit(root){
     showAllPills();
     if(hint) hint.style.display = 'none';
     // base interaction: clicking still reveals (already shown) - keep button harmless
-    var staticScan = function(){ showAllPills(); };
+    var staticScan = function(){ setIdx = (setIdx + 1) % SETS.length; applySet(setIdx); showAllPills(); };
     btn.addEventListener('click', staticScan);
     if(docG){ docG.addEventListener('click', staticScan); }
     return;
@@ -1440,6 +1489,8 @@ function ocrInit(root){
     stopIdle();
     clearTimers();
     resetPills();
+    setIdx = (setIdx + 1) % SETS.length;
+    applySet(setIdx);
     root.classList.add('ocr-scanning');
 
     var dur = 1500; // ms beam travel
