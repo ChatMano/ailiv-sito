@@ -555,6 +555,7 @@
       <li><b>Capire quali campagne rendono e quali bruciano soldi</b> — e spostare il budget di conseguenza</li>
     </ul>
     <p class="lead mb-4 max-w-xl"><b>Hai un set di programmi? Bene: da oggi interagisci solo con la tua AI</b> — quella che già usi, o quella che ti piacerebbe usare. A collegarle l'azienda ci pensiamo noi.</p>
+    <img src="assets/img/ponte-cervello.jpg" alt="Quattro programmi collegati da ponti dorati a un unico cervello" class="reveal rounded-2xl border border-[#143d5c]/12 w-full max-w-2xl my-6" width="1400" height="781" loading="lazy" decoding="async">
     <p class="lead mb-4 max-w-xl">E non scegli: <b>i report ti arrivano da soli</b> — ogni giorno, ogni settimana o ogni mese, lo decidi tu — e quando un numero non ti torna, <b>glielo chiedi</b>.</p>
     <p class="mono text-[.7rem] text-[#0e2c43]/75 mb-7">Ogni sistema è su misura: cosa si può collegare da te lo verifichiamo nel check-up gratuito, prima di promettere qualsiasi cosa.</p>
     <nav class="toc max-w-md">
@@ -854,7 +855,7 @@
     <h2 class="h2x reveal mb-3">Ci colleghiamo a quello che usi già.</h2>
     <p class="lead reveal mb-10 max-w-lg">Nessun programma nuovo da imparare, nessun cambio di abitudini: il sistema si collega ai programmi che usi già — e l'analisi ti arriva dove sei già.</p>
 
-    <video id="collegaVideo" class="sec-video reveal" muted loop playsinline preload="none" poster="assets/video/con-ponte-poster.jpg" aria-hidden="true" style="max-width:680px"></video>
+    <video id="collegaVideo" class="sec-video reveal" muted loop playsinline preload="none" poster="assets/video/ponte-golden-poster.jpg" aria-hidden="true" style="max-width:680px"></video>
 
     <div class="con-flow reveal">
       <div class="con-pulse" aria-hidden="true"></div>
@@ -2163,7 +2164,7 @@ function localInit(root){
     var io = new IntersectionObserver(function(es){
       es.forEach(function(e){
         if (e.isIntersecting) {
-          if (!loaded) { loaded = true; v.src = (innerWidth < 700 ? 'assets/video/con-ponte-480.mp4' : 'assets/video/con-ponte-720.mp4'); }
+          if (!loaded) { loaded = true; v.src = (innerWidth < 700 ? 'assets/video/ponte-golden-480.mp4' : 'assets/video/ponte-golden-720.mp4'); }
           if (v.play) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
         } else if (v.pause) { v.pause(); }
       });
