@@ -1839,7 +1839,7 @@ function chatInit(root){
           clearActions();
           addBubble(a.reply, "user");
           later(function(){
-            runSteps(a.next, function(){ autoMode = false; showChips(true); setBusy(false); startIdle(); });
+            runSteps(a.next, function(){ showChips(true); setBusy(false); startIdle(); });
           }, 380);
         });
         chipsBar.appendChild(btn);
