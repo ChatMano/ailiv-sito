@@ -20,6 +20,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   html { font-size: 112.5%; }
+  body { overflow-x: clip; }
   :root {
     --ink: #0e2c43;
     --navy: #143d5c;
@@ -136,6 +137,7 @@
   .demo-viz[data-cf="chat"] { aspect-ratio: 412/292; }
   .demo-viz[data-cf="ocr"] { aspect-ratio: 480/400; }
   @media (max-width: 700px) { .demo-viz[data-cf="chat"] { aspect-ratio: 412/442; margin-left: -1.25rem; margin-right: -1.25rem; width: calc(100% + 2.5rem); border-radius: 0; border-left: none; border-right: none; } }
+  .band-video { display: block; width: 100vw; max-width: 100vw; margin-left: calc(50% - 50vw); border: 0; border-radius: 0; }
   .sec-video { display: block; width: 100%; border-radius: 18px; border: 1px solid var(--line); margin-bottom: 1.1rem; }
   .demo-cap { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; letter-spacing: .1em; color: var(--gold-dark); margin-bottom: .6rem; text-transform: uppercase; }
   .demo-note { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; color: rgba(20,61,92,.45); margin-top: .55rem; }
@@ -562,7 +564,7 @@
     </ul>
     <p class="reveal mt-8 text-xl font-bold">Quanto ti costa, in ore, ogni settimana?</p>
 
-    <video id="matassaVideo" class="sec-video reveal mt-12 mb-2" muted loop playsinline preload="none" poster="assets/video/matassa-story-v2-poster.jpg" aria-hidden="true" style="max-width:680px"></video>
+    <video id="matassaVideo" class="band-video reveal mt-12" muted loop playsinline preload="none" poster="assets/video/matassa-story-v2-poster.jpg" aria-hidden="true"></video>
 
   </div>
 </section>
