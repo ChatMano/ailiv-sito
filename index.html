@@ -22,6 +22,7 @@
   html { font-size: 112.5%; }
   body { overflow-x: clip; }
   :root {
+    --gold-text: #8a6a1e;
     --ink: #0e2c43;
     --navy: #143d5c;
     --gold: #d4a747;
@@ -32,12 +33,12 @@
   }
   * { -webkit-font-smoothing: antialiased; }
   section .grid > *, .grid > * { min-width: 0; }
-  html { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+  html { font-family: 'Inter', sans-serif; scroll-behavior: smooth; scroll-padding-top: 84px; }
   body { background: var(--paper); color: var(--ink); overflow-x: hidden; }
   .mono { font-family: 'IBM Plex Mono', monospace; }
 
   /* ---------- sistema editoriale ---------- */
-  .kicker { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-dark); display: flex; align-items: center; gap: .8rem; }
+  .kicker { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-text); display: flex; align-items: center; gap: .8rem; }
   .kicker::after { content: ''; flex: 1; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform .9s cubic-bezier(.16,1,.3,1) .2s; }
   .visible .kicker::after, .kicker.visible::after { transform: scaleX(1); }
   .h2x { font-weight: 800; letter-spacing: -.03em; line-height: 1.04; color: var(--ink); font-size: clamp(1.9rem, 6vw, 3.4rem); }
@@ -56,51 +57,55 @@
   .cta { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; background: var(--gold); color: var(--ink); font-weight: 800; border-radius: 12px; padding: 1.05rem 1.8rem; transition: transform .25s, box-shadow .25s, background .25s; box-shadow: 0 10px 30px rgba(212,167,71,.35); }
   .cta:active { transform: scale(.98); }
   .cta:hover { background: var(--gold-dark); color: #fff; transform: translateY(-2px); }
-  .cta-note { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; color: rgba(20,61,92,.55); margin-top: .6rem; }
-  .cta-text { font-weight: 700; color: var(--gold-dark); }
+  .cta-note { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; color: rgba(20,61,92,.72); margin-top: .6rem; }
+  .cta-text { font-weight: 700; color: var(--gold-text); }
   .cta-text:hover { text-decoration: underline; }
 
   /* ---------- header ---------- */
-  .hdr { position: fixed; top: 0; left: 0; right: 0; z-index: 50; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); background: rgba(250,250,247,.88); border-bottom: 1px solid rgba(20,61,92,.07); }
+  .hdr { position: fixed; top: 0; left: 0; right: 0; z-index: 50; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); background: rgba(250,250,247,.88); border-bottom: 1px solid var(--line); }
 
   /* ---------- hero ---------- */
   .hero-wrap { position: relative; overflow: hidden; }
   .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .hero-veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(250,250,247,.88) 0%, rgba(250,250,247,.78) 55%, var(--paper) 97%); }
   .hero-content { position: relative; z-index: 2; }
-  .h1x { font-weight: 800; letter-spacing: -.035em; line-height: 1.02; font-size: clamp(2.1rem, 8.4vw, 4.6rem); color: var(--ink); }
+  .h1x { font-weight: 800; letter-spacing: -.035em; line-height: 1.02; font-size: clamp(1.9rem, 8.4vw, 4.6rem); color: var(--ink); }
+  @media (min-width: 768px) { .h1x { font-size: clamp(2.1rem, 5vw, 3.4rem); } }
   .ln-mask { display: block; overflow: hidden; }
   .ln-mask > span { display: block; transform: translateY(110%); animation: lnUp .65s cubic-bezier(.16,1,.3,1) forwards; }
   .ln-mask:nth-child(2) > span { animation-delay: .12s; }
+  .ln-mask:nth-child(3) > span { animation-delay: .24s; }
   @keyframes lnUp { to { transform: translateY(0); } }
 
   /* Registro */
-  .reg { background: #fff; border: 1.5px solid var(--navy); border-radius: 14px; box-shadow: 6px 6px 0 rgba(20,61,92,.08); overflow: hidden; }
-  .reg-head { display: flex; justify-content: space-between; align-items: center; padding: .65rem 1rem; border-bottom: 1px dashed var(--line); font-family: 'IBM Plex Mono', monospace; font-size: .74rem; letter-spacing: .14em; color: rgba(20,61,92,.6); }
+  .reg { background: #fff; border: 1.5px solid var(--navy); border-radius: 18px; box-shadow: 6px 6px 0 rgba(20,61,92,.08); overflow: hidden; }
+  .reg-head { display: flex; justify-content: space-between; align-items: center; padding: .65rem 1rem; border-bottom: 1px dashed var(--line); font-family: 'IBM Plex Mono', monospace; font-size: .74rem; letter-spacing: .12em; color: rgba(20,61,92,.72); }
   .reg-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); animation: regPulse 2s ease-in-out infinite; }
   @keyframes regPulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
   .reg-body { padding: .9rem 1rem 1rem; min-height: 148px; }
-  .reg-line { font-family: 'IBM Plex Mono', monospace; font-size: .84rem; line-height: 1.9; color: var(--ink); white-space: nowrap; overflow: hidden; }
-  .reg-line b { color: var(--gold-dark); font-weight: 600; }
+  .reg-line { font-family: 'IBM Plex Mono', monospace; font-size: .84rem; line-height: 1.9; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .reg-line b { color: var(--gold-text); font-weight: 600; }
   .reg-cursor { display: inline-block; width: 7px; height: 1em; background: var(--gold); vertical-align: text-bottom; animation: curBlink 1s steps(1) infinite; }
   @keyframes curBlink { 50% { opacity: 0 } }
-  .reg-note { font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: rgba(20,61,92,.45); padding: 0 1rem .8rem; }
+  .reg-note { font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: rgba(20,61,92,.72); padding: 0 1rem .8rem; }
   @media (max-width: 480px) { .reg-line { font-size: .76rem; } }
 
   /* ---------- per chi è / sommario ---------- */
   .qualbar { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; letter-spacing: .12em; color: rgba(20,61,92,.65); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: .8rem 0; }
   .toc a { display: flex; align-items: baseline; gap: .8rem; padding: .55rem 0; border-bottom: 1px dashed var(--line); font-weight: 600; color: var(--ink); }
-  .toc a .n { font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: rgba(20,61,92,.45); }
-  .toc a.gold { color: var(--gold-dark); }
+  .toc a .n { font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: rgba(20,61,92,.72); }
+  .toc a.gold { color: var(--gold-text); }
   .toc a:last-child { border-bottom: none; }
 
   /* ---------- lunedì del titolare (timbri) ---------- */
-  .mon li { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.1rem; padding-right: 7.2rem; font-weight: 500; color: rgba(20,61,92,.85); }
-  .mon .stamp { position: absolute; right: .9rem; top: 50%; transform: translateY(-50%) rotate(-8deg) scale(0); font-family: 'IBM Plex Mono', monospace; font-size: .7rem; font-weight: 700; letter-spacing: .1em; color: var(--gold-dark); border: 2px solid var(--gold); border-radius: 6px; padding: .3rem .5rem; background: rgba(212,167,71,.08); }
+  .mon li { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.1rem; padding-right: 7.8rem; font-weight: 500; color: rgba(20,61,92,.85); }
+  .mon .stamp { position: absolute; right: .9rem; top: 50%; transform: translateY(-50%) rotate(-8deg) scale(0); font-family: 'IBM Plex Mono', monospace; font-size: .7rem; font-weight: 700; letter-spacing: .1em; color: var(--gold-text); border: 2px solid var(--gold); border-radius: 6px; padding: .3rem .5rem; background: rgba(212,167,71,.08); }
   .mon li.stamped .stamp { animation: stampIn .28s cubic-bezier(.2,1.4,.4,1) forwards; }
   .mon li.stamped { text-decoration: line-through; text-decoration-color: rgba(212,167,71,.75); text-decoration-thickness: 2px; }
   @keyframes stampIn { to { transform: translateY(-50%) rotate(-8deg) scale(1); } }
   @media (max-width: 420px) { .mon li { padding-right: 6.4rem; font-size: .95rem; } }
+
+  @media (min-width: 768px) { #gamba1 .h2x { font-size: clamp(2rem, 3.4vw, 2.5rem); } }
 
   /* ---------- storia matassa ---------- */
   .story { display: grid; gap: 1rem; }
@@ -113,7 +118,7 @@
   .story-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
   .story-card img { display: block; width: 100%; height: auto; }
   .story-card figcaption { padding: .85rem 1rem 1.05rem; font-weight: 700; font-size: 1.08rem; line-height: 1.35; color: var(--ink); }
-  .story-card figcaption span { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; color: var(--gold-dark); display: block; margin-bottom: .2rem; }
+  .story-card figcaption span { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; color: var(--gold-text); display: block; margin-bottom: .2rem; }
 
   /* ---------- confronto ChatGPT ---------- */
   .cmp-wrap { display: grid; gap: 1rem; }
@@ -130,24 +135,25 @@
   .cmp li::before { content: '—'; color: rgba(20,61,92,.35); flex: 0 0 auto; }
   .cmp.sys li::before { content: '●'; color: var(--gold); font-size: .6rem; padding-top: .35rem; }
   .swipe-hint { display: none; }
-  @media (max-width: 759px) { .swipe-hint { display: block; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: rgba(20,61,92,.45); margin-top: .4rem; } }
+  @media (max-width: 759px) { .swipe-hint { display: block; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: rgba(20,61,92,.72); margin-top: .4rem; } }
 
   /* ---------- demo container ---------- */
   .demo-viz { position: relative; width: 100%; height: auto; aspect-ratio: 480/320; background: linear-gradient(180deg,#fcfbf8,#f3f0e9); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
   .demo-viz[data-cf="chat"] { aspect-ratio: 412/292; }
   .demo-viz[data-cf="ocr"] { aspect-ratio: 480/400; }
   @media (max-width: 700px) { .demo-viz[data-cf="chat"] { aspect-ratio: 412/442; margin-left: -1.25rem; margin-right: -1.25rem; width: calc(100% + 2.5rem); border-radius: 0; border-left: none; border-right: none; } }
-  .band-video { display: block; width: 100vw; max-width: 100vw; margin-left: calc(50% - 50vw); border: 0; border-radius: 0; }
+  .flow-video { display: block; width: 100vw; max-width: 100vw; margin-left: calc(50% - 50vw); border: 0; border-radius: 0; }
+  .sec-video, .flow-video { aspect-ratio: 16/9; background: #f5f3ee; }
   .sec-video { display: block; width: 100%; border-radius: 18px; border: 1px solid var(--line); margin-bottom: 1.1rem; }
-  .demo-cap { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; letter-spacing: .1em; color: var(--gold-dark); margin-bottom: .6rem; text-transform: uppercase; }
-  .demo-note { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; color: rgba(20,61,92,.45); margin-top: .55rem; }
+  .demo-cap { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; letter-spacing: .1em; color: var(--gold-text); margin-bottom: .6rem; text-transform: uppercase; }
+  .demo-note { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; color: rgba(20,61,92,.72); margin-top: .55rem; }
 
   /* ---------- toggle raccontato/vero ---------- */
   .vs-wrap { display: flex; flex-direction: column; }
   .vs-card { border-radius: 16px; padding: 1.4rem 1.5rem; }
   .vs-told { background: #fff; border: 1px dashed rgba(20,61,92,.25); color: rgba(20,61,92,.72); }
   .vs-told p:first-of-type { color: rgba(20,61,92,.62); font-style: italic; }
-  .vs-mid { font-family: 'IBM Plex Mono', monospace; font-size: .76rem; letter-spacing: .1em; color: var(--gold-dark); text-align: center; padding: .55rem 0; }
+  .vs-mid { font-family: 'IBM Plex Mono', monospace; font-size: .76rem; letter-spacing: .1em; color: var(--gold-text); text-align: center; padding: .55rem 0; }
   .vs-real { background: linear-gradient(180deg,#143d5c,#0e2c43); border: 1px solid rgba(212,167,71,.55); color: #fafaf7; box-shadow: 6px 6px 0 rgba(20,61,92,.08); }
   .vs-real .num { font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--gold); }
   .vs-who { font-size: .875rem; color: rgba(250,250,247,.6); }
@@ -163,18 +169,18 @@
   .con-step { position: relative; padding-left: 52px; padding-bottom: 1.8rem; }
   .con-step:last-child { padding-bottom: 0; }
   .con-dot { position: absolute; left: 6px; top: 8px; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 2px solid var(--gold); z-index: 2; }
-  .con-tag { font-family: 'IBM Plex Mono', monospace; font-size: .74rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: .3rem; }
+  .con-tag { font-family: 'IBM Plex Mono', monospace; font-size: .74rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-text); margin-bottom: .3rem; }
   .con-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 1.15rem 1.25rem; }
   .con-card h3 { font-weight: 800; font-size: 1.15rem; margin-bottom: .4rem; }
   .con-card p { font-size: .97rem; color: rgba(20,61,92,.75); line-height: 1.55; }
   .con-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .7rem; }
-  .con-chips span { font-family: 'IBM Plex Mono', monospace; font-size: .72rem; font-weight: 600; letter-spacing: .08em; padding: .28rem .55rem; border-radius: 6px; background: rgba(212,167,71,.1); color: var(--gold-dark); border: 1px solid rgba(212,167,71,.4); }
-  .con-note { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; color: rgba(20,61,92,.55); line-height: 1.6; margin-top: .7rem; border-top: 1px dashed var(--line); padding-top: .7rem; }
+  .con-chips span { font-family: 'IBM Plex Mono', monospace; font-size: .72rem; font-weight: 600; letter-spacing: .12em; padding: .28rem .55rem; border-radius: 6px; background: rgba(212,167,71,.1); color: var(--gold-text); border: 1px solid rgba(212,167,71,.4); }
+  .con-note { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; color: rgba(20,61,92,.72); line-height: 1.6; margin-top: .7rem; border-top: 1px dashed var(--line); padding-top: .7rem; }
   .con-due { display: grid; gap: .8rem; margin-top: .2rem; }
   @media (min-width: 640px) { .con-due { grid-template-columns: 1fr 1fr; } }
   .con-g { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: 1.6rem; }
-  .con-g span { font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: rgba(20,61,92,.55); }
-  .con-g b { color: var(--gold-dark); }
+  .con-g span { font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: rgba(20,61,92,.72); }
+  .con-g b { color: var(--gold-text); }
   @media (prefers-reduced-motion: reduce) { .con-pulse { animation: none; opacity: 0; } }
 
   /* ---------- progetti ---------- */
@@ -186,10 +192,10 @@
     .prj { flex: 0 0 86%; scroll-snap-align: center; }
   }
   .prj { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 1.4rem; }
-  .prj-tag { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: .7rem; font-weight: 700; letter-spacing: .12em; color: var(--gold-dark); border: 1px solid var(--gold); border-radius: 6px; padding: .25rem .55rem; margin-bottom: .8rem; background: rgba(212,167,71,.07); }
+  .prj-tag { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: .7rem; font-weight: 700; letter-spacing: .12em; color: var(--gold-text); border: 1px solid var(--gold); border-radius: 6px; padding: .25rem .55rem; margin-bottom: .8rem; background: rgba(212,167,71,.07); }
   .prj h3 { font-weight: 800; font-size: 1.18rem; margin-bottom: .7rem; }
   .prj-row { padding: .45rem 0; border-top: 1px dashed var(--line); font-size: .95rem; line-height: 1.5; color: rgba(20,61,92,.78); }
-  .prj-row b { font-family: 'IBM Plex Mono', monospace; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-dark); display: block; margin-bottom: .15rem; }
+  .prj-row b { font-family: 'IBM Plex Mono', monospace; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-text); display: block; margin-bottom: .15rem; }
   .dots { display: flex; justify-content: center; gap: .45rem; margin-top: .8rem; }
   .dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(20,61,92,.18); transition: background .3s, transform .3s; }
   .dots i.on { background: var(--gold); transform: scale(1.25); }
@@ -197,21 +203,22 @@
 
   /* ---------- offerta (ricevuta) ---------- */
   .offer { position: relative; background: #fff; border: 2px solid var(--gold); border-radius: 20px; box-shadow: 8px 8px 0 rgba(212,167,71,.18); overflow: hidden; }
-  .offer-stamp { position: absolute; top: 1.1rem; right: 1.1rem; font-family: 'IBM Plex Mono', monospace; font-size: .74rem; font-weight: 700; letter-spacing: .14em; color: var(--gold-dark); border: 2px solid var(--gold); border-radius: 8px; padding: .4rem .7rem; transform: rotate(8deg) scale(0); background: rgba(212,167,71,.1); }
+  .offer-stamp { position: absolute; top: 1.1rem; right: 1.1rem; font-family: 'IBM Plex Mono', monospace; font-size: .74rem; font-weight: 700; letter-spacing: .12em; color: var(--gold-text); border: 2px solid var(--gold); border-radius: 8px; padding: .4rem .7rem; transform: rotate(8deg) scale(0); background: rgba(212,167,71,.1); }
   .offer.visible .offer-stamp { animation: stampIn2 .32s cubic-bezier(.2,1.4,.4,1) .45s forwards; }
   @keyframes stampIn2 { to { transform: rotate(8deg) scale(1); } }
   .offer-block { padding: 1.1rem 1.4rem; border-top: 1px dashed var(--line); }
-  .offer-block b { font-family: 'IBM Plex Mono', monospace; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-dark); display: block; margin-bottom: .3rem; }
+  .offer-block b { font-family: 'IBM Plex Mono', monospace; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-text); display: block; margin-bottom: .3rem; }
   .offer-block p { font-size: 1rem; color: rgba(20,61,92,.8); line-height: 1.55; }
 
   /* ---------- FAQ accordion ---------- */
   .faq-item { border-bottom: 1px solid var(--line); }
   .faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.05rem 0; text-align: left; font-weight: 700; font-size: 1.05rem; color: var(--ink); cursor: pointer; background: none; border: none; }
-  .faq-q .pm { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--gold); color: var(--gold-dark); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; transition: transform .3s; }
+  .faq-q .pm { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--gold); color: var(--gold-text); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; transition: transform .3s; }
   .faq-item.open .pm { transform: rotate(45deg); }
   .faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .38s cubic-bezier(.16,1,.3,1); }
   .faq-item.open .faq-a { grid-template-rows: 1fr; }
   .faq-a > div { overflow: hidden; }
+  .faq-a p, .offer-block p { max-width: 62ch; }
   .faq-a p { padding: 0 0 1.1rem; color: rgba(20,61,92,.72); line-height: 1.6; font-size: 1rem; }
 
   /* ---------- banda statement ---------- */
@@ -228,7 +235,7 @@
   /* ---------- sticky bottom bar (mobile) ---------- */
   .sbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; padding: .6rem .9rem calc(.6rem + env(safe-area-inset-bottom)); background: rgba(250,250,247,.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: .8rem; transform: translateY(110%); transition: transform .35s cubic-bezier(.16,1,.3,1); }
   .sbar.show { transform: translateY(0); }
-  .sbar .mono { font-size: .76rem; color: rgba(20,61,92,.55); }
+  .sbar .mono { font-size: .76rem; color: rgba(20,61,92,.72); }
   .sbar .cta { padding: .7rem 1.2rem; font-size: .95rem; border-radius: 10px; }
   @media (min-width: 768px) { .sbar { display: none; } }
 
@@ -239,12 +246,12 @@
   .jrn-fill { position: absolute; left: 26px; top: 0; width: 4px; height: 0; background: linear-gradient(180deg,#e0bd63,#b8902f); border-radius: 3px; box-shadow: 0 0 16px rgba(212,167,71,0.5); }
   .jrn-step { position: relative; padding-left: 80px; padding-bottom: 2.6rem; }
   .jrn-step:last-child { padding-bottom: 0; }
-  .jrn-dot { position: absolute; left: 8px; top: 0; width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 2px solid rgba(20,61,92,0.16); display: flex; align-items: center; justify-content: center; font-family: 'Archivo Black', sans-serif; font-size: .82rem; color: rgba(20,61,92,0.38); transition: all .45s cubic-bezier(.2,.8,.3,1); z-index: 2; }
-  .jrn-lbl { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; letter-spacing: .14em; color: rgba(20,61,92,0.4); margin-bottom: .3rem; transition: color .4s; }
+  .jrn-dot { position: absolute; left: 8px; top: 0; width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 2px solid rgba(20,61,92,0.16); display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: .8rem; letter-spacing: .04em; color: rgba(20,61,92,0.38); transition: all .45s cubic-bezier(.2,.8,.3,1); z-index: 2; }
+  .jrn-lbl { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; letter-spacing: .12em; color: rgba(20,61,92,0.4); margin-bottom: .3rem; transition: color .4s; }
   .jrn-h { font-size: 1.32rem; font-weight: 700; color: var(--ink); margin-bottom: .35rem; line-height: 1.2; }
   .jrn-p { font-size: 1rem; color: rgba(20,61,92,0.6); line-height: 1.55; max-width: 460px; transition: color .4s; }
   .jrn-step.active .jrn-dot { border-color: #d4a747; color: #0e2c43; transform: scale(1.1); box-shadow: 0 0 0 6px rgba(212,167,71,0.14), 0 6px 20px rgba(212,167,71,0.4); }
-  .jrn-step.active .jrn-lbl { color: #b8902f; }
+  .jrn-step.active .jrn-lbl { color: var(--gold-text); }
   .jrn-step.active .jrn-p { color: rgba(20,61,92,0.8); }
   @media (min-width: 720px) { .jrn-h { font-size: 1.5rem; } }
   .sector-grid { display: grid; grid-template-columns: 1fr; gap: .5rem; }
@@ -254,9 +261,9 @@
   .chat-action-yes { background: var(--gold) !important; color: var(--ink) !important; border-color: var(--gold-dark) !important; font-weight: 700; }
   @media (prefers-reduced-motion: reduce) { .jrn-step .jrn-dot { border-color:#d4a747; color:#0e2c43; } }
 
-  .jrn-do { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; color: rgba(20,61,92,.5); margin-top: .45rem; }
+  .jrn-do { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; color: rgba(20,61,92,.72); margin-top: .45rem; }
   .jrn-step.jrn-hl .jrn-dot { border-color: var(--gold); background: rgba(212,167,71,.1); color: var(--ink); }
-  .jrn-step.jrn-hl .jrn-lbl { color: var(--gold-dark); }
+  .jrn-step.jrn-hl .jrn-lbl { color: var(--gold-text); }
 
   /* ---------- prezzo grande ---------- */
   .price-hero { position: relative; background: linear-gradient(180deg,#143d5c,#0e2c43); border-radius: 20px; padding: 2.6rem 1.5rem 2.5rem; text-align: center; margin-top: 2.2rem; color: #fafaf7; overflow: hidden; box-shadow: 8px 8px 0 rgba(20,61,92,.08); }
@@ -278,7 +285,7 @@
 .ocr-doc:hover .ocr-docbg{stroke:rgba(20,61,92,0.32);}
 .ocr-doctitle{font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:700;letter-spacing:1px;fill:#143d5c;}
 .ocr-docbadge{fill:rgba(212,167,71,0.16);stroke:rgba(212,167,71,0.5);stroke-width:1;}
-.ocr-docbadgetx{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.5px;fill:#b8902f;}
+.ocr-docbadgetx{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.5px;fill:#8a6a1e;}
 .ocr-doctotal{fill:rgba(20,61,92,0.07);stroke:rgba(20,61,92,0.16);stroke-width:1;}
 .ocr-doctotaltx{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.5px;fill:#143d5c;}
 
@@ -308,11 +315,15 @@
 .ocr-scanning .ocr-btndot{animation:ocr-pulse 1s ease-out infinite;}
 .ocr-btntx{white-space:nowrap;}
 
-.ocr-hint{position:absolute;left:50%;bottom:72px;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.4px;color:rgba(20,61,92,0.5);white-space:nowrap;pointer-events:none;opacity:.85;z-index:2;animation:ocr-hintfloat 2.6s ease-in-out infinite;}
+.ocr-hint{position:absolute;left:50%;bottom:72px;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.4px;color:rgba(20,61,92,0.5);white-space:nowrap;pointer-events:none;opacity:.85;z-index:2;animation:ocr-hintfloat 2.6s ease-in-out infinite;}
 
+.cf-chat .chat-chip{min-height:44px;padding:10px 16px;}
+.ocr-btn{min-height:44px;}
+.local-btn{min-height:44px;padding:10px 18px;}
 @keyframes ocr-pulse{0%{box-shadow:0 0 0 0 rgba(14,44,67,0.5);}100%{box-shadow:0 0 0 7px rgba(14,44,67,0);}}
 @keyframes ocr-hintfloat{0%,100%{opacity:.5;}50%{opacity:.9;}}
 
+@media (max-width:700px){ .ocr-cell,.ocr-cellp{font-size:12.5px;} .ocr-docline{font-size:11px;} .ocr-colh{font-size:10.5px;} .ocr-datahead{font-size:14px;} }
 @media (prefers-reduced-motion: reduce){
   .ocr-pill{transition:none;}
   .ocr-btndot{animation:none !important;}
@@ -382,7 +393,7 @@
   right:16px;
   bottom:76px;
   font-family:'IBM Plex Mono',monospace;
-  font-size:12px;
+  font-size:13px;
   letter-spacing:.04em;
   color:rgba(20,61,92,0.5);
   pointer-events:none;
@@ -438,7 +449,7 @@
   position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
   font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.02em;
   color:#fafaf7;background:linear-gradient(180deg,#143d5c,#0e2c43);
-  border:1px solid rgba(212,167,71,0.55);border-radius:9px;
+  border:1px solid rgba(212,167,71,0.55);border-radius:10px;
   padding:8px 16px;cursor:pointer;user-select:none;touch-action:manipulation;
   box-shadow:0 4px 12px rgba(14,44,67,0.22);transition:transform 0.12s ease,box-shadow 0.12s ease,border-color 0.12s ease;
   z-index:3;white-space:nowrap;
@@ -449,7 +460,7 @@
 .local-btn-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#d4a747;margin-right:7px;vertical-align:middle;}
 .local-badge{
   position:absolute;left:14px;top:13px;
-  font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:0.05em;
+  font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.05em;
   color:#143d5c;background:rgba(255,255,255,0.7);
   border:1px solid rgba(20,61,92,0.18);border-radius:6px;
   padding:4px 8px;display:flex;align-items:center;gap:6px;z-index:3;
@@ -461,7 +472,7 @@
   position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.9);
   font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.02em;
   color:#fafaf7;background:rgba(14,44,67,0.94);
-  border:1px solid rgba(212,167,71,0.5);border-radius:9px;
+  border:1px solid rgba(212,167,71,0.5);border-radius:10px;
   padding:9px 14px;opacity:0;pointer-events:none;z-index:4;
   transition:opacity 0.22s ease,transform 0.22s ease;white-space:nowrap;
   box-shadow:0 8px 22px rgba(14,44,67,0.3);
@@ -491,7 +502,7 @@
 <header class="hdr">
   <div class="max-w-5xl mx-auto px-5 py-3 flex items-center justify-between">
     <a href="#top" class="flex items-center"><img src="assets/bollino-ailiv-hdr.png" alt="Ailiv" class="h-9 md:h-10 w-auto"></a>
-    <a href="#prenota" class="mono text-[14px] font-semibold tracking-widest text-[#b8902f] uppercase">Richiedi →</a>
+    <a href="#prenota" class="mono text-[14px] font-semibold tracking-widest text-[#8a6a1e] uppercase py-4 -my-4 px-2 -mx-2">Richiedi →</a>
   </div>
 </header>
 
@@ -504,9 +515,10 @@
   </div>
   <div class="hero-content max-w-5xl mx-auto grid md:grid-cols-[1.05fr_1fr] gap-10 items-center">
     <div>
-      <p class="mono text-[.68rem] font-semibold tracking-[.2em] text-[#b8902f] uppercase mb-5">Costruiamo e gestiamo il cervello AI della tua azienda</p>
+      <p class="mono text-[.72rem] font-semibold tracking-[.16em] text-[#8a6a1e] uppercase mb-5">Costruiamo e gestiamo il cervello AI della tua azienda</p>
       <h1 class="h1x mb-5">
-        <span class="ln-mask"><span>Il lavoro ripetitivo lo fa l'AI.</span></span>
+        <span class="ln-mask"><span>Il lavoro ripetitivo</span></span>
+        <span class="ln-mask"><span>lo fa l'AI.</span></span>
         <span class="ln-mask"><span>Tu torni a decidere.</span></span>
       </h1>
       <p class="lead text-lg mb-7 max-w-md">Un cervello che immagazzina i dati di cassa, fatture, campagne e clienti — e agenti che lavorano per te: leggono le fatture, ti avvisano se un fornitore alza i prezzi, ti dicono quali campagne rendono. Report e avvisi automatici: ogni giorno, ogni settimana o ogni mese — decidi tu.</p>
@@ -529,7 +541,7 @@
   <div class="max-w-5xl mx-auto reveal">
     <h2 class="h2x mt-4 mb-3">L'AI risponde bene.<br>Ma se avesse la visione totale della tua azienda?</h2>
     <p class="lead mb-7 max-w-xl">Magari la usi già: funziona. Ma risponde a una domanda alla volta, e ogni volta le rispieghi tutto da capo.</p>
-    <p class="mono text-[.72rem] tracking-[.14em] text-[#b8902f] uppercase mt-7 mb-3">Pensa se invece potessi</p>
+    <p class="mono text-[.72rem] tracking-[.16em] text-[#8a6a1e] uppercase mt-7 mb-3">Pensa se invece potessi</p>
     <ul class="sector-grid mb-7">
       <li><b>Sapere subito se un fornitore ritocca il listino</b> — riga per riga, non a sensazione</li>
       <li><b>Vedere ogni mattina quanto è entrato ieri</b>, sede per sede, senza chiedere a nessuno</li>
@@ -537,11 +549,12 @@
       <li><b>Capire quali campagne rendono e quali bruciano soldi</b> — e spostare il budget di conseguenza</li>
     </ul>
     <p class="lead mb-4 max-w-xl">Con Ailiv non scegli: <b>i report ti arrivano da soli</b> — ogni giorno, ogni settimana o ogni mese, lo decidi tu — e quando un numero non ti torna, <b>glielo chiedi</b>.</p>
-    <p class="mono text-[.7rem] text-[#0e2c43]/45 mb-7">Ogni sistema è su misura: cosa si può collegare da te lo verifichiamo nel check-up gratuito, prima di promettere qualsiasi cosa.</p>
+    <p class="mono text-[.7rem] text-[#0e2c43]/75 mb-7">Ogni sistema è su misura: cosa si può collegare da te lo verifichiamo nel check-up gratuito, prima di promettere qualsiasi cosa.</p>
     <nav class="toc max-w-md">
       <a href="#problema"><span class="n">01</span> Il problema</a>
       <a href="#chatgpt"><span class="n">02</span> Perché una chat non basta</a>
       <a href="#gamba1"><span class="n">03</span> Cosa costruiamo</a>
+      <a href="#gamba2"><span class="n">04</span> Il cervello aziendale</a>
       <a href="#collega"><span class="n">05</span> Come si collega</a>
       <a href="#progetti"><span class="n">06</span> Progetti in produzione</a>
       <a href="#offerta" class="gold"><span class="n">07</span> Richiedi il check-up →</a>
@@ -550,7 +563,7 @@
 </section>
 
 <!-- ============ 01 / IL PROBLEMA ============ -->
-<section id="problema" class="px-5 py-16 bg-white border-y border-[#143d5c]/8">
+<section id="problema" class="px-5 py-16 bg-white border-y border-[#143d5c]/12">
   <div class="max-w-5xl mx-auto">
     <p class="kicker reveal mb-6">01 / Il problema</p>
     <h2 class="h2x reveal mb-3">Il lunedì di un titolare.</h2>
@@ -564,7 +577,7 @@
     </ul>
     <p class="reveal mt-8 text-xl font-bold">Quanto ti costa, in ore, ogni settimana?</p>
 
-    <video id="matassaVideo" class="band-video reveal mt-12" muted loop playsinline preload="none" poster="assets/video/matassa-story-v2-poster.jpg" aria-hidden="true"></video>
+    <video id="matassaVideo" class="flow-video reveal mt-12" muted loop playsinline preload="none" poster="assets/video/matassa-story-v2-poster.jpg" aria-hidden="true"></video>
 
   </div>
 </section>
@@ -600,7 +613,7 @@
 </section>
 
 <!-- ============ 03 / GAMBA 1 — AGENTI ============ -->
-<section id="gamba1" class="px-5 py-16 bg-white border-y border-[#143d5c]/8">
+<section id="gamba1" class="px-5 py-16 bg-white border-y border-[#143d5c]/12">
   <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-center">
     <div>
       <p class="kicker reveal mb-6">03 / Cosa costruiamo — parte 1</p>
@@ -735,12 +748,13 @@
         
       </div>
       <p class="demo-note">Demo con dati di esempio — il funzionamento è quello del nostro sistema vero.</p>
+      <p class="reveal mt-4 text-[.95rem] text-[#0e2c43]/80 max-w-lg">Qui c'è un DDT da pizzeria, ma funziona uguale coi <b>ricambi dell'officina</b>, i <b>materiali di cantiere</b>, le <b>forniture dello studio</b> o gli <b>ordini del negozio</b>: se emetti o ricevi fatture, ci colleghiamo — nel check-up te lo diciamo gestionale per gestionale.</p>
     </div>
   </div>
 </section>
 
 <!-- ============ 04 / GAMBA 2 — I NUMERI ============ -->
-<section class="px-5 py-16">
+<section id="gamba2" class="px-5 py-16">
   <div class="max-w-5xl mx-auto">
     <p class="kicker reveal mb-6">04 / Cosa costruiamo — parte 2</p>
     <h2 class="h2x reveal mb-4">Un cervello aziendale.<br>Tutti i tuoi dati, una sola memoria.</h2>
@@ -753,7 +767,7 @@
           <div class="vs-card vs-told">
             <span class="flip-tag">VERSIONE RACCONTATA</span>
             <p class="text-lg font-semibold leading-snug">«La campagna sta andando benissimo, fidati. I risultati si vedranno.»</p>
-            <p class="text-sm text-[#0e2c43]/55 mt-2">— chi te la vende</p>
+            <p class="text-sm text-[#0e2c43]/75 mt-2">— chi te la vende</p>
           </div>
           <div class="vs-mid" aria-hidden="true">i numeri dicono un'altra cosa ↓</div>
           <div class="vs-card vs-real">
@@ -793,7 +807,7 @@
     <circle cx="68" cy="42" r="14.5" fill="#fafaf7"/>
     <image href="assets/bollino-ailiv-hdr.png" x="57" y="33.5" width="22" height="17" preserveAspectRatio="xMidYMid meet"/>
     <text class="chat-htitle" x="90" y="39" fill="#fafaf7" font-weight="700" letter-spacing="1.5" font-family="Inter,system-ui,sans-serif">AILIV</text>
-    <circle cx="93.5" cy="51" r="3" fill="#5bbd7a"/>
+    <circle cx="93.5" cy="51" r="3" fill="#d4a747"/>
     <text class="chat-hsub" x="101" y="54.5" fill="rgba(250,250,247,0.78)" font-family="'IBM Plex Mono',monospace">demo · dati di esempio</text>
 
     <!-- message list group (translated by JS for scroll) -->
@@ -827,7 +841,7 @@
 
 
 <!-- ============ 05 / COME SI COLLEGA ============ -->
-<section id="collega" class="px-5 py-16">
+<section id="collega" class="px-5 py-16 bg-[#f5f3ee] border-y border-[#143d5c]/12">
   <div class="max-w-5xl mx-auto">
     <p class="kicker reveal mb-6">05 / Come si collega</p>
     <h2 class="h2x reveal mb-3">Ci colleghiamo a quello che usi già.</h2>
@@ -893,12 +907,12 @@
       <figure class="story-card"><img src="assets/img/matassa-4-v4.jpg" alt="Ogni cavo collegato al posto giusto, il titolare si gode il caffe" loading="lazy" decoding="async" width="1200" height="670"><figcaption><span>4/4</span>Tutto connesso. Tu torni a decidere.</figcaption></figure>
     </div>
 
-    <p class="reveal lead mt-8 max-w-lg">Vuoi sapere cosa si collega da te? <a class="cta-text" href="#prenota">Richiedi il check-up gratuito →</a></p>
+    <div class="reveal mt-10"><p class="lead mb-4 max-w-lg">Vuoi sapere cosa si collega da te?</p><a href="#prenota" class="cta">Richiedi il check-up gratuito</a><p class="cta-note">30–45 min · mini-report con 2–3 opportunità · zero impegno</p></div>
   </div>
 </section>
 
 <!-- ============ 06 / PROGETTI ============ -->
-<section id="progetti" class="px-5 py-16 bg-white border-y border-[#143d5c]/8">
+<section id="progetti" class="px-5 py-16 bg-white border-y border-[#143d5c]/12">
   <div class="max-w-5xl mx-auto">
     <p class="kicker reveal mb-6">06 / Progetti in produzione</p>
     <h2 class="h2x reveal mb-8">Sistemi che girano adesso.</h2>
@@ -933,7 +947,7 @@
       </div>
     </div>
     <div class="dots" id="projDots"><i class="on"></i><i></i><i></i><i></i></div>
-    <p class="mono text-[.64rem] text-[#0e2c43]/45 mt-5 reveal">Nomi riservati qui in pagina: in call ti raccontiamo i casi per esteso.</p>
+    <p class="mono text-[.7rem] text-[#0e2c43]/75 mt-5 reveal">Nomi riservati qui in pagina: in call ti raccontiamo i casi per esteso.</p>
     <!-- SLOT TESTIMONIANZA (dormiente): incollare qui la quote reale del cliente quando arriva
     <blockquote class="mt-6 p-6 bg-[#fafaf7] border-l-4 border-[#d4a747] rounded-r-xl">
       <p class="text-lg font-semibold leading-snug">«...»</p>
@@ -953,7 +967,7 @@
     <div class="offer reveal">
       <span class="offer-stamp">GRATUITO</span>
       <div class="px-6 pt-6 pb-4">
-        <p class="mono text-[.66rem] tracking-[.16em] text-[#0e2c43]/50 uppercase mb-1 pr-24">Check-up dei tuoi numeri e processi</p>
+        <p class="mono text-[.7rem] tracking-[.16em] text-[#0e2c43]/75 uppercase mb-1 pr-24">Check-up dei tuoi numeri e processi</p>
         <p class="text-xl font-extrabold">Cosa succede, cosa ricevi, cosa decidi.</p>
       </div>
       <div class="offer-block"><b>La call</b><p>30–45 minuti sui tuoi numeri e i tuoi processi, con chi poi costruisce davvero — non con un venditore.</p></div>
@@ -961,7 +975,7 @@
       <div class="offer-block"><b>La decisione</b><p>Con il report in mano decidi tu se andare avanti, con noi o da solo. Il report resta a te comunque.</p></div>
       <div class="offer-block"><b>Il passo dopo, se ha senso</b><p>La <strong>Mappa dei Collegamenti</strong> — il prezzo è qui sotto, ed è l'unico che ti serve per cominciare.</p></div>
       <div class="offer-block bg-[#fafaf7]">
-        <p class="mono text-[.68rem] text-[#0e2c43]/55 leading-relaxed">Seguiamo pochi progetti alla volta, per seguirli davvero.</p>
+        <p class="mono text-[.7rem] text-[#0e2c43]/75 leading-relaxed">Seguiamo pochi progetti alla volta, per seguirli davvero.</p>
       </div>
     </div>
 
@@ -983,7 +997,7 @@
 </section>
 
 <!-- ============ 07 / COME LAVORIAMO ============ -->
-<section class="px-5 py-16 bg-white border-y border-[#143d5c]/8">
+<section class="px-5 py-16 bg-white border-y border-[#143d5c]/12">
   <div class="max-w-5xl mx-auto">
     <p class="kicker reveal mb-6">08 / Come lavoriamo</p>
     <h2 class="h2x reveal mb-10">Si parte sempre dal check-up.</h2>
@@ -1188,7 +1202,7 @@
         <script src="https://link.msgsndr.com/js/form_embed.js"></script>
     </div>
 
-    <p class="mono text-[.66rem] text-[#0e2c43]/50 mt-5 leading-relaxed reveal">Cosa succede dopo: ti rispondiamo entro un giorno lavorativo per fissare la call.</p>
+    <p class="mono text-[.7rem] text-[#0e2c43]/75 mt-5 leading-relaxed reveal">Cosa succede dopo: ti rispondiamo entro un giorno lavorativo per fissare la call.</p>
   </div>
 </section>
 
@@ -1206,7 +1220,7 @@
         PEC: ailivsrl@legalmail.it
       </div>
     </div>
-    <div class="border-t border-white/10 pt-5 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/40">
+    <div class="border-t border-white/10 pt-5 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/60">
       <p>© 2026 AILIV SRL — Tutti i diritti riservati</p>
       <div class="flex gap-5">
         <a href="privacy.html" class="hover:text-white transition">Privacy</a>
