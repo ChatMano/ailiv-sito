@@ -141,18 +141,17 @@
   .demo-note { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; color: rgba(20,61,92,.45); margin-top: .55rem; }
 
   /* ---------- toggle raccontato/vero ---------- */
-  .flipcard { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 1.6rem; cursor: pointer; min-height: 168px; transition: border-color .3s; }
-  .flipcard .face { transition: opacity .22s ease; }
-  .flipcard .face.told { position: relative; }
-  .flipcard .face.real { position: absolute; inset: 1.6rem; opacity: 0; }
-  .flipcard.flipped .face.told { opacity: 0; }
-  .flipcard.flipped .face.real { opacity: 1; }
-  .flipcard.flipped { border-color: var(--gold); }
+  .vs-wrap { display: flex; flex-direction: column; }
+  .vs-card { border-radius: 16px; padding: 1.4rem 1.5rem; }
+  .vs-told { background: #fff; border: 1px dashed rgba(20,61,92,.25); color: rgba(20,61,92,.72); }
+  .vs-told p:first-of-type { color: rgba(20,61,92,.62); font-style: italic; }
+  .vs-mid { font-family: 'IBM Plex Mono', monospace; font-size: .76rem; letter-spacing: .1em; color: var(--gold-dark); text-align: center; padding: .55rem 0; }
+  .vs-real { background: linear-gradient(180deg,#143d5c,#0e2c43); border: 1px solid rgba(212,167,71,.55); color: #fafaf7; box-shadow: 6px 6px 0 rgba(20,61,92,.08); }
+  .vs-real .num { font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--gold); }
+  .vs-who { font-size: .875rem; color: rgba(250,250,247,.6); }
   .flip-tag { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: .72rem; font-weight: 700; letter-spacing: .12em; padding: .28rem .6rem; border-radius: 6px; margin-bottom: .7rem; }
-  .face.told .flip-tag { background: rgba(20,61,92,.07); color: rgba(20,61,92,.6); }
-  .face.real .flip-tag { background: rgba(212,167,71,.14); color: var(--gold-dark); border: 1px solid var(--gold); }
-  .flip-hint { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; color: var(--gold-dark); margin-top: .8rem; }
-  .face.real .num { font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--gold-dark); }
+  .vs-told .flip-tag { background: rgba(20,61,92,.07); color: rgba(20,61,92,.6); }
+  .vs-real .flip-tag { background: rgba(212,167,71,.16); color: var(--gold); border: 1px solid rgba(212,167,71,.6); }
 
   /* ---------- connettori (come si collega) ---------- */
   .con-flow { position: relative; max-width: 680px; }
@@ -747,19 +746,19 @@
 
     <div class="grid md:grid-cols-[0.85fr_1.15fr] gap-8 items-start">
       <div class="reveal">
-        <p class="demo-cap">Tocca la carta: stessa campagna, due versioni</p>
-        <div class="flipcard" id="flipCard" role="button" tabindex="0" aria-label="Confronta versione raccontata e numeri reali">
-          <div class="face told">
+        <p class="demo-cap">Stessa campagna, due versioni</p>
+        <div class="vs-wrap rv-kids">
+          <div class="vs-card vs-told">
             <span class="flip-tag">VERSIONE RACCONTATA</span>
             <p class="text-lg font-semibold leading-snug">«La campagna sta andando benissimo, fidati. I risultati si vedranno.»</p>
             <p class="text-sm text-[#0e2c43]/55 mt-2">— chi te la vende</p>
           </div>
-          <div class="face real">
+          <div class="vs-mid" aria-hidden="true">i numeri dicono un'altra cosa ↓</div>
+          <div class="vs-card vs-real">
             <span class="flip-tag">I NUMERI</span>
             <p class="text-lg font-semibold leading-snug">Costo per nuovo cliente: <span class="num">8,40 €</span> — <span class="num">+18%</span> in due mesi. Da rivedere.</p>
-            <p class="text-sm text-[#0e2c43]/55 mt-2">— la voce imparziale</p>
+            <p class="vs-who mt-2">— la voce imparziale</p>
           </div>
-          <p class="flip-hint" id="flipHint">tocca per girare ↻</p>
         </div>
       </div>
       <div class="reveal">
@@ -1275,15 +1274,6 @@
       });
     }, { threshold: 0.35 });
     io.observe(list);
-  })();
-
-  // Flipcard raccontato/vero
-  (function(){
-    var card = document.getElementById('flipCard');
-    if (!card) return;
-    function flip(){ card.classList.toggle('flipped'); var h = document.getElementById('flipHint'); if (h) h.textContent = card.classList.contains('flipped') ? 'tocca per tornare ↻' : 'tocca per girare ↻'; }
-    card.addEventListener('click', flip);
-    card.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } });
   })();
 
   // Carosello progetti: indicatori
