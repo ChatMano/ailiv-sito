@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prepariamo la tua call — Ailiv</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="/assets/bollino-ailiv.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#143d5c; --ink:#0e2c43; --gold:#d4a747; --gold-text:#8a6a1e; --cream:#fafaf7; --line:rgba(20,61,92,.14); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { font-size:112.5%; font-family:'Inter',sans-serif; }
+  body { background:var(--cream); color:var(--ink); -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:640px; margin:0 auto; padding:2rem 1rem 2.5rem; display:flex; flex-direction:column; min-height:100dvh; }
+  .head { text-align:center; margin-bottom:1.2rem; }
+  .head img { height:44px; width:auto; }
+  .head p { font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:rgba(20,61,92,.6); margin-top:.5rem; letter-spacing:.06em; }
+  .chat { flex:1; background:#fff; border:1.5px solid var(--navy); border-radius:16px; box-shadow:6px 6px 0 rgba(20,61,92,.08); display:flex; flex-direction:column; overflow:hidden; }
+  .msgs { flex:1; overflow-y:auto; padding:1.1rem; display:flex; flex-direction:column; gap:.7rem; min-height:320px; max-height:62dvh; }
+  .msg { max-width:85%; padding:.7rem .95rem; border-radius:14px; font-size:.95rem; line-height:1.55; white-space:pre-wrap; word-wrap:break-word; }
+  .bot { align-self:flex-start; background:var(--cream); border:1px solid var(--line); border-bottom-left-radius:4px; }
+  .me { align-self:flex-end; background:var(--navy); color:#fff; border-bottom-right-radius:4px; }
+  .bot .who { display:flex; align-items:center; gap:.4rem; font-family:'IBM Plex Mono',monospace; font-size:.66rem; color:var(--gold-text); margin-bottom:.3rem; }
+  .bot .who img { width:16px; height:16px; }
+  .typing { align-self:flex-start; font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:rgba(20,61,92,.55); padding:.3rem .9rem; }
+  .bar { display:flex; gap:.6rem; padding: .8rem; border-top:1.5px solid var(--line); background:#fff; }
+  .bar textarea { flex:1; resize:none; font-family:'Inter',sans-serif; font-size:1rem; color:var(--ink); border:1.5px solid rgba(20,61,92,.25); border-radius:10px; padding:.65rem .8rem; outline:none; max-height:120px; }
+  .bar textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,167,71,.18); }
+  .bar button { background:var(--gold); color:var(--ink); border:none; font-weight:800; font-size:.95rem; padding:.65rem 1.1rem; border-radius:10px; cursor:pointer; }
+  .bar button:hover { background:#b8902f; }
+  .bar button:disabled { opacity:.5; cursor:wait; }
+  .note { font-family:'IBM Plex Mono',monospace; font-size:.68rem; color:rgba(20,61,92,.55); text-align:center; margin-top:.9rem; line-height:1.6; }
+  .note a { color:var(--gold-text); }
+  .fallback { text-align:center; padding:2.5rem 1.2rem; }
+  .fallback h2 { font-weight:800; font-size:1.4rem; margin-bottom:.6rem; }
+  .fallback p { color:rgba(20,61,92,.78); line-height:1.6; max-width:28rem; margin:0 auto; }
+  .fallback a { color:var(--gold-text); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <img src="/assets/logo-ailiv-email.png" alt="Ailiv">
+    <p>PREPARIAMO LA TUA CALL · 3 MINUTI</p>
+  </div>
+  <div class="chat">
+    <div class="msgs" id="msgs"></div>
+    <div class="bar" id="bar">
+      <textarea id="inp" rows="1" placeholder="Scrivi come parli…" autocomplete="off"></textarea>
+      <button id="send" type="button">Invia</button>
+    </div>
+  </div>
+  <p class="note">Chat con l'assistente AI di AILIV: le risposte servono solo a preparare il tuo check-up.<br>Problemi? Scrivici a <a href="mailto:info@ailiv.it">info@ailiv.it</a> — <a href="/privacy.html">privacy</a></p>
+</div>
+
+<script>
+(function(){
+  var WORKER = 'https://ailiv-prequalifica.amanoamano.workers.dev';
+  var msgs = document.getElementById('msgs');
+  var inp = document.getElementById('inp');
+  var send = document.getElementById('send');
+  var bar = document.getElementById('bar');
+
+  var q = new URLSearchParams(location.search);
+  var c = (q.get('c') || '').trim();
+  var history = [];
+  var busy = false;
+  var finished = false;
+
+  function esc(s){ var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  function addBot(text){
+    var el = document.createElement('div');
+    el.className = 'msg bot';
+    el.innerHTML = '<div class="who"><img src="/assets/bollino-ailiv.png" alt="">AILIV — assistente AI</div>' + esc(text);
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+  function addMe(text){
+    var el = document.createElement('div');
+    el.className = 'msg me';
+    el.textContent = text;
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+  var typingEl = null;
+  function typing(on){
+    if (on && !typingEl) {
+      typingEl = document.createElement('div');
+      typingEl.className = 'typing';
+      typingEl.textContent = 'sta scrivendo…';
+      msgs.appendChild(typingEl);
+      msgs.scrollTop = msgs.scrollHeight;
+    } else if (!on && typingEl) { typingEl.remove(); typingEl = null; }
+  }
+
+  function fallback(){
+    document.querySelector('.chat').innerHTML =
+      '<div class="fallback"><h2>Apri il link dalla tua email.</h2>' +
+      '<p>Questa chat si apre dal link personale che ti abbiamo mandato via mail dopo la prenotazione. ' +
+      'Non lo trovi? Nessun problema: scrivici a <a href="mailto:info@ailiv.it">info@ailiv.it</a> e prepariamo noi la call con te.</p></div>';
+  }
+
+  if (!/^[A-Za-z0-9]{15,32}$/.test(c)) { fallback(); return; }
+
+  function opening(name){
+    var hi = name ? ('Ciao ' + name + '!') : 'Ciao!';
+    return hi + " Sono l'assistente AI di Andrea — sì, proprio il tipo di tecnologia di cui parlerete in call. " +
+      "Ti rubo 3 minuti con qualche domanda veloce, così Andrea arriva già sapendo come lavori e ti mostra subito esempi sui TUOI numeri. " +
+      "Scrivi come parli: non ci sono risposte sbagliate.\n\nPartiamo: che attività hai e quanti siete, più o meno?";
+  }
+
+  // Avvio: verifica il link e personalizza il saluto
+  fetch(WORKER + '/hello?c=' + encodeURIComponent(c))
+    .then(function(r){ if (!r.ok) throw new Error('bad'); return r.json(); })
+    .then(function(j){
+      var op = opening(j.firstName || '');
+      history.push({ role: 'assistant', content: op });
+      addBot(op);
+      inp.focus();
+    })
+    .catch(fallback);
+
+  function finish(){
+    finished = true;
+    bar.style.display = 'none';
+  }
+
+  function sendMsg(){
+    if (busy || finished) return;
+    var text = inp.value.trim();
+    if (!text) return;
+    inp.value = '';
+    addMe(text);
+    history.push({ role: 'user', content: text });
+    busy = true; send.disabled = true; typing(true);
+
+    fetch(WORKER + '/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ c: c, history: history })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      typing(false);
+      var reply = (j && j.reply) ? j.reply : 'Scusami, ho avuto un intoppo — me lo ridici?';
+      history.push({ role: 'assistant', content: reply });
+      addBot(reply);
+      if (j && j.done) finish();
+    })
+    .catch(function(){
+      typing(false);
+      addBot('Ops, connessione ballerina. Riprova tra un attimo, oppure scrivici a info@ailiv.it — la call resta confermata comunque.');
+    })
+    .finally(function(){ busy = false; send.disabled = false; if (!finished) inp.focus(); });
+  }
+
+  send.addEventListener('click', sendMsg);
+  inp.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+  });
+})();
+</script>
+</body>
+</html>
