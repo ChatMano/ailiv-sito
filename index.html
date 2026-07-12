@@ -273,6 +273,17 @@
   .price-new { font-family: 'Archivo Black', sans-serif; font-size: clamp(3.6rem, 10vw, 5.2rem); line-height: 1; color: #d4a747; }
   .price-sub { font-size: 1rem; color: rgba(250,250,247,.78); max-width: 30rem; margin: 0 auto; line-height: 1.6; }
   .price-sub b { color: #fafaf7; }
+  .lead-form { display: flex; flex-direction: column; gap: .95rem; }
+  .lead-form label { font-family: 'IBM Plex Mono', monospace; font-size: .74rem; color: rgba(20,61,92,.75); display: flex; flex-direction: column; gap: .38rem; letter-spacing: .02em; }
+  .lead-form input { font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--ink); background: #fff; border: 1.5px solid rgba(20,61,92,.25); border-radius: 10px; padding: .75rem .9rem; outline: none; transition: border-color .2s, box-shadow .2s; width: 100%; }
+  .lead-form input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,167,71,.18); }
+  .lead-submit { width: 100%; border: none; cursor: pointer; margin-top: .3rem; font-size: 1.02rem; }
+  .lead-submit:disabled { opacity: .6; cursor: wait; }
+  .lead-status { font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: #a03a2e; min-height: 1.2em; margin-top: .2rem; }
+  .lead-legal { font-family: 'IBM Plex Mono', monospace; font-size: .7rem; color: rgba(20,61,92,.6); line-height: 1.65; margin-top: .4rem; }
+  .lead-legal a { color: var(--gold-text); }
+  .grecaptcha-badge { visibility: hidden; }
+
   .price-stack { text-align: left; max-width: 30rem; margin: 1.4rem auto 0; border: 1px solid rgba(212,167,71,.35); border-radius: 12px; padding: 1.1rem 1.2rem; background: rgba(250,250,247,.04); }
   .price-stack-t { font-family: 'IBM Plex Mono', monospace; font-size: .74rem; letter-spacing: .12em; color: var(--gold); margin-bottom: .6rem; }
   .price-stack ul { display: flex; flex-direction: column; gap: .45rem; }
@@ -1222,15 +1233,24 @@
 
     <div class="formcard reveal">
       <p class="mono text-[.74rem] text-[#0e2c43]/75 leading-relaxed mb-3"><b>Patto chiaro:</b> compili, e ti arriva subito una mail col calendario per <b>scegliere tu giorno e ora</b> della call. Il numero serve solo per quella chiamata — niente richiami, niente liste. Dati protetti come da <a href="privacy.html" class="underline">informativa privacy</a>: niente cessioni a terzi, cancellazione quando la chiedi.</p>
-<!-- Form contatti -->
-        <iframe src="https://api.leadconnectorhq.com/widget/form/BurG4Q7fFt6liEwrBBuF"
-          style="width:100%;border:none;border-radius:12px;min-height:479px"
-          id="inline-BurG4Q7fFt6liEwrBBuF" data-layout='{"id":"INLINE"}'
-          data-trigger-type="alwaysShow" data-activation-type="alwaysActivated"
-          data-deactivation-type="neverDeactivate" data-form-name="Form Sito ufficiale"
-          data-height="479" data-layout-iframe-id="inline-BurG4Q7fFt6liEwrBBuF"
-          data-form-id="BurG4Q7fFt6liEwrBBuF" title="Form Sito ufficiale"></iframe>
-        <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+<!-- Form contatti nativo (invia al CRM, protetto da reCAPTCHA) -->
+      <form id="leadForm" class="lead-form" novalidate>
+        <label>Il tuo nome
+          <input name="first_name" autocomplete="given-name" required placeholder="Mario">
+        </label>
+        <label>Cognome
+          <input name="last_name" autocomplete="family-name" placeholder="Rossi">
+        </label>
+        <label>Telefono — una sola chiamata, per fissare la call
+          <input name="phone" type="tel" autocomplete="tel" required placeholder="+39 333 123 4567">
+        </label>
+        <label>Email — dove ti mandiamo il mini-report
+          <input name="email" type="email" autocomplete="email" required placeholder="nome@tuaazienda.it">
+        </label>
+        <button type="submit" class="cta lead-submit">Richiedi il check-up gratuito →</button>
+        <p class="lead-status" id="leadStatus" role="status" aria-live="polite"></p>
+        <p class="lead-legal">Inviando accetti l'<a href="privacy.html">informativa privacy</a> e i <a href="termini.html">termini</a>. Modulo protetto da reCAPTCHA: si applicano <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">privacy</a> e <a href="https://policies.google.com/terms" target="_blank" rel="noopener">termini</a> di Google.</p>
+      </form>
     </div>
 
     <p class="mono text-[.7rem] text-[#0e2c43]/75 mt-5 leading-relaxed reveal">Cosa succede dopo: ricevi subito una mail col calendario, scegli giorno e ora, e a quell'ora ti chiamo io.</p>
@@ -2171,6 +2191,75 @@ function localInit(root){
       });
     }, { threshold: 0.1 });
     io.observe(v);
+  })();
+
+  // ===== Form nativo -> CRM (stesso endpoint del widget, reCAPTCHA on-demand) =====
+  (function(){
+    var form = document.getElementById('leadForm');
+    if (!form) return;
+    var KEY = '6LeDBFwpAAAAAJe8ux9-imrqZ2ueRsEtdiWoDDpX';
+    var FORM_ID = 'BurG4Q7fFt6liEwrBBuF';
+    var LOC_ID = 'BphV4FTBieSmV7ou2li2';
+    var loading = null;
+    function loadRecaptcha(){
+      if (window.grecaptcha && window.grecaptcha.enterprise) return Promise.resolve();
+      if (loading) return loading;
+      loading = new Promise(function(res, rej){
+        var sc = document.createElement('script');
+        sc.src = 'https://www.google.com/recaptcha/enterprise.js?render=' + KEY;
+        sc.async = true; sc.onload = res; sc.onerror = rej;
+        document.head.appendChild(sc);
+      });
+      return loading;
+    }
+    form.addEventListener('focusin', function(){ loadRecaptcha(); }, { once: true });
+    var statusEl = document.getElementById('leadStatus');
+    var btn = form.querySelector('.lead-submit');
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var d = {
+        first_name: form.first_name.value.trim(),
+        last_name: form.last_name.value.trim(),
+        phone: form.phone.value.trim(),
+        email: form.email.value.trim()
+      };
+      if (!d.first_name || !d.phone || !d.email) { statusEl.textContent = 'Compila nome, telefono ed email.'; return; }
+      btn.disabled = true; btn.textContent = 'Invio in corso…'; statusEl.textContent = '';
+      loadRecaptcha().then(function(){
+        return new Promise(function(res){ grecaptcha.enterprise.ready(res); });
+      }).then(function(){
+        return grecaptcha.enterprise.execute(KEY, { action: 'LEADGEN_FORM_SUBMIT' });
+      }).then(function(token){
+        var payload = {
+          first_name: d.first_name, last_name: d.last_name, phone: d.phone, email: d.email,
+          formId: FORM_ID, location_id: LOC_ID,
+          eventData: {
+            source: document.referrer ? 'referral' : 'direct',
+            referrer: document.referrer || '',
+            page: { url: location.href, title: document.title },
+            timestamp: Date.now(),
+            type: 'page-visit', parentId: FORM_ID, pageVisitType: 'form',
+            domain: 'ailiv.it', version: 'v3', medium: 'form', mediumId: FORM_ID
+          },
+          Timezone: 'Europe/Rome (GMT+02:00)'
+        };
+        var fd = new FormData();
+        fd.append('formData', JSON.stringify(payload));
+        fd.append('locationId', LOC_ID);
+        fd.append('formId', FORM_ID);
+        fd.append('captchaV3', token);
+        return fetch('https://backend.leadconnectorhq.com/forms/submit?formId=' + FORM_ID + '&locationId=' + LOC_ID, { method: 'POST', body: fd });
+      }).then(function(r){
+        return r.json().catch(function(){ return {}; }).then(function(j){ return { ok: r.ok, j: j }; });
+      }).then(function(x){
+        if (x.ok && (x.j.status === true || x.j.contactId || x.j.submissionId)) {
+          window.location.href = 'grazie.html';
+        } else { throw new Error('submit'); }
+      }).catch(function(){
+        btn.disabled = false; btn.textContent = 'Richiedi il check-up gratuito →';
+        statusEl.textContent = 'Non è andato — riprova tra qualche secondo, o scrivici a ailivsrl@gmail.com';
+      });
+    });
   })();
 </script>
 <script src="assets/cookie-consent.js" defer></script>
