@@ -1221,7 +1221,7 @@
     </div>
 
     <div class="formcard reveal">
-      <p class="mono text-[.74rem] text-[#0e2c43]/75 leading-relaxed mb-3"><b>Patto chiaro:</b> il numero serve a una cosa sola — fissare la call. Una telefonata, concordata; se non rispondi ti scriviamo, non ti richiamiamo a raffica. E il tuo numero non entra in nessuna lista.</p>
+      <p class="mono text-[.74rem] text-[#0e2c43]/75 leading-relaxed mb-3"><b>Patto chiaro:</b> il numero serve a una cosa sola — fissare la call. Una telefonata, concordata; se non rispondi ti scriviamo, non ti richiamiamo a raffica. I tuoi dati finiscono nel nostro gestionale contatti, protetti come da <a href="privacy.html" class="underline">informativa privacy</a>: niente cessioni a terzi, niente telefonate a raffica, cancellazione quando la chiedi.</p>
 <!-- Form contatti -->
         <iframe src="https://api.leadconnectorhq.com/widget/form/BurG4Q7fFt6liEwrBBuF"
           style="width:100%;border:none;border-radius:12px;min-height:479px"
@@ -2171,6 +2171,37 @@ function localInit(root){
     }, { threshold: 0.1 });
     io.observe(v);
   })();
+</script>
+<script src="assets/cookie-consent.js" defer></script>
+<script>
+// Gate dei tracker: si caricano SOLO dopo il consenso (banner AilivCookies)
+(function(){
+  var GA4_ID = '';      // G-XXXXXXXXXX — riempire per attivare Google Analytics
+  var META_PIXEL = '';  // 000000000000000 — riempire per attivare il Pixel Meta
+  var done = { s: false, m: false };
+  function gaLoad(){
+    if (done.s || !GA4_ID) return; done.s = true;
+    var sc = document.createElement('script'); sc.async = true;
+    sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+    document.head.appendChild(sc);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'granted' });
+    gtag('config', GA4_ID, { anonymize_ip: true });
+  }
+  function fbLoad(){
+    if (done.m || !META_PIXEL) return; done.m = true;
+    !function(f,b,e,v,n,t,x){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;x=b.getElementsByTagName(e)[0];x.parentNode.insertBefore(t,x)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', META_PIXEL); fbq('track', 'PageView');
+    if (window.gtag) gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' });
+  }
+  function apply(c){ if (c && c.statistics) gaLoad(); if (c && c.marketing) fbLoad(); }
+  document.addEventListener('ailiv:cookie-consent', function(e){ apply(e.detail); });
+  window.addEventListener('load', function(){
+    if (window.AilivCookies) apply({ statistics: window.AilivCookies.hasConsent('statistics'), marketing: window.AilivCookies.hasConsent('marketing') });
+  });
+})();
 </script>
 </body>
 </html>
