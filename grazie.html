@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Richiesta ricevuta — Ailiv</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="assets/bollino-ailiv.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --navy: #143d5c; --ink: #0e2c43; --gold: #d4a747; --gold-text: #8a6a1e; --cream: #fafaf7; --line: rgba(20,61,92,.12); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 112.5%; font-family: 'Inter', sans-serif; }
+  body { background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 3.5rem 1.25rem 4rem; }
+  .check { width: 64px; height: 64px; border-radius: 50%; background: rgba(212,167,71,.15); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--gold-text); margin-bottom: 1.4rem; }
+  h1 { font-weight: 800; font-size: clamp(1.7rem, 5vw, 2.4rem); letter-spacing: -.02em; margin-bottom: .8rem; }
+  .lead { font-size: 1.05rem; line-height: 1.65; color: rgba(20,61,92,.8); max-width: 34rem; margin-bottom: .6rem; }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+  .kick { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-text); margin: 2.4rem 0 1rem; }
+  .cal { background: #fff; border: 1.5px solid var(--navy); border-radius: 16px; box-shadow: 6px 6px 0 rgba(20,61,92,.08); overflow: hidden; padding: .5rem; }
+  .note { font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: rgba(20,61,92,.72); line-height: 1.6; margin-top: 1rem; }
+  .back { display: inline-block; margin-top: 2rem; font-weight: 700; color: var(--gold-text); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="check">✓</div>
+  <h1>Richiesta ricevuta.</h1>
+  <p class="lead">Ti abbiamo scritto una mail con tutto quello che serve — controlla anche lo spam.</p>
+  <p class="lead"><b>Vuoi giocare d'anticipo?</b> Scegli subito giorno e ora della call qui sotto: 30–45 minuti, e nei giorni successivi ricevi il mini-report scritto sui tuoi numeri.</p>
+
+  <p class="kick mono">Scegli il tuo slot</p>
+  <div class="cal">
+    <iframe src="https://api.leadconnectorhq.com/widget/booking/Y4jEIlri5iwbzwgzWVm5"
+      style="width:100%;border:none;border-radius:12px;overflow:hidden;min-height:700px"
+      scrolling="no" id="booking-Y4jEIlri5iwbzwgzWVm5" title="Prenota il check-up gratuito"></iframe>
+    <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+  </div>
+  <p class="note">Una telefonata sola, al giorno e all'ora che scegli tu. Se nessuno slot ti torna comodo, rispondi alla mail con due orari e ci pensiamo noi.</p>
+
+  <a class="back" href="/">← Torna su ailiv.it</a>
+</div>
+
+<script src="assets/cookie-consent.js" defer></script>
+<script>
+// Stesso gate della home + evento di conversione lead
+(function(){
+  var GA4_ID = 'G-W4JNRMTPEY';
+  var META_PIXEL = '2944167229260391';
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ dataLayer.push(arguments); };
+  gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied', wait_for_update: 500 });
+  gtag('set', 'ads_data_redaction', true);
+  gtag('set', 'url_passthrough', true);
+  gtag('js', new Date());
+  gtag('config', GA4_ID, { anonymize_ip: true });
+  var sc = document.createElement('script'); sc.async = true;
+  sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+  document.head.appendChild(sc);
+  // conversione: arrivo sulla thank-you = form inviato (pieno se consenso, ping anonimo se no)
+  gtag('event', 'genera_lead', { page_location: location.href });
+
+  var fbDone = false;
+  function fbLoad(){
+    if (fbDone || !META_PIXEL) return; fbDone = true;
+    !function(f,b,e,v,n,t,x){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;x=b.getElementsByTagName(e)[0];x.parentNode.insertBefore(t,x)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', META_PIXEL); fbq('track', 'PageView'); fbq('track', 'Lead');
+  }
+  function apply(c){
+    if (!c) return;
+    gtag('consent', 'update', {
+      analytics_storage: c.statistics ? 'granted' : 'denied',
+      ad_storage: c.marketing ? 'granted' : 'denied',
+      ad_user_data: c.marketing ? 'granted' : 'denied',
+      ad_personalization: c.marketing ? 'granted' : 'denied'
+    });
+    if (c.marketing) fbLoad();
+  }
+  document.addEventListener('ailiv:cookie-consent', function(e){ apply(e.detail); });
+  window.addEventListener('load', function(){
+    if (window.AilivCookies) apply({
+      statistics: window.AilivCookies.hasConsent('statistics'),
+      marketing: window.AilivCookies.hasConsent('marketing')
+    });
+  });
+})();
+</script>
+</body>
+</html>
