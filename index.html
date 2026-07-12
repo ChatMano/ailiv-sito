@@ -2197,6 +2197,15 @@ function localInit(root){
     if (window.gtag) gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' });
   }
   function apply(c){ if (c && c.statistics) gaLoad(); if (c && c.marketing) fbLoad(); }
+  // Eventi CTA verso il form (solo se GA4 e attivo, cioe dopo consenso)
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[href="#prenota"]') : null;
+    if (!a || !window.gtag) return;
+    gtag('event', 'cta_prenota_click', {
+      cta_text: (a.textContent || '').trim().slice(0, 60),
+      cta_class: a.className ? String(a.className).slice(0, 60) : ''
+    });
+  }, true);
   document.addEventListener('ailiv:cookie-consent', function(e){ apply(e.detail); });
   window.addEventListener('load', function(){
     if (window.AilivCookies) apply({ statistics: window.AilivCookies.hasConsent('statistics'), marketing: window.AilivCookies.hasConsent('marketing') });
