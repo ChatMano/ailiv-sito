@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scegli l'orario del tuo check-up — Ailiv</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="assets/bollino-ailiv.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://www.google.com/recaptcha/enterprise.js?render=6LeDBFwpAAAAAJe8ux9-imrqZ2ueRsEtdiWoDDpX"></script>
+<style>
+  :root { --navy:#143d5c; --ink:#0e2c43; --gold:#d4a747; --gold-text:#8a6a1e; --cream:#fafaf7; --warm:#f5f3ee; --line:rgba(20,61,92,.14); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { font-size:112.5%; font-family:'Inter',sans-serif; }
+  body { background:var(--cream); color:var(--ink); -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:720px; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+  .head { text-align:center; margin-bottom:1.8rem; }
+  .head img { height:52px; width:auto; margin-bottom:1.1rem; }
+  h1 { font-weight:800; font-size:clamp(1.5rem,4.5vw,2.1rem); letter-spacing:-.02em; margin-bottom:.5rem; }
+  .sub { font-size:1rem; line-height:1.6; color:rgba(20,61,92,.78); max-width:32rem; margin:0 auto; }
+  .mono { font-family:'IBM Plex Mono',monospace; }
+  .who { font-family:'IBM Plex Mono',monospace; font-size:.76rem; color:var(--gold-text); text-align:center; margin-top:.7rem; }
+  .day { margin-top:1.8rem; }
+  .day-h { font-family:'IBM Plex Mono',monospace; font-size:.76rem; letter-spacing:.12em; text-transform:uppercase; color:rgba(20,61,92,.6); border-bottom:1px dashed var(--line); padding-bottom:.5rem; margin-bottom:.9rem; }
+  .slots { display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:.6rem; }
+  .slot { font-family:'IBM Plex Mono',monospace; font-size:1rem; font-weight:600; color:var(--navy); background:#fff; border:1.5px solid var(--line); border-radius:12px; padding:.85rem .4rem; cursor:pointer; transition:all .15s; min-height:48px; }
+  .slot:hover { border-color:var(--gold); background:rgba(212,167,71,.08); transform:translateY(-1px); }
+  .slot:disabled { opacity:.5; cursor:wait; }
+  .state { text-align:center; padding:3rem 1rem; }
+  .spin { width:32px; height:32px; border:3px solid rgba(20,61,92,.15); border-top-color:var(--gold); border-radius:50%; margin:0 auto 1rem; animation:sp 1s linear infinite; }
+  @keyframes sp { to { transform:rotate(360deg); } }
+  .done { text-align:center; padding:2.5rem 1rem; }
+  .done .check { width:72px; height:72px; border-radius:50%; background:rgba(212,167,71,.15); border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:2rem; color:var(--gold-text); margin:0 auto 1.4rem; }
+  .done h2 { font-weight:800; font-size:1.6rem; margin-bottom:.6rem; }
+  .done p { color:rgba(20,61,92,.78); line-height:1.6; max-width:30rem; margin:.4rem auto 0; }
+  .err { color:#a03a2e; font-size:.9rem; margin-top:1rem; text-align:center; }
+  .back { display:block; text-align:center; margin-top:2.2rem; font-weight:700; color:var(--gold-text); text-decoration:none; font-size:.9rem; }
+  .note { font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:rgba(20,61,92,.55); text-align:center; margin-top:1.6rem; line-height:1.6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <img src="assets/logo-ailiv-email.png" alt="Ailiv">
+    <h1>Scegli quando ti chiamo.</h1>
+    <p class="sub">Un solo tocco sull'orario che preferisci. Al resto pensiamo noi: niente da ricompilare.</p>
+    <p class="who mono" id="who"></p>
+  </div>
+
+  <div id="app">
+    <div class="state"><div class="spin"></div><p class="mono">Carico gli orari disponibili…</p></div>
+  </div>
+
+  <a class="back" href="/">← Torna su ailiv.it</a>
+</div>
+
+<script>
+(function(){
+  var CAL = 'Y4jEIlri5iwbzwgzWVm5';
+  var LOC = 'BphV4FTBieSmV7ou2li2';
+  var KEY = '6LeDBFwpAAAAAJe8ux9-imrqZ2ueRsEtdiWoDDpX';
+  var TZ = 'Europe/Rome';
+  var app = document.getElementById('app');
+
+  var q = new URLSearchParams(location.search);
+  var c = {
+    first_name: (q.get('first_name') || '').trim(),
+    last_name: (q.get('last_name') || '').trim(),
+    phone: (q.get('phone') || '').trim(),
+    email: (q.get('email') || '').trim()
+  };
+  if (c.first_name) document.getElementById('who').textContent = c.first_name + ', questi sono i primi orari liberi:';
+
+  var GG = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
+  var MM = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
+  function fmtDay(iso){ var d = new Date(iso); return GG[d.getDay()] + ' ' + d.getDate() + ' ' + MM[d.getMonth()]; }
+  function fmtTime(iso){ return iso.slice(11,16); }
+
+  function showError(msg){
+    app.innerHTML = '<div class="state"><p class="mono">' + msg + '</p><p class="err">Scrivici a <a href="mailto:ailivsrl@gmail.com">ailivsrl@gmail.com</a> e fissiamo noi.</p></div>';
+  }
+
+  var now = Date.now();
+  var end = now + 15 * 24 * 60 * 60 * 1000;
+  fetch('https://backend.leadconnectorhq.com/calendars/' + CAL + '/free-slots?startDate=' + now + '&endDate=' + end + '&timezone=' + encodeURIComponent(TZ))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var days = Object.keys(data).filter(function(k){ return data[k] && data[k].slots && data[k].slots.length; }).sort();
+      if (!days.length) { showError('Al momento non ci sono orari liberi nei prossimi giorni.'); return; }
+      var html = '';
+      days.slice(0, 8).forEach(function(day){
+        var slots = data[day].slots;
+        html += '<div class="day"><div class="day-h">' + fmtDay(slots[0]) + '</div><div class="slots">';
+        slots.forEach(function(s){ html += '<button type="button" class="slot" data-slot="' + s + '">' + fmtTime(s) + '</button>'; });
+        html += '</div></div>';
+      });
+      html += '<p class="note">Fuso orario: Italia. Una telefonata di 30–45 minuti, al giorno e all\'ora che scegli tu.</p>';
+      app.innerHTML = html;
+      app.addEventListener('click', onSlot);
+    })
+    .catch(function(){ showError('Non riesco a caricare gli orari.'); });
+
+  var booking = false;
+  function onSlot(e){
+    var btn = e.target.closest('.slot');
+    if (!btn || booking) return;
+    booking = true;
+    var slot = btn.getAttribute('data-slot');
+    Array.prototype.forEach.call(app.querySelectorAll('.slot'), function(b){ b.disabled = true; });
+    btn.textContent = '…';
+
+    grecaptcha.enterprise.ready(function(){
+      grecaptcha.enterprise.execute(KEY, { action: 'LEADGEN_FORM_SUBMIT' }).then(function(token){
+        var payload = {
+          first_name: c.first_name, last_name: c.last_name, phone: c.phone, email: c.email,
+          location_id: LOC, calendar_id: CAL,
+          selected_slot: slot, selected_timezone: TZ,
+          source: 'booking_widget',
+          eventData: { page: { url: location.href, title: document.title }, type: 'page-visit', domain: 'ailiv.it', medium: 'calendar', mediumId: CAL, version: 'v3' },
+          Timezone: 'Europe/Rome (GMT+02:00)'
+        };
+        var fd = new FormData();
+        fd.append('formData', JSON.stringify(payload));
+        fd.append('captchaV3', token);
+        return fetch('https://backend.leadconnectorhq.com/calendars/events/appointments/widget', {
+          method: 'POST',
+          headers: { channel: 'APP', source: 'WEB_USER', version: '2021-04-15', timezone: TZ },
+          body: fd
+        });
+      }).then(function(r){
+        return r.json().catch(function(){ return {}; }).then(function(j){ return { ok: r.ok, j: j }; });
+      }).then(function(x){
+        if (x.ok && (x.j.appointment || x.j.id || x.j.contact)) {
+          var d = new Date(slot);
+          app.innerHTML = '<div class="done"><div class="check">✓</div><h2>Fatto. Ci sentiamo ' + fmtDay(slot) + ' alle ' + fmtTime(slot) + '.</h2><p>Ti ho mandato la conferma via mail — trovi tutto lì, con la possibilità di spostare se ti serve. A presto!</p><p><b>Andrea Rubei — AILIV</b></p></div>';
+          try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(_) {}
+        } else { throw new Error('book'); }
+      }).catch(function(){
+        booking = false;
+        Array.prototype.forEach.call(app.querySelectorAll('.slot'), function(b){ b.disabled = false; });
+        btn.textContent = fmtTime(slot);
+        var e = document.createElement('p'); e.className = 'err';
+        e.innerHTML = 'Quell\'orario è appena stato preso o c\'è stato un intoppo — prova con un altro, o scrivici a <a href="mailto:ailivsrl@gmail.com">ailivsrl@gmail.com</a>.';
+        app.insertBefore(e, app.firstChild);
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
