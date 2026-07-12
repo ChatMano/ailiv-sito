@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sposta l'appuntamento — Ailiv</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="/assets/bollino-ailiv.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#143d5c; --ink:#0e2c43; --gold:#d4a747; --gold-text:#8a6a1e; --cream:#fafaf7; --line:rgba(20,61,92,.14); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { font-size:112.5%; font-family:'Inter',sans-serif; }
+  body { background:var(--cream); color:var(--ink); -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:560px; margin:0 auto; padding:3.4rem 1.25rem 4rem; text-align:center; }
+  .head img { height:50px; width:auto; margin-bottom:2rem; }
+  h1 { font-weight:800; font-size:clamp(1.5rem,4.5vw,2rem); letter-spacing:-.02em; margin-bottom:.6rem; }
+  .sub { font-size:1.02rem; line-height:1.6; color:rgba(20,61,92,.78); max-width:30rem; margin:0 auto; }
+  .mono { font-family:'IBM Plex Mono',monospace; }
+  .spin { width:34px; height:34px; border:3px solid rgba(20,61,92,.15); border-top-color:var(--gold); border-radius:50%; margin:0 auto 1.6rem; animation:sp 1s linear infinite; }
+  @keyframes sp { to { transform:rotate(360deg); } }
+  .btn { display:none; margin-top:1.8rem; background:var(--navy); color:#fff; font-weight:700; font-size:1rem; text-decoration:none; padding:.9rem 1.6rem; border-radius:12px; }
+  .btn:hover { background:var(--ink); }
+  .icon { width:64px; height:64px; border-radius:50%; background:rgba(212,167,71,.15); border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.8rem; color:var(--gold-text); margin:0 auto 1.4rem; }
+  .mail { color:var(--gold-text); font-weight:700; text-decoration:none; }
+  .note { font-family:'IBM Plex Mono',monospace; font-size:.74rem; color:rgba(20,61,92,.55); margin-top:1.8rem; line-height:1.6; }
+  .back { display:inline-block; margin-top:2rem; font-weight:700; color:var(--gold-text); text-decoration:none; font-size:.9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head"><img src="/assets/logo-ailiv-email.png" alt="Ailiv"></div>
+  <div id="app">
+    <div class="spin"></div>
+    <h1>Un attimo…</h1>
+    <p class="sub">Ti sto portando alla pagina per scegliere un nuovo orario per la tua videochiamata.</p>
+    <a class="btn" id="manual" href="#">Vai a scegliere l'orario →</a>
+  </div>
+</div>
+<script>
+(function(){
+  var CAL = 'Gx2gDBVib5SQcULHTVS8';
+  var BASE = 'https://app.ailiv.it/widget/booking/' + CAL;
+  var app = document.getElementById('app');
+  var q = new URLSearchParams(location.search);
+  var id = (q.get('e') || '').trim();
+  var valid = /^[A-Za-z0-9]{12,40}$/.test(id);
+
+  if (valid) {
+    var dest = BASE + '?event_id=' + encodeURIComponent(id);
+    var btn = document.getElementById('manual');
+    if (btn) { btn.href = dest; btn.style.display = 'inline-block'; }
+    setTimeout(function(){ try { location.replace(dest); } catch(_) { location.href = dest; } }, 900);
+  } else {
+    app.innerHTML =
+      '<div class="icon">✉️</div>' +
+      '<h1>Spostiamo noi l\'appuntamento.</h1>' +
+      '<p class="sub">Scrivici a <a class="mail" href="mailto:info@ailiv.it?subject=Spostare%20l\'appuntamento">info@ailiv.it</a> ' +
+      'dicendo che vuoi cambiare orario: ti rispondiamo con i primi slot liberi. Ci pensiamo noi.</p>' +
+      '<a class="back" href="https://ailiv.it/">← Torna su ailiv.it</a>';
+  }
+})();
+</script>
+</body>
+</html>
