@@ -78,7 +78,7 @@
   function fmtTime(iso){ return iso.slice(11,16); }
 
   function showError(msg){
-    app.innerHTML = '<div class="state"><p class="mono">' + msg + '</p><p class="err">Scrivici a <a href="mailto:info@ailiv.it">ailivsrl@gmail.com</a> e fissiamo noi.</p></div>';
+    app.innerHTML = '<div class="state"><p class="mono">' + msg + '</p><p class="err">Scrivici a <a href="mailto:info@ailiv.it">info@ailiv.it</a> e fissiamo noi.</p></div>';
   }
 
   var now = Date.now();
@@ -141,7 +141,7 @@
         Array.prototype.forEach.call(app.querySelectorAll('.slot'), function(b){ b.disabled = false; });
         btn.textContent = fmtTime(slot);
         var e = document.createElement('p'); e.className = 'err';
-        e.innerHTML = 'Quell\'orario è appena stato preso o c\'è stato un intoppo — prova con un altro, o scrivici a <a href="mailto:info@ailiv.it">ailivsrl@gmail.com</a>.';
+        e.innerHTML = 'Quell\'orario è appena stato preso o c\'è stato un intoppo — prova con un altro, o scrivici a <a href="mailto:info@ailiv.it">info@ailiv.it</a>.';
         app.insertBefore(e, app.firstChild);
       });
     });
