@@ -43,8 +43,8 @@
 <div class="wrap">
   <div class="head">
     <img src="assets/logo-ailiv-email.png" alt="Ailiv">
-    <h1>Scegli quando ti chiamo.</h1>
-    <p class="sub">Un solo tocco sull'orario che preferisci. Al resto pensiamo noi: niente da ricompilare.</p>
+    <h1>Scegli quando ci vediamo.</h1>
+    <p class="sub">Un solo tocco sull'orario che preferisci: videochiamata di 30–45 minuti, il link ti arriva subito via mail. Niente da ricompilare.</p>
     <p class="who mono" id="who"></p>
   </div>
 
@@ -78,7 +78,7 @@
   function fmtTime(iso){ return iso.slice(11,16); }
 
   function showError(msg){
-    app.innerHTML = '<div class="state"><p class="mono">' + msg + '</p><p class="err">Scrivici a <a href="mailto:ailivsrl@gmail.com">ailivsrl@gmail.com</a> e fissiamo noi.</p></div>';
+    app.innerHTML = '<div class="state"><p class="mono">' + msg + '</p><p class="err">Scrivici a <a href="mailto:info@ailiv.it">ailivsrl@gmail.com</a> e fissiamo noi.</p></div>';
   }
 
   var now = Date.now();
@@ -95,7 +95,7 @@
         slots.forEach(function(s){ html += '<button type="button" class="slot" data-slot="' + s + '">' + fmtTime(s) + '</button>'; });
         html += '</div></div>';
       });
-      html += '<p class="note">Fuso orario: Italia. Una telefonata di 30–45 minuti, al giorno e all\'ora che scegli tu.</p>';
+      html += '<p class="note">Fuso orario: Italia. Videochiamata di 30–45 minuti — ti mostro esempi veri a schermo condiviso.</p>';
       app.innerHTML = html;
       app.addEventListener('click', onSlot);
     })
@@ -133,7 +133,7 @@
       }).then(function(x){
         if (x.ok && (x.j.appointment || x.j.id || x.j.contact)) {
           var d = new Date(slot);
-          app.innerHTML = '<div class="done"><div class="check">✓</div><h2>Fatto. Ci sentiamo ' + fmtDay(slot) + ' alle ' + fmtTime(slot) + '.</h2><p>Ti ho mandato la conferma via mail — trovi tutto lì, con la possibilità di spostare se ti serve. A presto!</p><p><b>Andrea Rubei — AILIV</b></p></div>';
+          app.innerHTML = '<div class="done"><div class="check">✓</div><h2>Fatto. Ci vediamo ' + fmtDay(slot) + ' alle ' + fmtTime(slot) + '.</h2><p>Ti ho mandato la conferma via mail: dentro trovi il <b>link della videochiamata</b> e i link per spostare o annullare, se ti serve. A presto!</p><p><b>Andrea Rubei — AILIV</b></p></div>';
           try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(_) {}
         } else { throw new Error('book'); }
       }).catch(function(){
@@ -141,7 +141,7 @@
         Array.prototype.forEach.call(app.querySelectorAll('.slot'), function(b){ b.disabled = false; });
         btn.textContent = fmtTime(slot);
         var e = document.createElement('p'); e.className = 'err';
-        e.innerHTML = 'Quell\'orario è appena stato preso o c\'è stato un intoppo — prova con un altro, o scrivici a <a href="mailto:ailivsrl@gmail.com">ailivsrl@gmail.com</a>.';
+        e.innerHTML = 'Quell\'orario è appena stato preso o c\'è stato un intoppo — prova con un altro, o scrivici a <a href="mailto:info@ailiv.it">ailivsrl@gmail.com</a>.';
         app.insertBefore(e, app.firstChild);
       });
     });
