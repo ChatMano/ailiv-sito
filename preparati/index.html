@@ -124,12 +124,14 @@
     .catch(fallback);
 
   function finish(){
+    // Chat "chiusa" ma il campo resta aperto: l'invito "scrivilo qui" dev'essere vero.
     finished = true;
-    bar.style.display = 'none';
+    inp.placeholder = 'Se ti viene in mente altro, scrivilo pure qui…';
+    inp.focus();
   }
 
   function sendMsg(){
-    if (busy || finished) return;
+    if (busy) return;
     var text = inp.value.trim();
     if (!text) return;
     inp.value = '';
@@ -154,7 +156,7 @@
       typing(false);
       addBot('Ops, connessione ballerina. Riprova tra un attimo, oppure scrivici a info@ailiv.it — la call resta confermata comunque.');
     })
-    .finally(function(){ busy = false; send.disabled = false; if (!finished) inp.focus(); });
+    .finally(function(){ busy = false; send.disabled = false; inp.focus(); });
   }
 
   send.addEventListener('click', sendMsg);
