@@ -5,7 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prepariamo la tua call — Ailiv</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="icon" type="image/png" href="/assets/bollino-ailiv.png">
+<meta name="description" content="Due minuti di domande veloci con l'assistente AI, così Andrea arriva alla call già sapendo come lavori.">
+<meta property="og:title" content="Prepariamo la tua call — Ailiv">
+<meta property="og:description" content="Due minuti di domande veloci con l'assistente AI, così Andrea arriva alla call già sapendo come lavori.">
+<meta property="og:image" content="https://ailiv.it/assets/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://ailiv.it/preparati/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ailiv">
+<meta property="og:locale" content="it_IT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ailiv.it/assets/og-card.png">
+<link rel="icon" href="/assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -74,7 +89,7 @@
   function addBot(text){
     var el = document.createElement('div');
     el.className = 'msg bot';
-    el.innerHTML = '<div class="who"><img src="/assets/bollino-ailiv.png" alt="">AILIV — assistente AI</div>' + esc(text);
+    el.innerHTML = '<div class="who"><img src="/assets/favicon-48.png" alt="">AILIV — assistente AI</div>' + esc(text);
     msgs.appendChild(el);
     msgs.scrollTop = msgs.scrollHeight;
   }
