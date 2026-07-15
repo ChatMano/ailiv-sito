@@ -121,10 +121,14 @@
   if (!/^[A-Za-z0-9]{15,32}$/.test(c)) { fallback(); return; }
 
   function opening(name){
-    var hi = name ? ('Ciao ' + name + '!') : 'Ciao!';
-    return hi + " Sono l'assistente AI di Andrea — sì, proprio il tipo di tecnologia di cui parlerete in call. " +
-      "Ti rubo 3 minuti con qualche domanda veloce, così Andrea arriva già sapendo come lavori e ti mostra subito esempi sui TUOI numeri. " +
-      "Scrivi come parli: non ci sono risposte sbagliate.\n\nPartiamo: che attività hai e quanti siete, più o meno?";
+    // NB: niente nome proprio nel saluto. Il closer si chiama Andrea e in Italia
+    // il lead può chiamarsi Andrea: "Ciao Andrea! Sono l'assistente AI di Andrea"
+    // è ridicolo. E UNA sola domanda: chiedere "che attività hai E quanti siete"
+    // faceva perdere per strada la seconda meta' (misurato: il lead risponde solo
+    // al settore, e il bot doveva richiedere la dimensione bruciando un turno).
+    return "Ciao! Sono l'assistente AI di Andrea di AILIV — sì, proprio il tipo di tecnologia di cui parlerete in call. " +
+      "Ti rubo due minuti, così Andrea arriva già sapendo come lavori.\n\n" +
+      "Scrivi come parli: non ci sono risposte sbagliate.\n\nPartiamo dalla base: che attività hai?";
   }
 
   // Avvio: verifica il link e personalizza il saluto
