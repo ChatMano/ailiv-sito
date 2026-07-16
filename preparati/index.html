@@ -17,10 +17,10 @@
 <meta property="og:locale" content="it_IT">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://ailiv.it/assets/og-card.png">
-<link rel="icon" href="/assets/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
-<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png">
-<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="icon" href="/assets/favicon.ico?v=2" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png?v=2">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -89,7 +89,7 @@
   function addBot(text){
     var el = document.createElement('div');
     el.className = 'msg bot';
-    el.innerHTML = '<div class="who"><img src="/assets/favicon-48.png" alt="">AILIV — assistente AI</div>' + esc(text);
+    el.innerHTML = '<div class="who"><img src="/assets/favicon-48.png?v=2" alt="">AILIV — assistente AI</div>' + esc(text);
     msgs.appendChild(el);
     msgs.scrollTop = msgs.scrollHeight;
   }
