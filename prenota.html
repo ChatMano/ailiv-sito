@@ -42,6 +42,15 @@
   .slot { font-family:'IBM Plex Mono',monospace; font-size:1rem; font-weight:600; color:var(--navy); background:#fff; border:1.5px solid var(--line); border-radius:12px; padding:.85rem .4rem; cursor:pointer; transition:all .15s; min-height:48px; }
   .slot:hover { border-color:var(--gold); background:rgba(212,167,71,.08); transform:translateY(-1px); }
   .slot:disabled { opacity:.5; cursor:wait; }
+  .slot.sel { border-color:var(--gold); background:rgba(212,167,71,.15); }
+  .lead-form { background:#fff; border:1.5px solid var(--navy); border-radius:14px; padding:1.1rem 1.1rem 1.3rem; margin-bottom:1.6rem; box-shadow:6px 6px 0 rgba(20,61,92,.08); }
+  .lead-form label { display:block; font-family:'IBM Plex Mono',monospace; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:rgba(20,61,92,.6); margin:.8rem 0 .3rem; }
+  .lead-form input { width:100%; font-family:'Inter',sans-serif; font-size:1rem; color:var(--ink); border:1.5px solid rgba(20,61,92,.25); border-radius:10px; padding:.65rem .8rem; outline:none; }
+  .lead-form input:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,167,71,.18); }
+  .lead-form .go { margin-top:1.1rem; width:100%; background:var(--gold); color:var(--ink); border:none; font-weight:800; font-size:1rem; padding:.85rem 1rem; border-radius:10px; cursor:pointer; }
+  .lead-form .go:hover { background:#b8902f; }
+  .lead-form .go:disabled { opacity:.5; cursor:wait; }
+  .lead-form .ferr { display:none; color:#a03a2e; font-size:.85rem; margin-top:.6rem; }
   .state { text-align:center; padding:3rem 1rem; }
   .spin { width:32px; height:32px; border:3px solid rgba(20,61,92,.15); border-top-color:var(--gold); border-radius:50%; margin:0 auto 1rem; animation:sp 1s linear infinite; }
   @keyframes sp { to { transform:rotate(360deg); } }
@@ -117,13 +126,74 @@
     .catch(function(){ showError('Non riesco a caricare gli orari.'); });
 
   var booking = false;
+  var pendingSlot = null;
+
+  // Il link arriva in due modi: dalla mail (dati nei query param → un tocco e via)
+  // oppure "nudo", girato al volo in chat → chiediamo i dati con un mini-form
+  // prima di confermare, altrimenti la prenotazione partirebbe vuota.
+  function hasData(){ return !!(c.first_name && c.email && c.phone); }
+
   function onSlot(e){
     var btn = e.target.closest('.slot');
     if (!btn || booking) return;
-    booking = true;
     var slot = btn.getAttribute('data-slot');
+    if (hasData()) { doBook(slot, btn); return; }
+    pendingSlot = slot;
+    Array.prototype.forEach.call(app.querySelectorAll('.slot'), function(b){ b.classList.remove('sel'); });
+    btn.classList.add('sel');
+    showForm();
+  }
+
+  function showForm(){
+    var f = document.getElementById('leadform');
+    if (!f) {
+      f = document.createElement('div');
+      f.id = 'leadform';
+      f.className = 'lead-form';
+      f.innerHTML =
+        '<div class="day-h">Un attimo: a chi mando il link della videochiamata?</div>' +
+        '<label for="lf-nome">Nome</label><input id="lf-nome" autocomplete="name" placeholder="Il tuo nome">' +
+        '<label for="lf-email">Email</label><input id="lf-email" type="email" autocomplete="email" placeholder="nome@tuaazienda.it">' +
+        '<label for="lf-tel">Telefono</label><input id="lf-tel" type="tel" autocomplete="tel" placeholder="+39 …">' +
+        '<button type="button" class="go" id="lf-go"></button>' +
+        '<p class="ferr" id="lf-err"></p>' +
+        '<p class="note" style="margin-top:.9rem;text-align:left;">Usiamo questi dati solo per organizzare la call. <a href="/privacy.html" style="color:var(--gold-text);">Privacy</a></p>';
+      app.insertBefore(f, app.firstChild);
+      document.getElementById('lf-nome').value = c.first_name || '';
+      document.getElementById('lf-email').value = c.email || '';
+      document.getElementById('lf-tel').value = c.phone || '';
+      document.getElementById('lf-go').addEventListener('click', submitForm);
+    }
+    document.getElementById('lf-go').textContent = 'Conferma ' + fmtDay(pendingSlot) + ' alle ' + fmtTime(pendingSlot);
+    try { f.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch(_) {}
+  }
+
+  function submitForm(){
+    if (booking || !pendingSlot) return;
+    var nome = document.getElementById('lf-nome').value.trim();
+    var email = document.getElementById('lf-email').value.trim();
+    var tel = document.getElementById('lf-tel').value.trim();
+    var err = document.getElementById('lf-err');
+    function fail(msg){ err.textContent = msg; err.style.display = 'block'; }
+    if (!nome) return fail('Scrivi il tuo nome.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail("Controlla l'email: lì ti arriva il link della videochiamata.");
+    if (tel.replace(/\D/g, '').length < 8) return fail('Controlla il numero di telefono.');
+    err.style.display = 'none';
+    var parts = nome.split(/\s+/);
+    c.first_name = parts.shift();
+    c.last_name = parts.join(' ') || c.last_name;
+    c.email = email;
+    c.phone = tel;
+    doBook(pendingSlot, app.querySelector('.slot.sel'));
+  }
+
+  function doBook(slot, btn){
+    if (booking) return;
+    booking = true;
     Array.prototype.forEach.call(app.querySelectorAll('.slot'), function(b){ b.disabled = true; });
-    btn.textContent = '…';
+    if (btn) btn.textContent = '…';
+    var go = document.getElementById('lf-go');
+    if (go) { go.disabled = true; go.textContent = 'Prenoto…'; }
 
     grecaptcha.enterprise.ready(function(){
       grecaptcha.enterprise.execute(KEY, { action: 'LEADGEN_FORM_SUBMIT' }).then(function(token){
@@ -154,7 +224,9 @@
       }).catch(function(){
         booking = false;
         Array.prototype.forEach.call(app.querySelectorAll('.slot'), function(b){ b.disabled = false; });
-        btn.textContent = fmtTime(slot);
+        if (btn) btn.textContent = fmtTime(slot);
+        var go2 = document.getElementById('lf-go');
+        if (go2) { go2.disabled = false; go2.textContent = 'Conferma ' + fmtDay(slot) + ' alle ' + fmtTime(slot); }
         var e = document.createElement('p'); e.className = 'err';
         e.innerHTML = 'Quell\'orario è appena stato preso o c\'è stato un intoppo — prova con un altro, o scrivici a <a href="mailto:info@ailiv.it">info@ailiv.it</a>.';
         app.insertBefore(e, app.firstChild);
