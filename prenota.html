@@ -23,7 +23,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<script src="https://www.google.com/recaptcha/enterprise.js?render=6LeDBFwpAAAAAJe8ux9-imrqZ2ueRsEtdiWoDDpX"></script>
+<link rel="preconnect" href="https://backend.leadconnectorhq.com">
 <style>
   :root { --navy:#143d5c; --ink:#0e2c43; --gold:#d4a747; --gold-text:#8a6a1e; --cream:#fafaf7; --warm:#f5f3ee; --line:rgba(20,61,92,.14); }
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -122,6 +122,9 @@
       html += '<p class="note">Fuso orario: Italia. Videochiamata di 30–45 minuti — ti mostro esempi veri a schermo condiviso.</p>';
       app.innerHTML = html;
       app.addEventListener('click', onSlot);
+      // scalda il captcha in background mentre il lead sceglie l'orario:
+      // quando clicca è già pronto, e se non arriva non blocca nulla
+      try { loadRecaptcha().catch(function(){}); } catch (_) {}
     })
     .catch(function(){ showError('Non riesco a caricare gli orari.'); });
 
@@ -187,6 +190,41 @@
     doBook(pendingSlot, app.querySelector('.slot.sel'));
   }
 
+  // reCAPTCHA caricato in modo NON bloccante e solo quando serve.
+  // Prima stava nell'<head> come <script> sincrono: dentro la webview di Gmail
+  // (link aperto dalla mail) il caricamento da google.com poteva impiantarsi e la
+  // pagina restava bianca — poi al secondo tentativo funzionava perché in cache.
+  // Ora: parte in background appena la pagina è pronta, e se non arriva entro 6s
+  // la prenotazione va avanti lo stesso invece di bloccarsi.
+  var rcPromise = null;
+  function loadRecaptcha(){
+    if (rcPromise) return rcPromise;
+    rcPromise = new Promise(function(resolve, reject){
+      var s = document.createElement('script');
+      s.src = 'https://www.google.com/recaptcha/enterprise.js?render=' + KEY;
+      s.async = true; s.defer = true;
+      s.onload = function(){ resolve(); };
+      s.onerror = function(){ reject(new Error('recaptcha-load')); };
+      document.head.appendChild(s);
+      setTimeout(function(){ reject(new Error('recaptcha-timeout')); }, 6000);
+    });
+    return rcPromise;
+  }
+
+  // Token captcha, con resa graziosa: se lo script non c'è o tarda, torna stringa vuota
+  function getToken(){
+    return loadRecaptcha()
+      .then(function(){
+        return new Promise(function(res, rej){
+          if (!window.grecaptcha || !window.grecaptcha.enterprise) return rej(new Error('no-grecaptcha'));
+          window.grecaptcha.enterprise.ready(function(){
+            window.grecaptcha.enterprise.execute(KEY, { action: 'LEADGEN_FORM_SUBMIT' }).then(res, rej);
+          });
+        });
+      })
+      .catch(function(){ return ''; });
+  }
+
   function doBook(slot, btn){
     if (booking) return;
     booking = true;
@@ -195,8 +233,8 @@
     var go = document.getElementById('lf-go');
     if (go) { go.disabled = true; go.textContent = 'Prenoto…'; }
 
-    grecaptcha.enterprise.ready(function(){
-      grecaptcha.enterprise.execute(KEY, { action: 'LEADGEN_FORM_SUBMIT' }).then(function(token){
+    try {
+      getToken().then(function(token){
         var payload = {
           first_name: c.first_name, last_name: c.last_name, phone: c.phone, email: c.email,
           location_id: LOC, calendar_id: CAL,
@@ -207,7 +245,7 @@
         };
         var fd = new FormData();
         fd.append('formData', JSON.stringify(payload));
-        fd.append('captchaV3', token);
+        if (token) fd.append('captchaV3', token);
         return fetch('https://backend.leadconnectorhq.com/calendars/events/appointments/widget', {
           method: 'POST',
           headers: { channel: 'APP', source: 'WEB_USER', version: '2021-04-15', timezone: TZ },
@@ -231,7 +269,18 @@
         e.innerHTML = 'Quell\'orario è appena stato preso o c\'è stato un intoppo — prova con un altro, o scrivici a <a href="mailto:info@ailiv.it">info@ailiv.it</a>.';
         app.insertBefore(e, app.firstChild);
       });
-    });
+    } catch (err) {
+      // Rete di sicurezza: qualunque errore sincrono non deve lasciare la pagina
+      // congelata con gli slot disabilitati (era il difetto peggiore: nessun messaggio).
+      booking = false;
+      Array.prototype.forEach.call(app.querySelectorAll('.slot'), function(b){ b.disabled = false; });
+      if (btn) btn.textContent = fmtTime(slot);
+      var go3 = document.getElementById('lf-go');
+      if (go3) { go3.disabled = false; go3.textContent = 'Conferma ' + fmtDay(slot) + ' alle ' + fmtTime(slot); }
+      var e2 = document.createElement('p'); e2.className = 'err';
+      e2.innerHTML = 'Intoppo tecnico — riprova, oppure scrivici a <a href="mailto:info@ailiv.it">info@ailiv.it</a> e fissiamo noi.';
+      app.insertBefore(e2, app.firstChild);
+    }
   }
 })();
 </script>
