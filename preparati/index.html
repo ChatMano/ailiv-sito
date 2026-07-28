@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prepariamo la tua call — Ailiv</title>
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Due minuti di domande veloci con l'assistente AI, così Andrea arriva alla call già sapendo come lavori.">
+<meta name="description" content="Tre minuti di domande veloci con l'assistente AI, così Andrea arriva alla call già sapendo come lavori.">
 <meta property="og:title" content="Prepariamo la tua call — Ailiv">
-<meta property="og:description" content="Due minuti di domande veloci con l'assistente AI, così Andrea arriva alla call già sapendo come lavori.">
+<meta property="og:description" content="Tre minuti di domande veloci con l'assistente AI, così Andrea arriva alla call già sapendo come lavori.">
 <meta property="og:image" content="https://ailiv.it/assets/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -31,7 +31,10 @@
   .wrap { max-width:640px; margin:0 auto; padding:2rem 1rem 2.5rem; display:flex; flex-direction:column; min-height:100dvh; }
   .head { text-align:center; margin-bottom:1.2rem; }
   .head img { height:44px; width:auto; }
-  .head p { font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:rgba(20,61,92,.6); margin-top:.5rem; letter-spacing:.06em; }
+  /* Contrasto >= 4.5:1 (WCAG AA): l'art.50 AI Act richiede che la dichiarazione sia
+     "chiara e distinguibile" e conforme ai requisiti di accessibilità. Prima era .6 su cream. */
+  .head p { font-family:'IBM Plex Mono',monospace; font-size:.8rem; color:#4a6275; margin-top:.5rem; letter-spacing:.06em; }
+  .head p b { color:var(--navy); font-weight:700; letter-spacing:.1em; }
   .chat { flex:1; background:#fff; border:1.5px solid var(--navy); border-radius:16px; box-shadow:6px 6px 0 rgba(20,61,92,.08); display:flex; flex-direction:column; overflow:hidden; }
   .msgs { flex:1; overflow-y:auto; padding:1.1rem; display:flex; flex-direction:column; gap:.7rem; min-height:320px; max-height:62dvh; }
   .msg { max-width:85%; padding:.7rem .95rem; border-radius:14px; font-size:.95rem; line-height:1.55; white-space:pre-wrap; word-wrap:break-word; }
@@ -46,7 +49,7 @@
   .bar button { background:var(--gold); color:var(--ink); border:none; font-weight:800; font-size:.95rem; padding:.65rem 1.1rem; border-radius:10px; cursor:pointer; }
   .bar button:hover { background:#b8902f; }
   .bar button:disabled { opacity:.5; cursor:wait; }
-  .note { font-family:'IBM Plex Mono',monospace; font-size:.68rem; color:rgba(20,61,92,.55); text-align:center; margin-top:.9rem; line-height:1.6; }
+  .note { font-family:'IBM Plex Mono',monospace; font-size:.8rem; color:#4a6275; text-align:center; margin-top:.9rem; line-height:1.65; }
   .note a { color:var(--gold-text); }
   .fallback { text-align:center; padding:2.5rem 1.2rem; }
   .fallback h2 { font-weight:800; font-size:1.4rem; margin-bottom:.6rem; }
@@ -58,16 +61,18 @@
 <div class="wrap">
   <div class="head">
     <img src="/assets/logo-ailiv-email.png" alt="Ailiv">
-    <p>ASSISTENTE AI · PREPARIAMO LA TUA CALL · 3 MINUTI</p>
+    <p><b>ASSISTENTE AI</b> · PREPARIAMO LA TUA CALL · 3 MINUTI</p>
   </div>
   <div class="chat">
     <div class="msgs" id="msgs"></div>
     <div class="bar" id="bar">
-      <textarea id="inp" rows="1" placeholder="Scrivi qui" autocomplete="off" aria-label="Scrivi il tuo messaggio all'assistente AI"></textarea>
-      <button id="send" type="button">Invia</button>
+      <!-- disabilitati finché non compare il messaggio di apertura, che contiene la
+           dichiarazione "sono l'assistente AI": nessuno può scrivere prima di averla letta -->
+      <textarea id="inp" rows="1" placeholder="Scrivi qui" autocomplete="off" aria-label="Scrivi il tuo messaggio all'assistente AI" disabled></textarea>
+      <button id="send" type="button" disabled>Invia</button>
     </div>
   </div>
-  <p class="note">Chat con l'assistente AI di AILIV: le risposte servono solo a preparare il tuo check-up.<br>La chat è facoltativa: la call resta confermata anche se non la usi.<br>Problemi? Scrivici a <a href="mailto:info@ailiv.it">info@ailiv.it</a> — <a href="/privacy.html">privacy</a></p>
+  <p class="note">Chat con l'assistente AI di AILIV: le risposte preparano il tuo check-up.<br>La conversazione resta salvata 14 giorni per sicurezza e controllo qualità (<a href="/privacy.html">privacy</a>).<br>La chat è facoltativa: la call resta confermata anche se non la usi.<br>Problemi? Scrivici a <a href="mailto:info@ailiv.it">info@ailiv.it</a></p>
 </div>
 
 <script>
@@ -105,7 +110,9 @@
     if (on && !typingEl) {
       typingEl = document.createElement('div');
       typingEl.className = 'typing';
-      typingEl.textContent = 'sta scrivendo…';
+      // non "sta scrivendo…": imita la digitazione di una persona ed è l'unico
+      // elemento dell'interfaccia che rema contro la trasparenza dichiarata
+      typingEl.textContent = 'sto preparando la risposta…';
       msgs.appendChild(typingEl);
       msgs.scrollTop = msgs.scrollHeight;
     } else if (!on && typingEl) { typingEl.remove(); typingEl = null; }
@@ -131,7 +138,7 @@
     // che serve dire è: non devi scrivere bene, bastano due parole, nessuna risposta
     // è sbagliata. È il muro vero all'inizio di una chat, non la formalità.
     return "Ciao! Sono l'assistente AI di Andrea di AILIV — sì, proprio il tipo di tecnologia di cui parlerete in call. " +
-      "Ti rubo due minuti, così Andrea arriva già sapendo come lavori.\n\n" +
+      "Ti rubo tre minuti, così Andrea arriva già sapendo come lavori.\n\n" +
       "Rispondi come ti viene, anche di corsa — bastano due parole. Non ci sono risposte sbagliate.\n\nPartiamo dalla base: che attività hai?";
   }
 
@@ -142,6 +149,8 @@
       var op = opening(j.firstName || '');
       history.push({ role: 'assistant', content: op });
       addBot(op);
+      // solo ora si può scrivere: la dichiarazione di essere un'AI è a schermo
+      inp.disabled = false; send.disabled = false;
       inp.focus();
     })
     .catch(fallback);
