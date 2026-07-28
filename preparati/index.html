@@ -58,12 +58,12 @@
 <div class="wrap">
   <div class="head">
     <img src="/assets/logo-ailiv-email.png" alt="Ailiv">
-    <p>PREPARIAMO LA TUA CALL · 3 MINUTI</p>
+    <p>ASSISTENTE AI · PREPARIAMO LA TUA CALL · 3 MINUTI</p>
   </div>
   <div class="chat">
     <div class="msgs" id="msgs"></div>
     <div class="bar" id="bar">
-      <textarea id="inp" rows="1" placeholder="Scrivi come parli…" autocomplete="off"></textarea>
+      <textarea id="inp" rows="1" placeholder="Scrivi qui" autocomplete="off" aria-label="Scrivi il tuo messaggio all'assistente AI"></textarea>
       <button id="send" type="button">Invia</button>
     </div>
   </div>
@@ -114,7 +114,7 @@
   function fallback(){
     document.querySelector('.chat').innerHTML =
       '<div class="fallback"><h2>Apri il link dalla tua email.</h2>' +
-      '<p>Questa chat si apre dal link personale che ti abbiamo mandato via mail dopo la prenotazione. ' +
+      '<p>Questa chat con l\'assistente AI di AILIV si apre dal link personale che ti abbiamo mandato via mail dopo la prenotazione. ' +
       'Non lo trovi? Nessun problema: scrivici a <a href="mailto:info@ailiv.it">info@ailiv.it</a> e prepariamo noi la call con te.</p></div>';
   }
 
@@ -174,6 +174,8 @@
     .catch(function(){
       typing(false);
       addBot('Ops, connessione ballerina. Riprova tra un attimo, oppure scrivici a info@ailiv.it — la call resta confermata comunque.');
+      // (il messaggio esce comunque con l'etichetta "AILIV — assistente AI": nessun
+      //  messaggio in pagina può apparire come scritto da una persona — art. 50 AI Act)
     })
     .finally(function(){ busy = false; send.disabled = false; inp.focus(); });
   }
