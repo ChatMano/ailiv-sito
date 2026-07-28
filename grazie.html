@@ -60,14 +60,23 @@
   var sc = document.createElement('script'); sc.async = true;
   sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
   document.head.appendChild(sc);
-  // conversione: arrivo sulla thank-you = form inviato (pieno se consenso, ping anonimo se no)
-  gtag('event', 'genera_lead', { page_location: location.href });
+  // conversione: arrivo sulla thank-you = form inviato (pieno se consenso, ping anonimo se no).
+  // GUARDIA: senza, ogni ricarica / tasto indietro / apertura diretta contava un lead
+  // nuovo — ed è il motivo per cui i numeri visti finora sono gonfiati (li gonfiavamo noi
+  // testando). page_location tolto: qui non serve e su questa pagina può portare parametri.
+  var giaContato = false;
+  try { giaContato = sessionStorage.getItem('lead_contato') === '1'; } catch (_) {}
+  if (!giaContato) {
+    gtag('event', 'genera_lead');
+    try { sessionStorage.setItem('lead_contato', '1'); } catch (_) {}
+  }
 
   var fbDone = false;
   function fbLoad(){
     if (fbDone || !META_PIXEL) return; fbDone = true;
     !function(f,b,e,v,n,t,x){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;x=b.getElementsByTagName(e)[0];x.parentNode.insertBefore(t,x)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', META_PIXEL); fbq('track', 'PageView'); fbq('track', 'Lead');
+    fbq('init', META_PIXEL); fbq('track', 'PageView');
+    if (!giaContato) fbq('track', 'Lead');   // stessa guardia di genera_lead
   }
   function apply(c){
     if (!c) return;
