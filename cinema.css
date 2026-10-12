@@ -55,6 +55,8 @@ dialog{border:1px solid #d4a74766;padding:0;width:min(1100px,calc(100% - 40px));
  .portal-playback button,.portal-finish>button{font-size:11px;padding:12px 14px}
  .portal-finish .button{font-size:12px;flex:1;gap:12px}
 }
-@media(min-width:851px) and (min-height:600px){.portal-stage{max-width:min(1000px,calc((100svh - 220px) * 16 / 9))}}
+@media(min-width:851px) and (min-height:600px){.portal-stage{max-width:min(1000px,calc((100svh - 280px) * 16 / 9))}}
 @media(prefers-reduced-motion:reduce){.portal-hotspot:after,.portal-stage[data-portal-state=loading] .portal-play-icon{animation:none}}
 .motion-ready .portal-stage.reveal{opacity:1;transform:none;transition:none}
+
+.portal-stage{scroll-margin-top:100px}@media(max-width:850px){.portal-stage{scroll-margin-top:85px}}
