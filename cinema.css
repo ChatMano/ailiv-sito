@@ -59,4 +59,4 @@ dialog{border:1px solid #d4a74766;padding:0;width:min(1100px,calc(100% - 40px));
 @media(prefers-reduced-motion:reduce){.portal-hotspot:after,.portal-stage[data-portal-state=loading] .portal-play-icon{animation:none}}
 .motion-ready .portal-stage.reveal{opacity:1;transform:none;transition:none}
 
-.portal-stage{scroll-margin-top:100px}@media(max-width:850px){.portal-stage{scroll-margin-top:85px}}
+.portal-stage{scroll-margin-top:0}
