@@ -174,29 +174,86 @@ document.querySelectorAll('[data-seek]').forEach(button=>button.addEventListener
 
 const portal=byId('portal-video');
 if(portal){
-  const trigger=byId('enter-system'), controls=document.querySelector('.portal-controls'), end=document.querySelector('.portal-ended'), poster=document.querySelector('.portal-poster'), pause=byId('pause-portal');
+  const stage=document.querySelector('.portal-stage');
+  const trigger=byId('enter-system'), hotspot=byId('portal-logo');
+  const startActions=stage.querySelector('.portal-start');
+  const controls=stage.querySelector('.portal-playback'), finish=stage.querySelector('.portal-finish');
+  const poster=stage.querySelector('.portal-poster'), pause=byId('pause-portal'), status=byId('portal-status');
+  let state='ready', attempt=0;
+  function setState(next){
+    state=next;stage.dataset.portalState=next;
+    const initial=next==='ready'||next==='loading';
+    startActions.hidden=!initial;hotspot.hidden=!initial;
+    trigger.disabled=hotspot.disabled=next==='loading';
+    controls.hidden=!['playing','paused'].includes(next);
+    finish.hidden=next!=='ended';
+    stage.setAttribute('aria-busy',String(next==='loading'));
+  }
+  function preparePortal(){
+    if(!portal.getAttribute('src')){portal.src=portal.dataset.src;portal.preload='auto';portal.load();}
+  }
+  function failPortal(){
+    attempt++;portal.pause();portal.hidden=true;stage.classList.remove('has-video-frame');
+    poster.src='assets/ingresso-partenza.webp';setState('ready');
+    status.textContent='Il video non è partito. Premi di nuovo per riprovare.';
+  }
   function finishPortal(){
-    portal.pause();controls.hidden=true;end.hidden=false;
-    byId('portal-status').textContent='I collegamenti prendono forma. Esplora collegamenti, memoria e analisi.';
+    const keepFocus=controls.contains(document.activeElement)||document.activeElement===trigger||document.activeElement===hotspot;
+    portal.pause();setState('ended');status.textContent='I collegamenti prendono forma. Esplora come lavorano insieme.';
+    if(keepFocus)finish.querySelector('a').focus({preventScroll:true});
   }
   function startPortal(forceMotion=false){
-    trigger.hidden=true;end.hidden=true;
+    if(state==='loading')return;
+    const thisAttempt=++attempt;
+    stage.scrollIntoView({block:'start',behavior:'instant'});
     if(reducedMotion.matches&&!forceMotion){
-      poster.src='assets/mondo.webp';poster.alt='Il mondo AILIV con le aree aziendali collegate';finishPortal();return;
+      portal.hidden=true;stage.classList.remove('has-video-frame');
+      poster.src='assets/ingresso-arrivo.webp';poster.alt='Il mondo AILIV: i reparti collegati intorno alla stessa azienda';
+      finishPortal();return;
     }
-    if(!portal.src)portal.src=portal.dataset.src;
-    portal.hidden=false;controls.hidden=false;portal.currentTime=0;
-    byId('portal-status').textContent='Dal tuo computer, dentro il sistema.';
-    pause.textContent='Ⅱ';pause.setAttribute('aria-label','Metti in pausa l’ingresso');
-    portal.play().catch(()=>{controls.hidden=true;trigger.hidden=false;byId('portal-status').textContent='Tocca il logo per avviare l’ingresso.';});
+    poster.src='assets/ingresso-partenza.webp';
+    poster.alt='Sul computer di Marco e Giulia, il logo AILIV da cliccare';
+    stage.classList.remove('has-video-frame');setState('loading');
+    status.textContent='L’ingresso si sta aprendo…';
+    preparePortal();portal.hidden=false;portal.currentTime=0;
+    portal.play().catch(()=>{if(attempt===thisAttempt)failPortal();});
   }
-  trigger.addEventListener('click',()=>startPortal());
+  portal.addEventListener('playing',()=>{
+    if(!['loading','paused'].includes(state))return;
+    const thisAttempt=attempt;
+    const revealFrame=()=>{
+      if(attempt!==thisAttempt||portal.paused)return;
+      stage.classList.add('has-video-frame');setState('playing');
+      pause.innerHTML='Ⅱ <span>Pausa</span>';pause.setAttribute('aria-label','Metti in pausa l’ingresso');
+      status.textContent='Dal computer, dentro il sistema.';
+    };
+    if('requestVideoFrameCallback' in portal)portal.requestVideoFrameCallback(revealFrame);
+    else requestAnimationFrame(revealFrame);
+  });
+  [trigger,hotspot].forEach(button=>{
+    button.addEventListener('click',()=>startPortal());
+    button.addEventListener('pointerenter',preparePortal,{once:true});
+    button.addEventListener('focus',preparePortal,{once:true});
+  });
   byId('replay-portal').addEventListener('click',()=>startPortal(true));
-  byId('skip-portal').addEventListener('click',()=>{finishPortal();byId('squadra').scrollIntoView({behavior:reducedMotion.matches?'instant':'smooth'});});
-  pause.addEventListener('click',()=>{if(portal.paused){portal.play().catch(()=>{});pause.textContent='Ⅱ';pause.setAttribute('aria-label','Metti in pausa l’ingresso');}else{portal.pause();pause.textContent='▶';pause.setAttribute('aria-label','Riprendi l’ingresso');}});
+  byId('skip-portal').addEventListener('click',()=>{
+    finishPortal();
+    const target=byId('squadra');target.scrollIntoView({behavior:reducedMotion.matches?'instant':'smooth'});
+    target.querySelector('[role="tab"]').focus({preventScroll:true});
+  });
+  pause.addEventListener('click',()=>{
+    if(portal.paused){portal.play().catch(failPortal);}
+    else{portal.pause();setState('paused');pause.innerHTML='▶ <span>Riprendi</span>';pause.setAttribute('aria-label','Riprendi l’ingresso');}
+  });
   portal.addEventListener('ended',finishPortal);
-  document.addEventListener('visibilitychange',()=>{if(document.hidden&&!portal.paused){portal.pause();pause.textContent='▶';pause.setAttribute('aria-label','Riprendi l’ingresso');}});
-  reducedMotion.addEventListener('change',e=>{if(e.matches&&!portal.paused)finishPortal();});
+  portal.addEventListener('pause',()=>{
+    if(state==='playing'&&!portal.ended){setState('paused');pause.innerHTML='▶ <span>Riprendi</span>';pause.setAttribute('aria-label','Riprendi l’ingresso');}
+  });
+  portal.addEventListener('error',()=>{if(['loading','playing','paused'].includes(state))failPortal();});
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden&&state==='playing'){portal.pause();setState('paused');pause.innerHTML='▶ <span>Riprendi</span>';pause.setAttribute('aria-label','Riprendi l’ingresso');}
+  });
+  reducedMotion.addEventListener('change',e=>{if(e.matches&&['playing','loading'].includes(state)){poster.src='assets/ingresso-arrivo.webp';portal.hidden=true;stage.classList.remove('has-video-frame');finishPortal();}});
 }
 
 const form=byId('checkup-form');
