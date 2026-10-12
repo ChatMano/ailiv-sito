@@ -194,12 +194,12 @@ if(portal){
   }
   function failPortal(){
     attempt++;portal.pause();portal.hidden=true;stage.classList.remove('has-video-frame');
-    poster.src='assets/ingresso-partenza.webp';setState('ready');
+    poster.src='assets/ingresso-partenza-v3.webp';setState('ready');
     status.textContent='Il video non è partito. Premi di nuovo per riprovare.';
   }
   function finishPortal(){
     const keepFocus=controls.contains(document.activeElement)||document.activeElement===trigger||document.activeElement===hotspot;
-    portal.pause();setState('ended');status.textContent='I collegamenti prendono forma. Esplora come lavorano insieme.';
+    portal.pause();setState('ended');status.textContent='I dati sono collegati. Scopri cosa cambia nel lavoro di ogni giorno.';
     if(keepFocus)finish.querySelector('a').focus({preventScroll:true});
   }
   function startPortal(forceMotion=false){
@@ -208,10 +208,10 @@ if(portal){
     stage.scrollIntoView({block:'start',behavior:'instant'});
     if(reducedMotion.matches&&!forceMotion){
       portal.hidden=true;stage.classList.remove('has-video-frame');
-      poster.src='assets/ingresso-arrivo.webp';poster.alt='Il mondo AILIV: i reparti collegati intorno alla stessa azienda';
+      poster.src='assets/ingresso-arrivo-v3.webp';poster.alt='Il ristorante di Marco e Giulia e il logo AILIV';
       finishPortal();return;
     }
-    poster.src='assets/ingresso-partenza.webp';
+    poster.src='assets/ingresso-partenza-v3.webp';
     poster.alt='Sul computer di Marco e Giulia, il logo AILIV da cliccare';
     stage.classList.remove('has-video-frame');setState('loading');
     status.textContent='L’ingresso si sta aprendo…';
@@ -253,7 +253,7 @@ if(portal){
   document.addEventListener('visibilitychange',()=>{
     if(document.hidden&&state==='playing'){portal.pause();setState('paused');pause.innerHTML='▶ <span>Riprendi</span>';pause.setAttribute('aria-label','Riprendi l’ingresso');}
   });
-  reducedMotion.addEventListener('change',e=>{if(e.matches&&['playing','loading'].includes(state)){poster.src='assets/ingresso-arrivo.webp';portal.hidden=true;stage.classList.remove('has-video-frame');finishPortal();}});
+  reducedMotion.addEventListener('change',e=>{if(e.matches&&['playing','loading'].includes(state)){poster.src='assets/ingresso-arrivo-v3.webp';poster.alt='Il ristorante di Marco e Giulia e il logo AILIV';portal.hidden=true;stage.classList.remove('has-video-frame');finishPortal();}});
 }
 
 const form=byId('checkup-form');

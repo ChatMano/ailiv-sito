@@ -24,10 +24,7 @@ dialog{border:1px solid #d4a74766;padding:0;width:min(1100px,calc(100% - 40px));
 .portal-screen{border-color:#92b4c744;box-shadow:0 24px 70px #0005;isolation:isolate}
 .portal-screen video{opacity:0;z-index:1}
 .portal-stage.has-video-frame .portal-screen video{opacity:1}
-.portal-hotspot{position:absolute;z-index:2;left:49.2%;top:49.4%;transform:translate(-50%,-50%);width:8.5%;min-width:44px;aspect-ratio:1;border:2px solid #f3cf83;border-radius:9px;background:#ffe6a80b;box-shadow:0 0 0 7px #d4a74718,0 0 28px #e6c87c70;cursor:pointer;transition:background .2s,box-shadow .2s}
-.portal-hotspot:after{content:'';position:absolute;inset:-8px;border:1px solid #f3cf8388;border-radius:14px;animation:portal-pulse 2.5s ease-out infinite;pointer-events:none}
-.portal-hotspot:hover{background:#ffe6a827;box-shadow:0 0 0 9px #d4a7472b,0 0 35px #f3cf83aa}
-.portal-hotspot>span{position:absolute;top:calc(100% + 13px);left:50%;transform:translateX(-50%);display:block;background:#d4a747;color:#102c3f;padding:7px 12px;border-radius:4px;white-space:nowrap;font-size:12px;font-weight:750;box-shadow:0 4px 18px #0005}
+.portal-hotspot{position:absolute;z-index:2;left:49.2%;top:49.4%;transform:translate(-50%,-50%);width:8.5%;min-width:44px;aspect-ratio:1;border:0;border-radius:5px;background:transparent;box-shadow:none;cursor:pointer}
 .portal-hotspot:focus-visible{outline:3px solid white;outline-offset:5px}
 .portal-action-row{min-height:130px;margin-top:24px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
 .portal-start{display:flex;flex-direction:column;align-items:center;gap:12px}
@@ -47,9 +44,7 @@ dialog{border:1px solid #d4a74766;padding:0;width:min(1100px,calc(100% - 40px));
 @keyframes portal-loading{50%{opacity:.35}}
 @media(max-width:540px){
  .portal-stage{width:calc(100% - 28px)}
- .portal-hotspot{min-width:42px;border-width:1.5px;border-radius:5px;box-shadow:0 0 0 4px #d4a74718,0 0 20px #e6c87c70}
- .portal-hotspot:after{inset:-5px;border-radius:9px}
- .portal-hotspot>span{top:calc(100% + 8px);font-size:9px;padding:5px 9px}
+ .portal-hotspot{min-width:44px}
  .portal-action-row{margin:19px 9px 0;min-height:135px}
  .portal-start{width:100%}
  .portal-start .button{width:100%;min-width:0;min-height:60px;padding:14px 19px;font-size:14px;gap:13px}
