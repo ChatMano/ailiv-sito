@@ -47,7 +47,7 @@
   });
   // Eventi CTA verso il form (con consenso: dato pieno; senza: ping anonimo -> modeling)
   document.addEventListener('click', function(e){
-    var a = e.target && e.target.closest ? e.target.closest('a[href="#prenota"],a[href="check-up.html"]') : null;
+    var a = e.target && e.target.closest ? e.target.closest('a[href="#prenota"],a[href="check-up.html"],a[href="#check-up"],a[href="index.html#check-up"]') : null;
     if (!a) return;
     gtag('event', 'cta_prenota_click', {
       cta_text: (a.textContent || '').trim().slice(0, 60),

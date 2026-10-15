@@ -1,0 +1,33 @@
+/* One continuous scene: the same routes settle into a shared destination. */
+.demo-console{overflow-anchor:none}
+.flow-map{position:relative;padding-bottom:0}
+.data-sources,.flow-center{position:relative;z-index:1}
+.flow-wires{position:static;height:175px;overflow:visible}
+.flow-wires svg{inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;display:block}
+.flow-wires:before,.data-sources:before,.data-source:after,.flow-paper{display:none!important}
+.wire-core{stroke:#c9a46b;stroke-width:1.8;stroke-dasharray:none;opacity:.66;stroke-linecap:round;stroke-linejoin:round;transition:stroke 2s,opacity 2s}
+.wire-glow{stroke-width:8;filter:blur(5px);transition:opacity 2s}
+.wire-core path,.wire-glow path{vector-effect:non-scaling-stroke}
+.data-source{transition:border-color 1.7s,background 1.7s,box-shadow 1.7s}
+.demo-console[data-mode=after] .data-source{box-shadow:0 0 22px #85d9f50a}
+.flow-center{display:grid;min-height:167px;align-items:stretch}
+.flow-center>div{grid-area:1/1;align-self:center;transition:opacity .8s,transform 1.1s cubic-bezier(.2,.7,.2,1),filter .8s;will-change:opacity,transform}
+.manual-work{opacity:1;transform:none;filter:blur(0)}
+.connected-brain{display:block;opacity:0;transform:scale(.9);filter:blur(5px);pointer-events:none;align-self:stretch!important;display:flex;flex-direction:column;justify-content:center}
+.demo-console[data-mode=after] .manual-work{display:block;opacity:0;transform:translateY(-12px) scale(.97);filter:blur(4px);pointer-events:none}
+.demo-console[data-mode=after] .connected-brain{display:flex;opacity:1;transform:scale(1);filter:blur(0);transition-delay:.55s;pointer-events:auto}
+.connected-brain:after{content:'';position:absolute;inset:-1px;border:1px solid #85d9f5;border-radius:inherit;opacity:0;pointer-events:none}
+.demo-console.is-running .connected-brain:after{animation:brain-arrival 2.3s .8s ease-out both}
+@keyframes brain-arrival{0%{transform:scale(.96);opacity:0}35%{opacity:.6}100%{transform:scale(1.07,1.16);opacity:0}}
+.document-packet{opacity:0;pointer-events:none}.document-packet rect{fill:#e7f8ff;stroke:#8ad7ef;stroke-width:1}.document-packet path{fill:none;stroke:#487b99;stroke-width:1}
+.before-action,.connected-output{display:grid;grid-template-rows:1fr;padding:0;transition:grid-template-rows 1.2s cubic-bezier(.22,.68,.2,1),opacity .7s;overflow:hidden}
+.before-action>div,.connected-output>div{min-height:0;overflow:hidden}
+.before-action .before-action-inner{padding:24px 20px 18px}
+.connected-output{grid-template-rows:0fr;opacity:0;visibility:hidden;transition: grid-template-rows 1.3s cubic-bezier(.22,.68,.2,1),opacity .7s,visibility 0s 1.3s}
+.connected-output-inner{padding:0 28px 2px}
+.demo-console[data-mode=after] .before-action{grid-template-rows:0fr;opacity:0}
+.demo-console[data-mode=after] .connected-output{grid-template-rows:1fr;opacity:1;visibility:visible;transition-delay:.65s,1s,0s}
+.demo-progress-row p{min-height:3em;max-width:560px}
+.flow-steps li{transition:opacity .8s,border-color .8s}
+@media(max-width:600px){.flow-wires{height:145px}.flow-center{min-height:166px}.connected-output-inner{padding-inline:16px}.before-action .before-action-inner{padding:20px 16px 5px}.flow-wires svg{display:block}.data-source{z-index:1}.connected-brain{width:100%}.flow-map{padding-inline:20px}}
+@media(prefers-reduced-motion:reduce){.flow-center>div,.before-action,.connected-output,.wire-core,.wire-glow,.data-source{transition:none!important}.connected-brain:after{animation:none!important}.document-packet{display:none}.flow-center>div{will-change:auto}}

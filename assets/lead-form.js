@@ -35,11 +35,12 @@
         .catch(function(){ return ''; });
     }
     var EMAIL_RX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    form.addEventListener('focusin', function(){ loadRecaptcha(); }, { once: true });
+    form.addEventListener('focusin', function(){ loadRecaptcha().catch(function(){}); }, { once: true });
     var statusEl = document.getElementById('leadStatus');
     var btn = form.querySelector('.lead-submit');
     form.addEventListener('submit', function(ev){
       ev.preventDefault();
+      if (btn.disabled) return;
       var d = {
         first_name: form.first_name.value.trim(),
         last_name: form.last_name.value.trim(),

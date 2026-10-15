@@ -205,7 +205,7 @@ if(portal){
   function startPortal(forceMotion=false){
     if(state==='loading')return;
     const thisAttempt=++attempt;
-    stage.scrollIntoView({block:'start',behavior:'instant'});
+
     if(reducedMotion.matches&&!forceMotion){
       portal.hidden=true;stage.classList.remove('has-video-frame');
       poster.src='assets/ingresso-arrivo-v3.webp';poster.alt='Il ristorante di Marco e Giulia e il logo AILIV';
@@ -227,7 +227,7 @@ if(portal){
       stage.classList.add('has-video-frame');setState('playing');
       pause.innerHTML='Ⅱ <span>Pausa</span>';pause.setAttribute('aria-label','Metti in pausa l’ingresso');
       status.textContent='Dal computer, dentro il sistema.';
-      if(isFirstFrame)requestAnimationFrame(()=>stage.scrollIntoView({block:'start',behavior:'instant'}));
+
     };
     if('requestVideoFrameCallback' in portal)portal.requestVideoFrameCallback(revealFrame);
     else requestAnimationFrame(revealFrame);
@@ -241,7 +241,7 @@ if(portal){
   byId('skip-portal').addEventListener('click',()=>{
     finishPortal();
     const target=byId('squadra');target.scrollIntoView({behavior:reducedMotion.matches?'instant':'smooth'});
-    target.querySelector('[role="tab"]').focus({preventScroll:true});
+    target.querySelector('button').focus({preventScroll:true});
   });
   pause.addEventListener('click',()=>{
     if(portal.paused){portal.play().catch(failPortal);}
@@ -256,12 +256,4 @@ if(portal){
     if(document.hidden&&state==='playing'){portal.pause();setState('paused');pause.innerHTML='▶ <span>Riprendi</span>';pause.setAttribute('aria-label','Riprendi l’ingresso');}
   });
   reducedMotion.addEventListener('change',e=>{if(e.matches&&['playing','loading'].includes(state)){poster.src='assets/ingresso-arrivo-v3.webp';poster.alt='Il ristorante di Marco e Giulia e il logo AILIV';portal.hidden=true;stage.classList.remove('has-video-frame');finishPortal();}});
-}
-
-const form=byId('checkup-form');
-if(form){
-  form.addEventListener('submit',e=>{
-    e.preventDefault();
-    byId('form-status').textContent='Il percorso è completo. Questa è un’anteprima: nessuna richiesta è stata inviata e nessun dato è stato salvato.';
-  });
 }
