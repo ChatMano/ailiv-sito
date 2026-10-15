@@ -66,7 +66,7 @@
     // Chiamato esclusivamente dopo la conferma positiva del servizio del modulo.
     leadAccepted: function(done){
       receipt = {created:Date.now(),ga:false,meta:false};
-      try { sessionStorage.setItem(RECEIPT_KEY,JSON.stringify(receipt)); done(); }
+      try { sessionStorage.setItem(RECEIPT_KEY,JSON.stringify(receipt)); receipt = null; done(); }
       catch (_) { trackLead(); setTimeout(done,800); }
     }
   };
