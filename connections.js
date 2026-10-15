@@ -69,7 +69,7 @@
     if(n===currentPhase)return;
     currentPhase=n; panel.dataset.phase=n;
     panel.querySelectorAll('[data-step]').forEach(el=>el.classList.toggle('complete',Number(el.dataset.step)<=n));
-    status.textContent=['','I dati vengono raccolti dagli strumenti collegati.','Le automazioni aggiornano i report e segnalano i passaggi mancanti.','Ora puoi leggere più reparti nello stesso contesto.'][n];
+    status.textContent=['','I dati vengono raccolti dagli strumenti collegati.','Le automazioni aggiornano i report e segnalano i passaggi mancanti.','Il contesto è pronto: puoi approfondire ogni reparto e incrociare le informazioni.'][n];
   }
   function hidePackets(){packets.forEach(p=>p.style.opacity=0);}
   function tick(now) {

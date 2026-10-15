@@ -2,7 +2,7 @@
 (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const scenarios = {
-    month: {label:'RIEPILOGO MENSILE', heading:'Il mese, nello stesso quadro.', rows:[['Vendite e incassi','Raccolti'],['Costi fissi e personale','Collegati'],['Materie prime','Da completare']], warning:'Manca una fattura: il margine è ancora provvisorio.', title:'Sai anche cosa manca.', text:'Il riepilogo si aggiorna con i dati disponibili e segnala il documento da recuperare. L’analisi parte da un quadro verificabile.', context:'Vendite + banca + acquisti + personale'},
+    overview: {label:'IL CONTESTO DA INTERROGARE', heading:'Crescono le vendite. E il resto?', rows:[['Vendite ↔ marketing','Domanda'],['Costi ↔ incassi','Margini'],['Persone ↔ procedure','Operatività']], warning:'L’analisi usa le fonti collegate. I dati mancanti restano visibili.', title:'La domanda cambia. Il contesto resta.', text:'Puoi approfondire un reparto o incrociare vendite, costi, marketing e operatività. Il sistema usa il contesto comune per aiutarti a capire cosa succede e valutare le prossime mosse.', context:'Tutti i reparti + documenti + storico'},
     marketing: {label:'ANALISI DI UNA CAMPAGNA', heading:'Più vendite. Ma con quale margine?', rows:[['Risultati delle campagne','Raccolti'],['Prodotti venduti e costi','Collegati'],['Capacità del personale','Da verificare']], warning:'Prima di spingere la promozione, verifica la capacità di gestirla.', title:'Il marketing vede anche il resto.', text:'Le proposte di campagna usano storico clienti, vendite e costi. Puoi valutarne la convenienza e confrontare i risultati nello stesso contesto.', context:'Marketing + clienti + margini + persone'},
     memory: {label:'CONTINUITÀ OPERATIVA', heading:'La procedura resta in azienda.', rows:[['Procedura e documenti','Disponibili'],['Storico delle attività','Consultabile'],['Ultimo caricamento','Da completare']], warning:'Un documento non è stato caricato: il passaggio resta segnalato.', title:'Chi subentra sa da dove ripartire.', text:'Trova la procedura, i documenti e lo stato del lavoro. Un’assenza non cancella il contesto: sai cosa è stato fatto e cosa richiede ancora una persona.', context:'Procedure + documenti + persone + report'}
   };
@@ -10,6 +10,7 @@
   function selectScenario(tab, focus=false) {
     tabs.forEach(t => { t.setAttribute('aria-selected', String(t===tab)); t.tabIndex=t===tab?0:-1; });
     const s = scenarios[tab.dataset.scenario];
+    document.querySelector('.report-preview').classList.toggle('context-preview',tab.dataset.scenario==='overview');
     document.getElementById('result-panel').setAttribute('aria-labelledby',tab.id);
     document.getElementById('report-label').textContent=s.label;
     document.getElementById('report-heading').textContent=s.heading;
