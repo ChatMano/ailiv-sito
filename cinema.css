@@ -60,3 +60,6 @@ dialog{border:1px solid #d4a74766;padding:0;width:min(1100px,calc(100% - 40px));
 .motion-ready .portal-stage.reveal{opacity:1;transform:none;transition:none}
 
 .portal-stage{scroll-margin-top:0}
+
+/* Mantiene logo, CTA e menu all’interno anche dei telefoni da 320px. */
+@media(max-width:360px){.site-header .nav-wrap{gap:7px;width:calc(100% - 24px)}.site-header .brand{width:70px}.site-header .nav-cta{font-size:11px;padding:10px 8px;gap:7px}.site-header .menu-toggle{width:36px;min-height:44px;flex-shrink:0}}

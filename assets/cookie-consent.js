@@ -1,5 +1,5 @@
 /* ============================================================================
-   AILIV · COOKIE CONSENT — GDPR-compliant (Garante Privacy + Reg. UE 2016/679)
+   AILIV · COOKIE CONSENT
    Self-contained: inject HTML + CSS, manage localStorage, expose API.
    Categorie: necessari (sempre), preferenze, statistiche, marketing.
    Scadenza consenso: 6 mesi. Dopo, il banner si ripresenta.
@@ -72,7 +72,7 @@
     .aic-banner-text a { color: #D4998D; text-decoration: underline; }
 
     .aic-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; align-items: center; }
-    @media (max-width: 720px) { .aic-actions { justify-content: stretch; } .aic-actions button { flex: 1; min-width: 0; } }
+    @media (max-width: 720px) { .aic-actions { display: grid; grid-template-columns: 1fr; } .aic-actions button { width:100%; min-height:44px; } }
 
     .aic-btn {
       font: inherit; font-weight: 600; font-size: 13px;
@@ -133,6 +133,10 @@
 
     .aic-modal-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
     .aic-modal-actions .aic-btn { flex: 1; min-width: 140px; }
+    .aic-toggle input:focus-visible + .aic-toggle-slider { outline:3px solid #d4a747; outline-offset:4px; }
+    .aic-settings { font:inherit; color:inherit; background:none; border:0; padding:8px 0; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+    @media(max-height:550px) { .aic-banner { max-height:calc(100dvh - 24px); overflow:auto; } }
+    @media(prefers-reduced-motion:reduce) { .aic-banner,.aic-modal { animation:none; } }
   `;
 
   // ---------- render helpers ----------
@@ -172,6 +176,7 @@
     bg.className = 'aic-modal-bg';
     bg.setAttribute('role', 'dialog');
     bg.setAttribute('aria-modal', 'true');
+    bg.setAttribute('aria-label', 'Gestisci i cookie');
     bg.innerHTML = `
       <div class="aic-modal">
         <button type="button" class="aic-modal-close" aria-label="Chiudi">&times;</button>
@@ -185,7 +190,7 @@
                 <p>${c.desc}</p>
               </div>
               <label class="aic-toggle">
-                <input type="checkbox" data-cat="${c.key}" ${c.required ? 'checked disabled' : (existing[c.key] ? 'checked' : '')}>
+                <input type="checkbox" aria-label="${c.label}" data-cat="${c.key}" ${c.required ? 'checked disabled' : (existing[c.key] ? 'checked' : '')}>
                 <span class="aic-toggle-slider"></span>
               </label>
             </div>
@@ -215,6 +220,7 @@
   // ---------- state ----------
   let bannerEl = null;
   let modalEl = null;
+  let previousFocus = null;
 
   function showBanner() {
     if (bannerEl) return;
@@ -226,9 +232,10 @@
   }
   function openModal() {
     if (modalEl) { modalEl.classList.add('open'); return; }
+    previousFocus = document.activeElement;
     modalEl = buildModal();
     document.body.appendChild(modalEl);
-    requestAnimationFrame(() => modalEl.classList.add('open'));
+    requestAnimationFrame(() => { modalEl.classList.add('open'); modalEl.querySelector('.aic-modal-close').focus(); });
     document.addEventListener('keydown', escHandler);
   }
   function closeModal() {
@@ -237,8 +244,17 @@
     if (modalEl.parentNode) modalEl.parentNode.removeChild(modalEl);
     modalEl = null;
     document.removeEventListener('keydown', escHandler);
+    if(previousFocus && previousFocus.isConnected) previousFocus.focus({preventScroll:true});
   }
-  function escHandler(e) { if (e.key === 'Escape') closeModal(); }
+  function escHandler(e) {
+    if (e.key === 'Escape') { e.preventDefault(); closeModal(); }
+    if(e.key === 'Tab' && modalEl) {
+      const controls = [...modalEl.querySelectorAll('button,a[href],input:not(:disabled)')];
+      const first=controls[0],last=controls[controls.length-1];
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    }
+  }
 
   function save(choices) {
     const record = writeConsent(choices);
@@ -261,6 +277,10 @@
   // ---------- boot ----------
   function init() {
     injectStyles();
+    const footer = document.querySelector('.footer-bottom>div');
+    if(footer && !footer.querySelector('[data-cookie-settings]')) {
+      const settings=document.createElement('button'); settings.type='button'; settings.className='aic-settings'; settings.dataset.cookieSettings=''; settings.textContent='Gestisci cookie'; settings.addEventListener('click',openModal); footer.appendChild(settings);
+    }
     const existing = readConsent();
     if (!existing) showBanner();
   }

@@ -84,7 +84,9 @@
         return r.json().catch(function(){ return {}; }).then(function(j){ return { ok: r.ok, j: j }; });
       }).then(function(x){
         if (x.ok && (x.j.status === true || x.j.contactId || x.j.submissionId)) {
-          window.location.href = 'grazie.html';
+          var next = function(){ window.location.href = 'grazie.html'; };
+          if (window.AilivTracking) window.AilivTracking.leadAccepted(next);
+          else next();
         } else { throw new Error('submit'); }
       }).catch(function(){
         btn.disabled = false; btn.textContent = 'Richiedi il check-up gratuito →';
