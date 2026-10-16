@@ -25,7 +25,12 @@
   async function attempt(payload, savingOnly) {
     if (busy) return;
     busy=true; updateControls(); notice(savingOnly?'Sto salvando le informazioni…':'Sto preparando la risposta…');
-    var ctrl = new AbortController(); var timer = setTimeout(function(){ctrl.abort();},40000);
+    var ctrl = new AbortController(); var timer = setTimeout(function(){ctrl.abort();},115000);
+    var waitTimers=[];
+    if(!savingOnly){
+      waitTimers.push(setTimeout(function(){notice('La risposta è ancora in preparazione. Puoi attendere qui: non serve inviare di nuovo il messaggio.');},12000));
+      waitTimers.push(setTimeout(function(){notice('Sta impiegando più del solito. La richiesta è ancora in corso; mantengo la conversazione aperta.');},35000));
+    }
     try {
       var res=await fetch(worker+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:ctrl.signal});
       var data=await res.json();
@@ -33,7 +38,7 @@
         var message=data.reply||'Non riesco a completare la richiesta. Puoi riprovare oppure scriverci a info@ailiv.it.';
         if(data.error==='limit_reached'||data.error==='bad_history'){blocked=true;notice(message);retry=null;return;}
         retry={payload:payload,savingOnly:savingOnly,newId:data.error==='ai_unavailable'||data.error==='request_interrupted'};blocked=true;
-        notice(message,retryLast,'Riprova');return;
+        notice(message,retryLast,data.error==='request_in_progress'?'Recupera risposta':retry.newId?'Richiedi una nuova risposta':'Riprova');return;
       }
       if(!savingOnly){
         if(typeof data.reply!=='string')throw new Error('Invalid response');
@@ -50,7 +55,7 @@
     }catch(e){
       retry={payload:payload,savingOnly:savingOnly,newId:false};blocked=true;
       notice('La connessione si è interrotta. Riprova a recuperare la risposta, senza riscrivere il messaggio.',retryLast,'Recupera risposta');
-    }finally{clearTimeout(timer);busy=false;updateControls();}
+    }finally{clearTimeout(timer);waitTimers.forEach(clearTimeout);busy=false;updateControls();}
   }
   function retryLast(){
     if(!retry||busy)return;var task=retry;
