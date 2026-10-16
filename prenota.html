@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scegli l'orario del tuo check-up — Ailiv</title>
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Scegli l'orario: 20 minuti in videochiamata con Andrea, con un mini-report sui tuoi numeri. Nessun impegno.">
+<meta name="description" content="Scegli l'orario: 30–45 minuti in videochiamata con Andrea, con un mini-report sui tuoi numeri. Nessun impegno.">
 <meta property="og:title" content="Prenota il tuo check-up gratuito — Ailiv">
-<meta property="og:description" content="Scegli l'orario: 20 minuti in videochiamata con Andrea, con un mini-report sui tuoi numeri. Nessun impegno.">
+<meta property="og:description" content="Scegli l'orario: 30–45 minuti in videochiamata con Andrea, con un mini-report sui tuoi numeri. Nessun impegno.">
 <meta property="og:image" content="https://ailiv.it/assets/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -77,8 +77,11 @@
   </div>
 
   <a class="back" href="/">← Torna su ailiv.it</a>
+  <p class="note"><button type="button" onclick="window.AilivCookies.open()" style="font:inherit;color:inherit;background:none;border:0;text-decoration:underline;cursor:pointer;min-height:44px">Gestisci cookie</button></p>
 </div>
 
+<script src="assets/cookie-consent.js?v=20261016-5"></script>
+<script src="assets/site-tracking.js?v=20261016-5"></script>
 <script>
 (function(){
   var CAL = 'Gx2gDBVib5SQcULHTVS8';
@@ -86,6 +89,9 @@
   var KEY = '6LeDBFwpAAAAAJe8ux9-imrqZ2ueRsEtdiWoDDpX';
   var TZ = 'Europe/Rome';
   var app = document.getElementById('app');
+  function trackStep(name){
+    try { if (window.gtag) window.gtag('event', name, {calendar_type:'checkup'}); } catch (_) {}
+  }
 
   var q = new URLSearchParams(location.search);
   var c = {
@@ -139,6 +145,7 @@
   function onSlot(e){
     var btn = e.target.closest('.slot');
     if (!btn || booking) return;
+    trackStep('calendar_slot_selected');
     var slot = btn.getAttribute('data-slot');
     if (hasData()) { doBook(slot, btn); return; }
     pendingSlot = slot;
@@ -254,12 +261,14 @@
       }).then(function(r){
         return r.json().catch(function(){ return {}; }).then(function(j){ return { ok: r.ok, j: j }; });
       }).then(function(x){
-        if (x.ok && (x.j.appointment || x.j.id || x.j.contact)) {
+        if (x.ok && (x.j.appointment || x.j.id)) {
+          try { if (window.AilivTracking) window.AilivTracking.appointmentAccepted(); } catch (_) {}
           var d = new Date(slot);
           app.innerHTML = '<div class="done"><div class="check">✓</div><h2>Fatto. Ci vediamo ' + fmtDay(slot) + ' alle ' + fmtTime(slot) + '.</h2><p>Ti ho mandato la conferma via mail: dentro trovi il <b>link della videochiamata</b> e i link per spostare o annullare, se ti serve. A presto!</p><p><b>Andrea Rubei — AILIV</b></p></div>';
           try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(_) {}
         } else { throw new Error('book'); }
       }).catch(function(){
+        trackStep('appointment_error');
         booking = false;
         Array.prototype.forEach.call(app.querySelectorAll('.slot'), function(b){ b.disabled = false; });
         if (btn) btn.textContent = fmtTime(slot);
@@ -270,6 +279,7 @@
         app.insertBefore(e, app.firstChild);
       });
     } catch (err) {
+      trackStep('appointment_error');
       // Rete di sicurezza: qualunque errore sincrono non deve lasciare la pagina
       // congelata con gli slot disabilitati (era il difetto peggiore: nessun messaggio).
       booking = false;

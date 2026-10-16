@@ -6,6 +6,7 @@
   var META_PIXEL = '2944167229260391';
   var RECEIPT_KEY = 'ailiv_lead_receipt_v1';
   var receipt = null;
+  var appointment = null;
   function validReceipt(r){ return r && typeof r.created === 'number' && Date.now() >= r.created && Date.now() - r.created < 30 * 60 * 1000; }
   if (/\/grazie\.html$/.test(location.pathname)) {
     try { var saved = JSON.parse(sessionStorage.getItem(RECEIPT_KEY)); if (validReceipt(saved)) receipt = saved; } catch (_) {}
@@ -62,7 +63,23 @@
       fbq('track', 'Lead');
     }
   }
+  function trackAppointment(){
+    if (!validReceipt(appointment)) return;
+    if (!appointment.ga) {
+      appointment.ga = true;
+      gtag('event', 'appointment_booked', {calendar_type:'checkup'});
+    }
+    if (!appointment.meta && window.AilivCookies && window.AilivCookies.hasConsent('marketing') && window.fbq) {
+      appointment.meta = true;
+      fbq('track', 'Schedule');
+    }
+  }
   window.AilivTracking = {
+    // La conferma resta in memoria: ricaricare il calendario non crea una conversione.
+    appointmentAccepted: function(){
+      if (!appointment) appointment = {created:Date.now(),ga:false,meta:false};
+      trackAppointment();
+    },
     // Chiamato esclusivamente dopo la conferma positiva del servizio del modulo.
     leadAccepted: function(done){
       receipt = {created:Date.now(),ga:false,meta:false};
@@ -82,6 +99,7 @@
       if (fbDone) fbq('consent', 'grant'); else fbLoad();
     } else if (window.fbq) fbq('consent', 'revoke');
     trackLead();
+    trackAppointment();
   }
   document.addEventListener('ailiv:cookie-consent', function(e){ apply(e.detail); });
   function syncConsent(){
