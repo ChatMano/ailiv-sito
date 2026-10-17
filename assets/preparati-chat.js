@@ -5,6 +5,7 @@
   var inp = document.getElementById('inp');
   var send = document.getElementById('send');
   var status = document.getElementById('status');
+  var typing = document.getElementById('typing');
   var c = new URLSearchParams(location.search).get('c') || '';
   var history = [], busy = false, retry = null, blocked = false;
 
@@ -14,9 +15,25 @@
     if (role !== 'user') {
       var label = document.createElement('div'); label.className = 'who'; label.textContent = 'AILIV — assistente AI'; el.appendChild(label);
     }
-    var content = document.createElement('span'); content.textContent = text; el.appendChild(content); msgs.appendChild(el);
+    var content = document.createElement('span');
+    if(role==='user')content.textContent=text;else appendReplyText(content,text);
+    el.appendChild(content); msgs.appendChild(el);
     el.scrollIntoView({block:'nearest',behavior:'auto'});
   }
+  function appendReplyText(parent,text){
+    var regex=/https?:\/\/[^\s<>"']+|(?:mailto:)?info@ailiv\.it\b/gi,position=0,match;
+    while((match=regex.exec(text))){
+      parent.appendChild(document.createTextNode(text.slice(position,match.index)));
+      var token=match[0],urlText=token.replace(/[.,!?;:)\]]+$/,''),href=null;
+      if(/^(?:mailto:)?info@ailiv\.it$/i.test(urlText))href='mailto:info@ailiv.it';
+      else {try{var url=new URL(urlText);if(url.protocol==='https:'&&['ailiv.it','www.ailiv.it'].includes(url.hostname)&&!url.username&&!url.password&&!url.port)href=url.href;}catch(e){}}
+      if(href){var a=document.createElement('a');a.href=href;a.textContent=urlText.replace(/^mailto:/i,'');parent.appendChild(a);parent.appendChild(document.createTextNode(token.slice(urlText.length)));}
+      else parent.appendChild(document.createTextNode(token));
+      position=regex.lastIndex;
+    }
+    parent.appendChild(document.createTextNode(text.slice(position)));
+  }
+  function showTyping(active){if(typing){typing.hidden=!active;if(active)typing.scrollIntoView({block:'nearest',behavior:'auto'});}}
   function updateControls() { send.disabled = busy || blocked; inp.disabled = busy || blocked; }
   function notice(text, action, label) {
     status.replaceChildren(); status.appendChild(document.createTextNode(text));
@@ -24,7 +41,7 @@
   }
   async function attempt(payload, savingOnly) {
     if (busy) return;
-    busy=true; updateControls(); notice(savingOnly?'Sto salvando le informazioni…':'Sto preparando la risposta…');
+    busy=true; updateControls(); showTyping(!savingOnly); notice(savingOnly?'Sto salvando le informazioni…':'Sto preparando la risposta…');
     var ctrl = new AbortController(); var timer = setTimeout(function(){ctrl.abort();},115000);
     var waitTimers=[];
     if(!savingOnly){
@@ -55,7 +72,7 @@
     }catch(e){
       retry={payload:payload,savingOnly:savingOnly,newId:false};blocked=true;
       notice('La connessione si è interrotta. Riprova a recuperare la risposta, senza riscrivere il messaggio.',retryLast,'Recupera risposta');
-    }finally{clearTimeout(timer);waitTimers.forEach(clearTimeout);busy=false;updateControls();}
+    }finally{clearTimeout(timer);waitTimers.forEach(clearTimeout);showTyping(false);busy=false;updateControls();}
   }
   function retryLast(){
     if(!retry||busy)return;var task=retry;
@@ -73,7 +90,7 @@
     blocked=true;updateControls();notice('Apri il link personale ricevuto via email dopo la prenotazione. Se non lo trovi, scrivici a info@ailiv.it.');return;
   }
   fetch(worker+'/hello?c='+encodeURIComponent(c)).then(function(r){if(!r.ok)throw new Error('bad link');return r.json();}).then(function(data){
-    var opening="Ciao! Sono l'assistente AI di AILIV. Ti faccio qualche domanda per aiutare Andrea a preparare il tuo check-up.\n\nDi cosa si occupa la tua attività?";
+    var opening="Ciao! Sono l'assistente AI di AILIV. Prima della call, raccontami un po’ della tua attività: così Andrea può partire da quello che conta per te.\n\nDi cosa ti occupi?";
     history.push({role:'assistant',content:opening});add(opening,'assistant');
     if(data.appointment)notice('Appuntamento con Andrea: '+data.appointment+'.');
     blocked=false;updateControls();

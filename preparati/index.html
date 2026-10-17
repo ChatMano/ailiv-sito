@@ -42,7 +42,16 @@
   .me { align-self:flex-end; background:var(--navy); color:#fff; border-bottom-right-radius:4px; }
   .bot .who { display:flex; align-items:center; gap:.4rem; font-family:'IBM Plex Mono',monospace; font-size:.66rem; color:var(--gold-text); margin-bottom:.3rem; }
   .bot .who img { width:16px; height:16px; }
-  .typing { align-self:flex-start; font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:rgba(20,61,92,.55); padding:.3rem .9rem; }
+  .typing { display:flex; align-items:center; gap:.65rem; align-self:flex-start; margin:0 1.1rem .8rem; padding:.65rem .9rem; border:1px solid var(--line); border-radius:14px 14px 14px 4px; background:var(--cream); color:var(--navy); font-size:.8rem; }
+  .typing[hidden] { display:none; }
+  .typing-dots { display:inline-flex; align-items:center; gap:4px; }
+  .typing-dots i { display:block; width:6px; height:6px; border-radius:50%; background:var(--gold-text); animation:reply-dot 1.2s ease-in-out infinite; }
+  .typing-dots i:nth-child(2) { animation-delay:.15s; }
+  .typing-dots i:nth-child(3) { animation-delay:.3s; }
+  @keyframes reply-dot { 0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-4px);opacity:1} }
+  @media(prefers-reduced-motion:reduce){.typing-dots i{animation:none;opacity:1}}
+  .bot a { color:var(--navy); text-decoration:underline; text-underline-offset:3px; overflow-wrap:anywhere; }
+  .bot a:focus-visible { outline:2px solid var(--gold-text); outline-offset:3px; }
   .bar { display:flex; align-items:flex-end; gap:.6rem; padding:.8rem; border-top:1.5px solid var(--line); background:#fff; position:sticky; bottom:0; z-index:2; }
   .bar textarea { flex:1; min-width:0; min-height:78px; resize:vertical; font-family:'Inter',sans-serif; font-size:1rem; line-height:1.4; color:var(--ink); border:1.5px solid rgba(20,61,92,.25); border-radius:10px; padding:.65rem .8rem; outline:none; max-height:160px; }
   .bar textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,167,71,.18); }
@@ -51,7 +60,6 @@
   .bar button:disabled { opacity:.5; cursor:wait; }
   .status { padding:0 1rem 1rem; font-size:.85rem; line-height:1.5; }
   .status button { display:block; margin-top:.6rem; padding:.6rem .8rem; font:inherit; color:var(--navy); border:1px solid var(--navy); border-radius:8px; background:#fff; cursor:pointer; }
-  .calendar { display:inline-block; margin:1rem auto 0; padding:.65rem 1rem; color:var(--navy); font-weight:700; border:1px solid var(--gold); border-radius:9px; text-decoration:none; }
   .chat { overflow:visible; }
   .bar { border-radius:0 0 16px 16px; }
   @media(max-width:480px){.wrap{padding:1rem .7rem 1.5rem}.head p{font-size:.7rem}.msg{max-width:94%;font-size:.94rem;padding:.65rem .75rem}.msgs{padding:.75rem}.bar{gap:.4rem;padding:.6rem;padding-bottom:max(.6rem,env(safe-area-inset-bottom))}.bar button{min-height:48px;padding:.65rem .8rem}.note{font-family:'Inter',sans-serif;font-size:.75rem}}
@@ -71,6 +79,7 @@
   </div>
   <div class="chat">
     <div class="msgs" id="msgs" role="log" aria-live="polite" aria-label="Conversazione con l'assistente AI"></div>
+    <div class="typing" id="typing" hidden aria-hidden="true"><span>AILIV sta rispondendo</span><span class="typing-dots"><i></i><i></i><i></i></span></div>
     <div class="bar" id="bar">
       <!-- disabilitati finché non compare il messaggio di apertura, che contiene la
            dichiarazione "sono l'assistente AI": nessuno può scrivere prima di averla letta -->
@@ -79,10 +88,9 @@
     </div>
   </div>
   <div class="status" id="status" role="status" aria-live="polite"></div>
-  <a class="calendar" href="/prenota.html">Scegli giorno e ora del check-up gratuito</a>
-  <p class="note">La chat è facoltativa e aiuta Andrea a preparare il tuo check-up.<br>Se hai già prenotato, l'appuntamento resta valido anche senza compilare la chat.<br>La conversazione resta salvata 14 giorni per sicurezza e controllo qualità (<a href="/privacy.html">privacy</a>).<br>Non inserire dati riservati, credenziali o informazioni personali di altre persone.<br>Problemi? <a href="mailto:info@ailiv.it">info@ailiv.it</a></p>
+  <p class="note">La chat è facoltativa e prepara la call che hai prenotato.<br>Per data, orario o modifiche, fai riferimento all’email di prenotazione: non serve prenotare di nuovo.<br>La conversazione resta salvata 14 giorni per sicurezza e controllo qualità (<a href="/privacy.html">privacy</a>).<br>Non inserire dati riservati, credenziali o informazioni personali di altre persone.<br>Hai bisogno di una mano? <a href="mailto:info@ailiv.it">info@ailiv.it</a></p>
 </div>
 
-<script src="/assets/preparati-chat.js?v=20261017-2" defer></script>
+<script src="/assets/preparati-chat.js?v=20261017-3" defer></script>
 </body>
 </html>
